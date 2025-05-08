@@ -19,8 +19,8 @@ import lombok.RequiredArgsConstructor;
 //생성자 주입 자동화용 lombok기능
 @Service
 @RequiredArgsConstructor
-public class tmdbServiceImpl implements TmdbService {
-	private final RestTemplate restTemplate = new RestTemplate();
+public class tmdbServiceImpl implements tmdbService {
+	private final RestTemplate restTemplate;
 	private ObjectMapper objectMapper;
     private final tmdbDao tmdbDao;
     
@@ -42,7 +42,8 @@ public class tmdbServiceImpl implements TmdbService {
                 tmdbGenreDto genre = new tmdbGenreDto();
                 genre.setGenreNum(genreNode.get("id").asInt());
                 genre.setGenreName(genreNode.get("name").asText());
-
+                
+                System.out.println(genre);
                 //tmdbDao.insertGenre(genre); // DB에 삽입
                 genres.add(genre);
             }
