@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class tmdbDto {
+public class tmdbMovieDto {
 	private int id; // TMDB 영화 ID
     private String title;
     private String releaseDate;
