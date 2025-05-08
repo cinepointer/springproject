@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>board list</title>
 </head>
 <body>
-
+	<table>
+		<tr th:each="item : ${boardList}">
+			<td th:text="${item.boardTitle}"></td>
+		</tr>
+	</table>
 </body>
 </html>
