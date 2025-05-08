@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class movieDto {
-	 private int movieNum;
+	private int movieNum;
     private String movieTitle;
     private Date movieReleaseDate;
     private String moviePosterPath;
