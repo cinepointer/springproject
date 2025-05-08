@@ -1,5 +1,13 @@
 package com.cinepointer.dto;
 
-public class reviewCommentDto {
+import java.util.Date;
+import lombok.Data;
 
+@Data
+public class reviewCommentDto {
+	int Rcomment_num;         
+   	String RcommentContent;    
+   	Date RcommentTime;        
+   	int reviewNum;             
+    int userNum;
 }

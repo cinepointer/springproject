@@ -1,5 +1,5 @@
 package com.cinepointer.dao;
 
-public class reviewDao {
+public interface reviewDao {
 
 }

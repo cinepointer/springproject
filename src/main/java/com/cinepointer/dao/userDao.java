@@ -1,5 +1,5 @@
 package com.cinepointer.dao;
 
-public class userDao {
+public interface userDao {
 
 }
