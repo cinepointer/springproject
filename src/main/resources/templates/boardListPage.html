@@ -5,9 +5,17 @@
 <title>board list</title>
 </head>
 <body>
+	<h3>게시글 목록</h3>
 	<table>
 		<tr th:each="item : ${boardList}">
+			<td th:text="${item.boardNum}"></td>
 			<td th:text="${item.boardTitle}"></td>
+			<td th:text="${item.boardContent}"></td>
+			<td th:text="${item.boardViewCnt}"></td>
+			<td th:text="${item.boardRegDate}"></td>
+			<td th:text="${item.boardModDate}"></td>
+			<td th:text="${item.boardType}"></td>
+			<td th:text="${item.userNum}"></td>
 		</tr>
 	</table>
 </body>

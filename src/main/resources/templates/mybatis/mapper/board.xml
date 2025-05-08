@@ -8,6 +8,6 @@
 		insert into board(board_title, board_content, board_type) values(#{boardTitle},#{boardContent},#{boardType})
 	</insert>
 	<update id="updateBoard">
-		update board set board_title = #{boardTitle}, board_content = #{boardContent}, board_type = #{boardType}, board_mod_date = #{boardModDate} where user_num = #{userNum}
+		update board set board_title = #{boardTitle}, board_content = #{boardContent}, board_type = #{boardType}, board_mod_date = CURRENT_TIMESTAMP where user_num = #{userNum}
 	</update>
 </mapper>

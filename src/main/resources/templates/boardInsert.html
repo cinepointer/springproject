@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>boardInsert</title>
+</head>
+<body>
+	<form name = "boardInsert" method = "get" th:action="@{/board}">
+		<div>
+			제목 : <input type = "text" th:field="*{boardTitle}" name = "title" placeholder="제목을 적어주세요">
+		</div>
+		<div>
+			<textarea rows="60" cols="50"></textarea>
+		</div>
+		<div>
+			<input type = "button" value = "작성하기" onclick="textCheck();">
+			<input type = "button" value = "취소하기" onclick="history.back();">
+		</div>
+	</form>
+</body>
+</html>

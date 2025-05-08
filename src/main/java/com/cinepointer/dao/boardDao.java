@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.cinepointer.dto.boardDto;
 
 @Mapper
-public interface BoardDao {
+public interface boardDao {
 	public List<boardDto> getList();
 
 	public int insertBoard(@Param("boardTitle") String boardTitle, @Param("boardContent") String boardContent,
