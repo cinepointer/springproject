@@ -3,14 +3,29 @@ package com.cinepointer.dto;
 import java.util.List;
 
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Date;
 
 @Data
 public class tmdbMovieDto {
-	private int id; // TMDB 영화 ID
-    private String title;
-    private String releaseDate;
-    private String posterPath;
-    private String overview;
-    private boolean adult;
-    private List<Integer> genreIds; // TMDB 장르 번호 리스트
+
+    private int movieNum; // TMDB 영화 ID
+
+    @JsonProperty("title")
+    private String movieTitle;
+
+    @JsonProperty("release_date")
+    private Date movieReleaseDate;
+
+    @JsonProperty("poster_path")
+    private String moviePosterPath;
+
+    @JsonProperty("overview")
+    private String movieOverview;
+    
+    @JsonProperty("adult")
+    private boolean movieAdult;
+
+    @JsonProperty("genre_ids")
+    private List<Integer> genreIds;
 }
