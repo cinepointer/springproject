@@ -11,8 +11,59 @@
 	    <foreach collection="genres" item="genre" separator=",">
 	        (#{genre.genreNum}, #{genre.genreName})
 	    </foreach>
+	    ON DUPLICATE KEY UPDATE genre_name = VALUES(genre_name)
+	</insert>
+	
+	
+		<!-- movie_genre 테이블에 하나의 장르를 삽입 -->
+	<insert id="insertMovieGenre">
+		INSERT INTO movie_genre (movie_num, genre_num)
+		VALUES (#{movie_genre.movieNum}, #{movie_genre.genreNum})
+		ON DUPLICATE KEY UPDATE
+    	movie_num = movie_num;
+	</insert>
+	
+	<!-- actor 테이블에 하나의 배우를 삽입, 중복 시 갱신 -->
+	<insert id="insertActor">
+		INSERT INTO actor (actor_num,actor_name,actor_gender)
+		VALUES (#{actor.actorId}, #{actor.actorName}, #{actor.gender})
+		ON DUPLICATE KEY UPDATE
+	    actor_name = VALUES(actor_name),
+	    actor_gender = VALUES(actor_gender)
+	</insert>
+	
+	<!-- movie 테이블에 하나의 영화를 삽입, 중복 시 갱신 -->
+	<insert id="insertMovie">
+	    INSERT INTO movie (movie_num, movie_title, movie_release_date, movie_poster_path, movie_overview, movie_adult)
+	    VALUES (#{movie.movieNum}, #{movie.movieTitle}, #{movie.movieReleaseDate}, #{movie.moviePosterPath}, #{movie.movieOverview}, #{movie.movieAdult})
+	    ON DUPLICATE KEY UPDATE
+	    movie_title = VALUES(movie_title),
+	    movie_release_date = VALUES(movie_release_date),
+	    movie_poster_path = VALUES(movie_poster_path),
+	    movie_overview = VALUES(movie_overview),
+	    movie_adult = VALUES(movie_adult)
 	</insert>
 
+	
+	<insert id="insertActorMovie">
+		  INSERT INTO actor_movie (movie_num, actor_num, actor_order, character_name)
+		  VALUES (
+		    #{movieNum},
+		    #{actor_movie.actorId},
+		    #{actor_movie.castOrder},
+		    #{actor_movie.characterName}
+		  )
+		  ON DUPLICATE KEY UPDATE
+		    actor_order = VALUES(actor_order),
+		    character_name = VALUES(character_name)
+	</insert>
+
+	
+	<select id="selectGenre" resultType="int">
+		Select genre_num from genre;
+	</select>
+	
+	
 </mapper>
 
 
