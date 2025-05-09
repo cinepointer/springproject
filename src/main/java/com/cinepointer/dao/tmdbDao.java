@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.cinepointer.dto.genreDto;
+import com.cinepointer.dto.tmdbGenreDto;
 
 
 @Mapper
 public interface tmdbDao {
-	public List<genreDto> a();
+	public void insertGenre(List<tmdbGenreDto> genres);
 }
