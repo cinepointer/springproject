@@ -13,18 +13,13 @@ import com.cinepointer.service.tmdbService;
 
 
 @Controller
-public class cinepointerController {
-	@Autowired
-	tmdbDao dao;
-	
+public class cinepointerController {	
 	@Autowired
 	private tmdbService service;
 	
 	@RequestMapping("/tmdbinsert")
 	public void insertmovie() {
-		List<tmdbGenreDto> genre=service.insertGenre();
-		
-		
+		service.insertGenre();
 		
 	}
 }

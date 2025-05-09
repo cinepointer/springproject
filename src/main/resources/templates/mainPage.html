@@ -1,10 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>CinePointer - 메인</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
+    <!-- 네비게이션 바 -->
+    <nav th:replace="fragments/nav :: nav"></nav>
 
+    <!-- 검색 섹션 -->
+    <section class="search-section">
+        <form th:action="@{/search}" method="GET">
+            <input type="text" name="query" placeholder="영화 검색...">
+            <button type="submit">검색</button>
+        </form>
+    </section>
+
+    <!-- 인기 영화 슬라이더 -->
+    <section class="popular-movies">
+        <h2>인기 영화</h2>
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" th:each="movie : ${popularMovies}">
+                    <a th:href="@{/movie/{id}(id=${movie.id})}">
+                        <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
+                        <h3 th:text="${movie.title}"></h3>
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+    </section>
+
+    <!-- 최신 개봉작 -->
+    <section class="latest-movies">
+        <h2>최신 개봉작</h2>
+        <div class="movie-grid">
+            <div class="movie-card" th:each="movie : ${latestMovies}">
+                <a th:href="@{/movie/{id}(id=${movie.id})}">
+                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
+                    <h3 th:text="${movie.title}"></h3>
+                    <p th:text="${movie.releaseDate}"></p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 장르별 영화 -->
+    <section class="genre-section">
+        <h2>장르별 영화</h2>
+        <div class="genre-tabs">
+            <div th:each="genre : ${genres}" class="genre-tab">
+                <a th:href="@{/genre/{id}(id=${genre.id})}" th:text="${genre.name}"></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 추천 영화 -->
+    <section class="recommended-movies">
+        <h2>추천 영화</h2>
+        <div class="movie-grid">
+            <div class="movie-card" th:each="movie : ${recommendedMovies}">
+                <a th:href="@{/movie/{id}(id=${movie.id})}">
+                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
+                    <h3 th:text="${movie.title}"></h3>
+                    <p th:text="${movie.rating}"></p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
 </body>
 </html>
