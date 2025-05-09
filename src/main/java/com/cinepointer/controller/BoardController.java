@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.cinepointer.dao.boardDao;
+import com.cinepointer.dto.boardDto;
 
 @Controller
 public class BoardController {
@@ -19,7 +20,8 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/boardInsert")
-	public String insertBoard() {
+	public String insertBoard(Model model) {
+		model.addAttribute("insertBoard", new boardDto());
 		return "boardInsert";
 	}
 }
