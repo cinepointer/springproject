@@ -37,4 +37,5 @@ public class movieController {
         model.addAttribute("movies", service.getAllMovies());
         return "mainpage";
     }
+    
 }
