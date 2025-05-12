@@ -26,4 +26,5 @@ public interface movieDao {
 
     // 영화 삭제
     void deleteMovie(int movieNum);
+
 }
