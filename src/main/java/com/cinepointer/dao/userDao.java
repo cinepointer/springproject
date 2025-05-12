@@ -11,4 +11,5 @@ public interface userDao {
     usersDto findByUserNum(@Param("userNum") int userNum);
     void updateUser(usersDto user);
     void deleteUser(@Param("userNum") int userNum);
+
 }
