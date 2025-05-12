@@ -54,6 +54,11 @@ public class userController { // 앞글자 소문자
         return "redirect:/users/mypage?userNum=" + user.getUserNum();
     }
 
+    
+    
+    
+    
+    
     @PostMapping("/delete")
     public String deleteUser(@RequestParam int userNum) {
         service.deleteUser(userNum);
