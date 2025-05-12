@@ -11,8 +11,68 @@
 	    <foreach collection="genres" item="genre" separator=",">
 	        (#{genre.genreNum}, #{genre.genreName})
 	    </foreach>
+	    ON DUPLICATE KEY UPDATE genre_name = VALUES(genre_name)
+	</insert>
+	
+	
+	<!-- 여러 개의 movie_genre 데이터를 일괄 삽입 -->
+	<insert id="insertMovieGenresBatch">
+	    INSERT INTO movie_genre (movie_num, genre_num)
+	    VALUES
+	    <foreach collection="movieGenreList" item="movie_genre" separator=",">
+	        (#{movie_genre.movieNum}, #{movie_genre.genreNum})
+	    </foreach>
+	    ON DUPLICATE KEY UPDATE
+	        movie_num = VALUES(movie_num);
+	</insert>
+	
+	<!-- 여러 개의 actor 데이터를 일괄 삽입, 중복 시 갱신 -->
+	<insert id="insertActorsBatch">
+	    INSERT INTO actor (actor_num, actor_name, actor_gender)
+	    VALUES
+	    <foreach collection="actorList" item="actor" separator=",">
+	        (#{actor.actorId}, #{actor.actorName}, #{actor.gender})
+	    </foreach>
+	    ON DUPLICATE KEY UPDATE
+	        actor_name = VALUES(actor_name),
+	        actor_gender = VALUES(actor_gender);
+	</insert>
+	
+	<!-- 여러 개의 movie 데이터를 일괄 삽입, 중복 시 갱신 -->
+	<insert id="insertMoviesBatch">
+	    INSERT INTO movie (movie_num, movie_title, movie_release_date, movie_poster_path, movie_overview, movie_adult)
+	    VALUES
+	    <foreach collection="movieList" item="movie" separator=",">
+	        (#{movie.movieNum}, #{movie.movieTitle}, #{movie.movieReleaseDate}, #{movie.moviePosterPath}, #{movie.movieOverview}, #{movie.movieAdult})
+	    </foreach>
+	    ON DUPLICATE KEY UPDATE
+	        movie_title = VALUES(movie_title),
+	        movie_release_date = VALUES(movie_release_date),
+	        movie_poster_path = VALUES(movie_poster_path),
+	        movie_overview = VALUES(movie_overview),
+	        movie_adult = VALUES(movie_adult);
+	</insert>
+	
+	<!-- 여러 개의 actor_movie 데이터를 일괄 삽입, 중복 시 갱신 -->
+	<insert id="insertActorMoviesBatch">
+	    INSERT INTO actor_movie (movie_num, actor_num, actor_order, character_name)
+	    VALUES
+	    <foreach collection="actorMovieList" item="am" separator=",">
+	        (#{am.movieNum}, #{am.actorNum}, #{am.actorOrder}, #{am.characterName})
+	    </foreach>
+	    ON DUPLICATE KEY UPDATE
+	        actor_order = VALUES(actor_order),
+	        character_name = VALUES(character_name);
 	</insert>
 
+
+
+	
+	<select id="selectGenre" resultType="int">
+		Select genre_num from genre;
+	</select>
+	
+	
 </mapper>
 
 

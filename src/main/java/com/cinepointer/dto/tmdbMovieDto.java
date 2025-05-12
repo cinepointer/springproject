@@ -8,8 +8,8 @@ import java.util.Date;
 
 @Data
 public class tmdbMovieDto {
-
-    private int movieNum; // TMDB 영화 ID
+	@JsonProperty("id")
+    private int movieNum;
 
     @JsonProperty("title")
     private String movieTitle;
