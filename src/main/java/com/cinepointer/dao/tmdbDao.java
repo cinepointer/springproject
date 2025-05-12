@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.cinepointer.dto.actorMovieDto;
 import com.cinepointer.dto.genreDto;
 import com.cinepointer.dto.tmdbActorDto;
 import com.cinepointer.dto.tmdbGenreDto;
@@ -18,11 +19,17 @@ public interface tmdbDao {
 	//장르 번호 가져오기
 	List<Integer> selectGenre();
 	
-	void insertMovieGenre(@Param("movie_genre")genreDto movie_genre);
-	
-	void insertActorMovie(@Param("actor_movie")tmdbActorDto actor_movie,
-			@Param("movieNum")int movidNum);
-	
-	void insertActor(@Param("actor")tmdbActorDto actor);
-	void insertMovie(@Param("movie")tmdbMovieDto movie);
+	// 배치 삽입 - 영화 리스트
+    void insertMoviesBatch(@Param("movieList") List<tmdbMovieDto> movieList);
+
+    // 배치 삽입 - 배우 리스트
+    void insertActorsBatch(@Param("actorList") List<tmdbActorDto> actorList);
+
+    // 배치 삽입 - 장르 리스트
+    void insertMovieGenresBatch(@Param("movieGenreList") List<genreDto> movieGenreList);
+
+    // 배치 삽입 - 배우-영화 관계 리스트
+    void insertActorMoviesBatch(@Param("actorMovieList") List<actorMovieDto> actorMovieList);
+
+
 }

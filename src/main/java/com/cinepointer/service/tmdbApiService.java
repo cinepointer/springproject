@@ -6,33 +6,42 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.cinepointer.dto.TmdbCreditsResponse;
-import com.cinepointer.dto.TmdbMovieResponse;
-import com.cinepointer.dto.tmdbActorDto;
-import com.cinepointer.dto.tmdbGenreDto;
-import com.cinepointer.dto.tmdbMovieDto;
+import com.cinepointer.dto.*;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class tmdbApiService {
+
     private final RestTemplate restTemplate;
 
-    @Value("${tmdb.api-key}")
+    @Value("${tmdb.api-key}")  // Bearer 토큰
     private String apiKey;
 
     @Value("${tmdb.base-url}")
     private String baseUrl;
 
+    
+    private HttpEntity<String> createAuthEntity() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(apiKey);
+        return new HttpEntity<>(headers);
+    }
+
     public List<tmdbGenreDto> fetchGenres() {
-        String url = baseUrl + "/genre/movie/list?api_key=" + apiKey + "&language=ko-KR";
-        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, null, Map.class);
+        String url = baseUrl + "/genre/movie/list?language=ko-KR";
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            createAuthEntity(),
+            Map.class
+        );
 
         List<Map<String, Object>> genresData = (List<Map<String, Object>>) response.getBody().get("genres");
         List<tmdbGenreDto> genres = new ArrayList<>();
@@ -46,6 +55,7 @@ public class tmdbApiService {
 
         return genres;
     }
+
     public List<tmdbMovieDto> fetchPopularMoviesByGenre(int genreId, int count) {
         List<tmdbMovieDto> movies = new ArrayList<>();
         int fetched = 0;
@@ -53,15 +63,16 @@ public class tmdbApiService {
 
         while (fetched < count) {
             String url = baseUrl + "/discover/movie"
-                    + "?api_key=" + apiKey
-                    + "&language=ko-KR"
-                    + "&sort_by=popularity.desc"
-                    + "&with_genres=" + genreId
-                    + "&page=" + page;
+                       + "?language=ko-KR"
+                       + "&sort_by=popularity.desc"
+                       + "&with_genres=" + genreId
+                       + "&page=" + page;
 
             ResponseEntity<TmdbMovieResponse> response = restTemplate.exchange(
-                    url, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<TmdbMovieResponse>() {}
+                url,
+                HttpMethod.GET,
+                createAuthEntity(),
+                new ParameterizedTypeReference<TmdbMovieResponse>() {}
             );
 
             List<tmdbMovieDto> resultList = response.getBody().getResults();
@@ -80,13 +91,13 @@ public class tmdbApiService {
     }
 
     public List<tmdbActorDto> fetchActorsByMovieId(int movieId) {
-        String url = baseUrl + "/movie/" + movieId + "/credits"
-                   + "?api_key=" + apiKey
-                   + "&language=ko-KR";
+        String url = baseUrl + "/movie/" + movieId + "/credits?language=ko-KR";
 
         try {
             ResponseEntity<TmdbCreditsResponse> response = restTemplate.exchange(
-                url, HttpMethod.GET, null,
+                url,
+                HttpMethod.GET,
+                createAuthEntity(),
                 new ParameterizedTypeReference<TmdbCreditsResponse>() {}
             );
 
@@ -96,8 +107,4 @@ public class tmdbApiService {
             return new ArrayList<>();
         }
     }
-
-
-    
-    
 }
