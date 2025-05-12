@@ -1,11 +1,15 @@
 package com.cinepointer.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.tmdbDao;
+import com.cinepointer.dto.actorMovieDto;
 import com.cinepointer.dto.genreDto;
 import com.cinepointer.dto.tmdbActorDto;
 import com.cinepointer.dto.tmdbGenreDto;
@@ -36,37 +40,51 @@ public class tmdbServiceImpl implements tmdbService {
     @Override
     public void insertPopularMovies() {
         List<Integer> genreList = tmdbDao.selectGenre();
+        List<tmdbActorDto> actorList = new ArrayList<>();
+        List<tmdbMovieDto> movieList = new ArrayList<>();
+        List<genreDto> movieGenreList = new ArrayList<>();
+        List<actorMovieDto> actorMovieList = new ArrayList<>();
+
+        Set<Integer> actorIdSet = new HashSet<>(); // 중복 제거
 
         for (int genre : genreList) {
-            List<tmdbMovieDto> movieList = api.fetchPopularMoviesByGenre(genre, 500);
+            List<tmdbMovieDto> movies = api.fetchPopularMoviesByGenre(genre, 50);
+            System.out.println(genre + " 장르의 영화 가져오는 중");
 
-            for (tmdbMovieDto movie : movieList) {
-                int movieId = movie.getMovieNum();
-                List<tmdbActorDto> actors = api.fetchActorsByMovieId(movieId); // 출연진 API 호출
-                System.out.println(actors);
-                // 2. 배우 정보 먼저 insert (중복 시 갱신)
+            for (tmdbMovieDto movie : movies) {
+                movieList.add(movie);
+
+                for (Integer genreId : movie.getGenreIds()) {
+                    genreDto mg = new genreDto();
+                    mg.setMovieNum(movie.getMovieNum());
+                    mg.setGenreNum(genreId);
+                    movieGenreList.add(mg);
+                }
+
+                List<tmdbActorDto> actors = api.fetchActorsByMovieId(movie.getMovieNum());
                 for (tmdbActorDto actor : actors) {
-                	tmdbDao.insertActor(actor);
+                    if (actorIdSet.add(actor.getActorId())) {
+                        actorList.add(actor); // 중복 제거
+                    }
+
+                    actorMovieDto am = new actorMovieDto();
+                    am.setMovieNum(movie.getMovieNum());
+                    am.setActorNum(actor.getActorId());
+                    am.setCharacterName(actor.getCharacterName());
+                    am.setActorOrder(actor.getCastOrder());
+                    actorMovieList.add(am);
                 }
-                
-                // 3. 영화 정보 insert (중복 시 갱신)
-                tmdbDao.insertMovie(movie);
-                for(Integer genreId:movie.getGenreIds()) {
-                	genreDto mg=new genreDto();
-                	mg.setMovieNum(movieId);
-                	mg.setGenreNum(genreId);
-                	tmdbDao.insertMovieGenre(mg);
-                	
-                }
-                
-                for(tmdbActorDto actor:actors) {
-                	tmdbDao.insertActorMovie(actor,movieId);
-                }
-                
             }
-            
         }
+
+        // 한 번에 배치 삽입
+        tmdbDao.insertMoviesBatch(movieList);
+        tmdbDao.insertActorsBatch(actorList);
+        tmdbDao.insertMovieGenresBatch(movieGenreList);
+        tmdbDao.insertActorMoviesBatch(actorMovieList);
     }
+
+
 
 	
 	
