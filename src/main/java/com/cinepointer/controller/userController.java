@@ -16,8 +16,11 @@ public class userController { // 앞글자 소문자
     }
 
     @GetMapping("/signup")
-    public String signUpPage() { return "signup"; }
-
+    public String signUpPage(Model model) {
+        model.addAttribute("user", new usersDto());
+        return "signup";
+    }
+    
     @PostMapping("/signup")
     public String signUp(usersDto user) {
         service.registerUser(user);
