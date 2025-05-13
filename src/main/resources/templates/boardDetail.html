@@ -17,8 +17,6 @@
             <span>작성일: <span th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}">작성일</span></span>
         </p>
         <p th:text="${board.content}">게시글 내용</p>
-        
-        <!-- 수정 버튼 추가 -->
         <div class="board-actions">
             <a href="#" th:href="@{/board/updateForm/{boardNum}(boardNum=${board.boardNum})}">[수정]</a>
         </div>
