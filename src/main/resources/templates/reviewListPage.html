@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 리뷰 목록</title>
+    <script src="/js/review.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>영화 리뷰</h1>
+        </div>
+    </header>
+    <main>
+        <div>
+            <h2>영화 번호: <span th:text="${movieNum}"></span></h2>
+            <button th:onclick="|window.location.href='/review/form?movieNum=' + ${movieNum}|">리뷰 작성</button>
+        </div>
+        <div th:each="review : ${reviews}">
+            <h3 th:text="${review.reviewTitle}"></h3>
+            <p th:text="'평점: ' + ${review.reviewRating} + ' / 5'"></p>
+            <p th:text="${review.reviewContent}"></p>
+            <p th:text="'작성 시간: ' + ${review.reviewTime}"></p>
+            <div th:if="${session.userNum != null}">
+                <button th:onclick="|window.location.href='/review/edit?reviewNum=' + ${review.reviewNum} + '&movieNum=' + ${movieNum}|">수정</button>
+                <button th:onclick="|deleteReview(${review.reviewNum}, ${movieNum})|">삭제</button>
+            </div>
+            <div th:unless="${session.userNum != null}">
+                <p>리뷰 수정/삭제는 로그인 후 가능합니다.</p>
+            </div>
+            <div>
+                <h4>댓글</h4>
+                <div th:each="comment : ${review.comments}">
+                    <p th:text="${comment.rCommentContent}"></p>
+                    <p th:text="'작성 시간: ' + ${comment.rCommentTime}"></p>
+                    <button th:onclick="|toggleEditForm(${comment.rCommentNum})|">수정</button>
+                    <a th:href="@{/review/comment/delete(rCommentNum=${comment.rCommentNum},movieNum=${movieNum})}">삭제</a>
+                    <form th:id="|edit-form-${comment.rCommentNum}|" th:action="@{/review/comment/update}" method="post" style="display:none;">
+                        <input type="hidden" name="rCommentNum" th:value="${comment.rCommentNum}">
+                        <input type="hidden" name="movieNum" th:value="${movieNum}">
+                        <textarea name="rCommentContent" th:text="${comment.rCommentContent}" required></textarea>
+                        <button type="submit">저장</button>
+                    </form>
+                </div>
+                <form th:action="@{/review/comment/insert}" method="post">
+                    <input type="hidden" name="reviewNum" th:value="${review.reviewNum}">
+                    <input type="hidden" name="movieNum" th:value="${movieNum}">
+                    <textarea name="rCommentContent" placeholder="댓글을 입력하세요" required></textarea>
+                    <button type="submit">댓글 추가</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

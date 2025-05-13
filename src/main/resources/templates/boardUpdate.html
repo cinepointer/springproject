@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/boardUpdate.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+    <h2>게시글 수정</h2>
+
+    <form th:action="@{/board/update}" method="post">
+        <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+        
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" th:value="${board.title}" required placeholder="제목을 입력하세요">
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" rows="8" required placeholder="내용을 입력하세요" th:text="${board.content}"></textarea>
+        </div>
+
+        <button type="submit">수정하기</button>
+        <button type="button" onclick="history.back();">취소</button>
+    </form>
+</div>
+
+</body>
+</html>

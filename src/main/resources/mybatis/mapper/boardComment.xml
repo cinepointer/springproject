@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cinepointer.dao.boardCommentDao">
+	<select id="getCommentsByBoardNum" parameterType="int" resultType="com.cinepointer.dto.boardCommentDto">
+        select * from b_comment where board_num = #{boardNum} order by b_comment_time desc
+    </select>
+    
+    <insert id="insertComment" parameterType="com.cinepointer.dto.boardCommentDto">
+        insert into b_comment (comment_content, board_num, user_num) values(#{commentContent}, #{boardNum}, #{userNum})
+    </insert>
+    
+    <update id="updateComment" parameterType="com.cinepointer.dto.boardCommentDto">
+        update b_comment set comment_content = #{commentContent}, comment_time = current_timestamp where comment_num = #{commentNum}
+    </update>
+    
+    <delete id="deleteComment" parameterType="int">
+        delete from b_comment where comment_num = #{commentNum}
+    </delete>
+</mapper>

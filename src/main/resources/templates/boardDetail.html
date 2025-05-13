@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/boardDetail.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="board-detail">
+        <h2 th:text="${board.title}">게시글 제목</h2>
+        <p class="board-meta">
+            <span>작성자: <span th:text="${board.userId}">작성자</span></span>
+            <span>작성일: <span th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}">작성일</span></span>
+        </p>
+        <p th:text="${board.content}">게시글 내용</p>
+        
+        <!-- 수정 버튼 추가 -->
+        <div class="board-actions">
+            <a href="#" th:href="@{/board/updateForm/{boardNum}(boardNum=${board.boardNum})}">[수정]</a>
+        </div>
+    </div>
+
+    <div class="comment-form">
+        <h3>댓글 작성</h3>
+        <form action="/board/comment" method="post">
+            <textarea name="content" rows="3" placeholder="댓글을 작성해주세요." required></textarea>
+            <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+            <button type="submit">댓글 등록</button>
+        </form>
+    </div>
+
+    <div class="comments">
+        <h3>댓글</h3>
+        <div th:each="comment : ${comment}" class="comment-item" th:id="'comment-' + ${comment.commentNum}">
+            <p>
+                <strong th:text="${comment.userId}">작성자</strong>: 
+                <span th:text="${comment.content}" th:id="'content-' + ${comment.commentNum}">댓글 내용</span>
+            </p>
+            <p class="comment-meta">
+                <span th:text="${#dates.format(comment.regDate, 'yyyy-MM-dd HH:mm')}">댓글 작성일</span>
+                <a href="javascript:void(0);" th:onclick="'showEditForm(' + ${comment.commentNum} + ');'">[수정]</a>
+                <a th:href="@{'/board/commentDelete/' + ${comment.commentNum} + '/' + ${board.boardNum}}">[삭제]</a>
+            </p>
+
+            <div th:id="'editForm-' + ${comment.commentNum}" class="edit-form" style="display:none;">
+                <form th:action="@{/board/commentEdit}" method="post">
+                    <input type="hidden" name="commentNum" th:value="${comment.commentNum}">
+                    <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+                    <textarea name="content" rows="3" th:text="${comment.content}"></textarea>
+                    <button type="submit">수정하기</button>
+                    <button type="button" class="cancel-edit">취소</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -12,5 +12,5 @@ public class boardDto {
     private String boardModDate;
     private String boardType;
     private int userNum;
-
+    private String userId;
 }

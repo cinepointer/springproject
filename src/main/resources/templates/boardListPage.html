@@ -1,22 +1,43 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>board list</title>
+    <meta charset="UTF-8">
+    <title>게시판 목록</title>
+    <!-- 외부 CSS 연결 -->
+    <link rel="stylesheet" th:href="@{/css/boardList.css}">
 </head>
 <body>
-	<h3>게시글 목록</h3>
-	<table>
-		<tr th:each="item : ${boardList}">
-			<td th:text="${item.boardNum}"></td>
-			<td th:text="${item.boardTitle}"></td>
-			<td th:text="${item.boardContent}"></td>
-			<td th:text="${item.boardViewCnt}"></td>
-			<td th:text="${item.boardRegDate}"></td>
-			<td th:text="${item.boardModDate}"></td>
-			<td th:text="${item.boardType}"></td>
-			<td th:text="${item.userNum}"></td>
-		</tr>
-	</table>
+    <h1>게시판 목록</h1>
+
+    <div class="action-bar">
+        <a href="/board/insertForm" class="write-btn">글 작성하기</a>
+    </div>
+
+    <table class="board-table">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board : ${boardList}">
+                <td th:text="${board.boardNum}">1</td>
+                <td>
+                    <a th:href="@{/board/detail/{boardNum}(boardNum=${board.boardNum})}"
+                       th:text="${board.title}">게시글 제목</a>
+                </td>
+                <td th:text="${board.writer}">작성자</td>
+                <td th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}">2025-05-13 14:21</td>
+                <td th:text="${board.viewCnt}">0</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 외부 JavaScript 연결 -->
+    <script th:src="@{/js/boardList.js}"></script>
 </body>
 </html>

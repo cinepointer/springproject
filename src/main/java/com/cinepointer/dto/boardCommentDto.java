@@ -9,5 +9,5 @@ public class boardCommentDto {
 	private String commentTime;
 	private int boardNum;
 	private int userNum;
-
+	private String userId;
 }

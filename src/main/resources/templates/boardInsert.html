@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>boardInsert</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/boardInsert.js" defer></script>
 </head>
 <body>
-	<form name = "boardInsert" method = "get" th:action="@{/board}">
-		<div>
-			제목 : <input type = "text" th:field="*{boardTitle}" name = "title" placeholder="제목을 적어주세요">
-		</div>
-		<div>
-			<textarea rows="60" cols="50" th:field="*{boardContent}" placeholder="내용을 적어주세요"></textarea>
-		</div>
-		<div>
-			<input type = "button" value = "작성하기" onclick="textCheck();">
-			<input type = "button" value = "취소하기" onclick="history.back();">
-		</div>
-	</form>
+
+<div class="container">
+    <h2>게시글 작성</h2>
+
+    <form th:action="@{/board/insert}" method="post">
+        <div class="form-group">
+            <label for="title">제목</label>
+            <input type="text" id="title" name="title" required placeholder="제목을 입력하세요">
+        </div>
+
+        <!-- 작성자(user_id)를 입력란이 아닌 span으로 표시만 하기 -->
+        <div class="form-group">
+            <label>작성자</label>
+            <span th:text="${loginUser.userId}">userId</span>
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" rows="8" required placeholder="내용을 입력하세요"></textarea>
+        </div>
+
+        <button type="submit">등록</button>
+        <button type="button" onclick="history.back();">취소</button>
+    </form>
+</div>
+
 </body>
 </html>

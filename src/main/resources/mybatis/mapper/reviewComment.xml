@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cinepointer.dao.ReviewCommentDao">
+    <insert id="insertComment" parameterType="com.cinepointer.dto.reviewCommentDto">
+        insert into review_comment (review_num, r_comment_content, user_num) values (#{reviewNum}, #{rCommentContent}, #{userNum})
+    </insert>
+    
+    <select id="selectComment" parameterType="int" resultType="com.cinepointer.dto.reviewCommentDto">
+        select * from r_comment where review_num = #{reviewNum} order by r_comment_time desc
+    </select>
+    
+    <update id="updateComment" parameterType="com.cinepointer.dto.reviewCommentDto">
+        update r_comment set r_comment_content = #{rCommentContent} where r_comment_num = #{rCommentNum}
+    </update>
+    
+    <delete id="deleteComment" parameterType="int">
+        delete from r_comment where r_comment_num = #{rCommentNum}
+    </delete>
+</mapper>

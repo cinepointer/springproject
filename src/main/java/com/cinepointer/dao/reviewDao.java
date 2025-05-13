@@ -2,16 +2,22 @@ package com.cinepointer.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
 
-import com.cinepointer.dto.boardDto;
+import com.cinepointer.dto.reviewCommentDto;
 import com.cinepointer.dto.reviewDto;
 
+@Mapper
 public interface reviewDao {
-	public List<reviewDto> getList();
-
-	public int insertReview(boardDto dto);
-
-	public int updateReview(@Param("userNum") int userNum, @Param("boardTitle") String boardTitle, @Param("boardContent") String boardContent,
-			@Param("boardType") String boardType, @Param("boardModDate") String boardModDate);
+	void insertReview(reviewDto dto);
+	
+    List<reviewDto> selectReview(int movieNum);
+    
+    void updateReview(reviewDto dto);
+    
+    void deleteReview(int reviewNum);
+    
+    reviewDto selectReviewByNum(int reviewNum);
+    
+    List<reviewCommentDto> selectComment(int reviewNum);
 }
