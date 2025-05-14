@@ -9,7 +9,7 @@
         </a>
 </head>
 <body>
-
+	<th:block th:replace="~{fragment/header.html :: headerFragment}"></th:block>
     <main>
         <div class="form-container">
             <h2>로그인</h2>
@@ -26,6 +26,6 @@
     </main>
 
     <!-- 푸터 fragment 참조 -->
-    <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
+    <th:block th:replace="~{fragment/footer.html :: footerFragment}"></th:block>
 </body>
 </html>

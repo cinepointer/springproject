@@ -41,7 +41,9 @@ public class userController {
     // 회원가입 폼
     @GetMapping("/signup")
     public String signUpForm(Model model) {
-        model.addAttribute("user", new usersDto());
+    	usersDto user = new usersDto();
+        user.setUserBirthDate("1999-01-01"); // 기본값 설정
+        model.addAttribute("user", user);
         return "signUp";
     }
 
@@ -61,7 +63,7 @@ public class userController {
 
     // 회원정보 조회
     @GetMapping("/users/{user_id}")
-    public String getUserInfo(@PathVariable String user_id, Model model) {
+    public String getUserInfo(@PathVariable("user_id") String user_id, Model model) {
         usersDto user = cinepointerService.findById(user_id);
         if (user == null) {
             model.addAttribute("error", "회원을 찾을 수 없습니다.");
@@ -73,7 +75,7 @@ public class userController {
 
     // 회원정보 수정 폼
     @GetMapping("/users/{user_id}/edit")
-    public String editUserForm(@PathVariable String user_id, Model model) {
+    public String editUserForm(@PathVariable("user_id") String user_id, Model model) {
         usersDto user = cinepointerService.findById(user_id);
         if (user == null) {
             model.addAttribute("error", "회원을 찾을 수 없습니다.");
@@ -85,7 +87,7 @@ public class userController {
 
     // 회원정보 수정 처리
     @PostMapping("/users/{user_id}/edit")
-    public String editUser(@PathVariable String user_id, @ModelAttribute("user") usersDto user, Model model) {
+    public String editUser(@PathVariable("user_id") String user_id, @ModelAttribute("user") usersDto user, Model model) {
         try {
             // user_id 보존
             //user.setUser_id(user_id);
@@ -99,7 +101,7 @@ public class userController {
 
     // 회원탈퇴
     @PostMapping("/users/{user_id}/delete")
-    public String deleteUser(@PathVariable int user_id, HttpSession session, Model model) {
+    public String deleteUser(@PathVariable("user_id") int user_id, HttpSession session, Model model) {
         try {
             cinepointerService.deleteUser(user_id); // deleteUser 메서드가 서비스에 있어야 함
             session.invalidate(); // 세션 종료(로그아웃)

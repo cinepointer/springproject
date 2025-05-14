@@ -30,10 +30,12 @@ public class userServiceImpl implements userService, UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         usersDto user = userDao.selectUserById(username);
+        System.out.println("로그인 동작");
         if (user == null) {
             throw new UsernameNotFoundException("해당 아이디의 사용자를 찾을 수 없습니다: " + username);
+            
         }
-
+        System.out.println("");
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUserId())
                 .password(user.getUserPasswd()) // 암호화된 비밀번호
