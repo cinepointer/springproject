@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/css/splide.min.css">
 </head>
 <body>
-    <!-- 전문적인 헤더/네비게이션 -->
+    <!-- 공통 헤더 -->
     <header>
         <div class="container nav-flex">
             <a href="/" class="logo">CinePointer</a>
@@ -16,6 +16,7 @@
                 <ul>
                     <li><a href="/" class="active">메인</a></li>
                     <li><a href="/movies">영화</a></li>
+                    <li><a href="/myPage">마이페이지</a></li>
                 </ul>
             </nav>
             <div class="nav-actions">
@@ -24,7 +25,6 @@
             </div>
         </div>
     </header>
-    
 
     <main>
         <div class="container">
@@ -43,6 +43,42 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- 최신 개봉작 -->
+            <section>
+                <h2>최신 개봉작</h2>
+                <div class="movie-list" th:each="movie : ${latestMovies}">
+                    <a th:href="@{/movies/{id}(id=${movie.id})}">
+                        <img th:src="${movie.posterUrl}" alt="포스터">
+                        <div th:text="${movie.title}">영화 제목</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 장르별 영화 섹션 -->
+            <section>
+                <h2>장르별 영화</h2>
+                <div th:each="genre : ${genres}">
+                    <h3 th:text="${genre.name}">장르명</h3>
+                    <div class="movie-list" th:each="movie : ${genre.movies}">
+                        <a th:href="@{/movies/{id}(id=${movie.id})}">
+                            <img th:src="${movie.posterUrl}" alt="포스터">
+                            <div th:text="${movie.title}">영화 제목</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 추천 영화 섹션 -->
+            <section>
+                <h2>추천 영화</h2>
+                <div class="movie-list" th:each="movie : ${recommendedMovies}">
+                    <a th:href="@{/movies/{id}(id=${movie.id})}">
+                        <img th:src="${movie.posterUrl}" alt="포스터">
+                        <div th:text="${movie.title}">영화 제목</div>
+                    </a>
+                </div>
+            </section>
         </div>
     </main>
 
