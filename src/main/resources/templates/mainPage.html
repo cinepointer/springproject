@@ -3,78 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <title>CinePointer - 메인</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/css/splide.min.css">
 </head>
 <body>
-    <!-- 네비게이션 바 -->
-    <nav th:replace="fragments/nav :: nav"></nav>
+    <!-- 전문적인 헤더/네비게이션 -->
+    <header>
+        <div class="container nav-flex">
+            <a href="/" class="logo">CinePointer</a>
+            <nav>
+                <ul>
+                    <li><a href="/" class="active">메인</a></li>
+                    <li><a href="/movies">영화</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="/signUp" class="btn nav-btn">회원가입</a>
+                <a href="/signIn" class="btn nav-btn">로그인</a>
+            </div>
+        </div>
+    </header>
+    
 
-    <!-- 검색 섹션 -->
-    <section class="search-section">
-        <form th:action="@{/search}" method="GET">
-            <input type="text" name="query" placeholder="영화 검색...">
-            <button type="submit">검색</button>
-        </form>
-    </section>
-
-    <!-- 인기 영화 슬라이더 -->
-    <section class="popular-movies">
-        <h2>인기 영화</h2>
-        <div class="swiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" th:each="movie : ${popularMovies}">
-                    <a th:href="@{/movie/{id}(id=${movie.id})}">
-                        <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
-                        <h3 th:text="${movie.title}"></h3>
-                    </a>
+    <main>
+        <div class="container">
+            <h1>인기 영화</h1>
+            <!-- 인기 영화 슬라이더 -->
+            <div id="popular-slider" class="splide" style="margin-bottom:40px;">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide" th:each="movie : ${popularMovies}">
+                            <a th:href="@{/movies/{id}(id=${movie.id})}">
+                                <img th:src="${movie.posterUrl}" alt="영화 포스터">
+                                <div class="slide-title" th:text="${movie.title}">영화 제목</div>
+                                <div class="slide-desc" th:text="${movie.director}">감독</div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
         </div>
-    </section>
+    </main>
 
-    <!-- 최신 개봉작 -->
-    <section class="latest-movies">
-        <h2>최신 개봉작</h2>
-        <div class="movie-grid">
-            <div class="movie-card" th:each="movie : ${latestMovies}">
-                <a th:href="@{/movie/{id}(id=${movie.id})}">
-                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
-                    <h3 th:text="${movie.title}"></h3>
-                    <p th:text="${movie.releaseDate}"></p>
-                </a>
-            </div>
-        </div>
-    </section>
+    <footer>
+        &copy; 2025 CinePointer. All Rights Reserved.
+    </footer>
 
-    <!-- 장르별 영화 -->
-    <section class="genre-section">
-        <h2>장르별 영화</h2>
-        <div class="genre-tabs">
-            <div th:each="genre : ${genres}" class="genre-tab">
-                <a th:href="@{/genre/{id}(id=${genre.id})}" th:text="${genre.name}"></a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 추천 영화 -->
-    <section class="recommended-movies">
-        <h2>추천 영화</h2>
-        <div class="movie-grid">
-            <div class="movie-card" th:each="movie : ${recommendedMovies}">
-                <a th:href="@{/movie/{id}(id=${movie.id})}">
-                    <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
-                    <h3 th:text="${movie.title}"></h3>
-                    <p th:text="${movie.rating}"></p>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    <script th:src="@{/js/main.js}"></script>
+    <script>
+      document.addEventListener( 'DOMContentLoaded', function () {
+        new Splide( '#popular-slider', {
+          type   : 'loop',
+          perPage: 4,
+          gap    : '24px',
+          breakpoints: {
+            900: { perPage: 2 },
+            600: { perPage: 1 }
+          }
+        } ).mount();
+      } );
+    </script>
 </body>
 </html>

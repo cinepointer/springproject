@@ -1,30 +1,21 @@
 package com.cinepointer.dao;
 
-import java.util.List;
 import com.cinepointer.dto.movieDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import java.util.List;
 
 @Mapper
 public interface movieDao {
-    // 전체 영화 목록
-    List<movieDto> findAll();
-
-    // 영화 상세
-    movieDto findByMovieNum(int movieNum);
-
-    // 제목 검색
-    List<movieDto> searchByTitle(String keyword);
-
-    // 성인/비성인 영화
-    List<movieDto> findByAdult(boolean movieAdult);
-
-    // 영화 등록
-    void insertMovie(movieDto movie);
-
-    // 영화 수정
-    void updateMovie(movieDto movie);
-
-    // 영화 삭제
-    void deleteMovie(int movieNum);
-
+    List<movieDto> searchMovies(
+        @Param("search") String search,
+        @Param("genre") String genre,
+        @Param("sort") String sort,
+        @Param("limit") Integer limit
+    );
+    movieDto findById(@Param("id") Long id);
+    List<movieDto> findByGenre(@Param("genre") String genre, @Param("limit") Integer limit);
+    List<movieDto> findPopular(@Param("limit") Integer limit);
+    List<movieDto> findLatest(@Param("limit") Integer limit);
+    void insert(movieDto movie);
 }

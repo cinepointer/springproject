@@ -1,38 +1,65 @@
 package com.cinepointer.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class movieDto {
-    private int movieNum;
-    private String movieTitle;
-    private Date movieReleaseDate;
-    private String moviePosterPath;
-    private String movieOverview;
-    private Date movieRegDate;
-    private int movieCheck;
-    private boolean movieAdult;
+    private Long id;
+    private String title;
+    private String genre; // 장르 필드 추가
+    private String description;
+    private Date releaseDate;
+    private Integer likeCount; // 찜 수
+    private List<String> actors; // 출연진
 
-    public int getMovieNum() { return movieNum; }
-    public void setMovieNum(int movieNum) { this.movieNum = movieNum; }
+    // Getter, Setter
 
-    public String getMovieTitle() { return movieTitle; }
-    public void setMovieTitle(String movieTitle) { this.movieTitle = movieTitle; }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Date getMovieReleaseDate() { return movieReleaseDate; }
-    public void setMovieReleaseDate(Date movieReleaseDate) { this.movieReleaseDate = movieReleaseDate; }
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public String getMoviePosterPath() { return moviePosterPath; }
-    public void setMoviePosterPath(String moviePosterPath) { this.moviePosterPath = moviePosterPath; }
+    public String getGenre() {
+        return genre;
+    }
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
 
-    public String getMovieOverview() { return movieOverview; }
-    public void setMovieOverview(String movieOverview) { this.movieOverview = movieOverview; }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-    public Date getMovieRegDate() { return movieRegDate; }
-    public void setMovieRegDate(Date movieRegDate) { this.movieRegDate = movieRegDate; }
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
-    public int getMovieCheck() { return movieCheck; }
-    public void setMovieCheck(int movieCheck) { this.movieCheck = movieCheck; }
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
 
-    public boolean isMovieAdult() { return movieAdult; }
-    public void setMovieAdult(boolean movieAdult) { this.movieAdult = movieAdult; }
+    public List<String> getActors() {
+        return actors;
+    }
+    public void setActors(List<String> actors) {
+        this.actors = actors;
+    }
 }

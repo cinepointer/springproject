@@ -1,41 +1,63 @@
 package com.cinepointer.controller;
 
+import com.cinepointer.dto.movieDto;
+import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.movieService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/movie")
-public class movieController {
-    private final movieService service;
+import java.util.List;
 
-    public movieController(movieService service) {
-        this.service = service;
+@Controller
+public class movieController {
+
+    private final movieService movieService;
+
+    @Autowired
+    public movieController(movieService movieService) {
+        this.movieService = movieService;
     }
 
-    @GetMapping("/detail/{movieNum}")
-    public String movieDetail(@PathVariable int movieNum, Model model) {
-        model.addAttribute("movie", service.getMovieDetail(movieNum));
+    // 메인 페이지: 인기 슬라이더, 최신, 장르별, 추천
+    @GetMapping({"/", "/movies"})
+    public String mainPage(
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) String genre,
+        @RequestParam(required = false) String sort,
+        Model model) {
+
+        List<movieDto> movies = movieService.searchMovies(search, genre, sort, null);
+        model.addAttribute("movies", movies);
+
+        model.addAttribute("popularMovies", movieService.findPopular(5));
+        model.addAttribute("latestMovies", movieService.findLatest(8));
+        model.addAttribute("actionMovies", movieService.findByGenre("액션", 4));
+        model.addAttribute("romanceMovies", movieService.findByGenre("로맨스", 4));
+        model.addAttribute("recommendMovies", movieService.findPopular(4));
+
+        return "mainpage"; // 템플릿명 소문자 주의!
+    }
+
+    // 영화 상세 페이지
+    @GetMapping("/movies/{id}")
+    public String movieDetail(@PathVariable Long id, Model model) {
+        movieDto movie = movieService.findById(id);
+        model.addAttribute("movie", movie);
         return "moviepage";
     }
 
-    @GetMapping("/search")
-    public String search(@RequestParam String keyword, Model model) {
-        model.addAttribute("movies", service.searchMovies(keyword));
-        return "mainpage";
+    // 로그인 폼
+    @GetMapping("/login")
+    public String loginForm() {
+        return "signIn"; // signIn.html
     }
 
-    @GetMapping("/adult")
-    public String moviesByAdult(@RequestParam boolean movieAdult, Model model) {
-        model.addAttribute("movies", service.getMoviesByAdult(movieAdult));
-        return "mainpage";
+    // 회원가입 폼
+    @GetMapping("/signup")
+    public String signupForm(Model model) {
+        model.addAttribute("user", new usersDto());
+        return "signUp"; // signUp.html
     }
-
-    @GetMapping("/list")
-    public String allMovies(Model model) {
-        model.addAttribute("movies", service.getAllMovies());
-        return "mainpage";
-    }
-    
 }

@@ -1,7 +1,80 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.cinepointer.dao.movieDao">
-    <!-- 여기에 SQL 매핑 태그들이 들어갑니다 -->
+    <!-- 검색, 필터, 정렬 -->
+    <select id="searchMovies" resultType="com.cinepointer.dto.movieDto">
+        SELECT m.*, 
+               (SELECT AVG(rating) FROM review WHERE movie_id = m.movie_num) AS ratingAvg,
+               (SELECT COUNT(*) FROM like_movie WHERE movie_id = m.movie_num) AS likeCount
+        FROM movie m
+        <where>
+            <if test="search != null and search != ''">
+                (m.movie_title LIKE CONCAT('%', #{search}, '%'))
+            </if>
+            <if test="genre != null and genre != ''">
+                <choose>
+                    <when test="search != null and search != ''">
+                        AND m.movie_genre = #{genre}
+                    </when>
+                    <otherwise>
+                        m.movie_genre = #{genre}
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        <choose>
+            <when test="sort == 'release'">
+                ORDER BY m.movie_release_date DESC
+            </when>
+            <when test="sort == 'rating'">
+                ORDER BY ratingAvg DESC
+            </when>
+            <when test="sort == 'popular'">
+                ORDER BY likeCount DESC
+            </when>
+            <otherwise>
+                ORDER BY m.movie_release_date DESC
+            </otherwise>
+        </choose>
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+    
+    <!-- 상세 -->
+    <select id="findById" parameterType="long" resultType="com.cinepointer.dto.movieDto">
+        SELECT m.*, 
+               (SELECT AVG(rating) FROM review WHERE movie_id = m.movie_num) AS ratingAvg,
+               (SELECT COUNT(*) FROM like_movie WHERE movie_id = m.movie_num) AS likeCount
+        FROM movie m
+        WHERE m.movie_num = #{id}
+    </select>
+
+    <!-- 장르별 인기 -->
+    <select id="findByGenre" resultType="com.cinepointer.dto.movieDto">
+        SELECT m.*, 
+               (SELECT AVG(rating) FROM review WHERE movie_id = m.movie_num) AS ratingAvg
+        FROM movie m
+        WHERE m.movie_genre = #{genre}
+        ORDER BY ratingAvg DESC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
+    </select>
+    
+    <!-- 최신 개봉작 -->
+    <select id="findLatest" resultType="com.cinepointer.dto.movieDto">
+        SELECT * FROM movie ORDER BY movie_release_date DESC LIMIT #{limit}
+    </select>
+    
+    <!-- 인기 영화 -->
+    <select id="findPopular" resultType="com.cinepointer.dto.movieDto">
+        SELECT m.*, (SELECT COUNT(*) FROM like_movie WHERE movie_id = m.movie_num) AS likeCount
+        FROM movie m
+        ORDER BY likeCount DESC
+        LIMIT #{limit}
+    </select>
 </mapper>
