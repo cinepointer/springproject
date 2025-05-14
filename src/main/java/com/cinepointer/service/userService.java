@@ -25,17 +25,31 @@ public class userService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // 회원가입
     public boolean registerUser(usersDto user) {
+
         // 비밀번호 암호화
         user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
         // 아이디 중복 체크
         usersDto existing = userDao.selectUserById(user.getUserId());
         if (existing != null) {
             return false; // 중복
+
+        // 1. 아이디 중복 검사
+        usersDto existingUser = userDao.selectUserById(user.getUserId());
+        if (existingUser != null) {
+            return false; // 아이디 이미 존재
+
         }
+
+        // 2. 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(user.getUserPasswd());
+        user.setUserPasswd(encodedPassword);
+        System.out.println("비밀번호 암호화 및 db저장");
+        // 3. 회원 정보 DB에 저장
         userDao.insertUser(user);
+
         return true;
+    }
     }
 
     // 로그인

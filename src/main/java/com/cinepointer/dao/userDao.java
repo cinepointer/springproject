@@ -8,13 +8,18 @@ import java.util.List;
 
 @Mapper
 public interface userDao {
+<<<<<<< HEAD
 
     // 아이디로 회원 조회
     usersDto selectUserById(@Param("userId") String userId);
 
     // 회원 등록
+=======
+	
+	usersDto selectUserById(String userId);
+>>>>>>> branch 'master' of https://github.com/cinepointer/springproject.git
     void insertUser(usersDto user);
-
+    
     // 회원정보 수정
     void updateUser(usersDto user);
 

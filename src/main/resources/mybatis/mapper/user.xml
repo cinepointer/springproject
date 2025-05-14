@@ -5,41 +5,23 @@
 
 <mapper namespace="com.cinepointer.dao.userDao">
 
-    <!-- 회원 단건 조회 -->
+    <!-- 아이디 중복 조회 조회 -->
     <select id="selectUserById" resultType="com.cinepointer.dto.usersDto">
-        SELECT 
-            user_id,
-            user_passwd,
-            user_name,
-            user_email,
-            user_status,
-            user_land_cd,
-            user_birth_date
-        FROM users
-        WHERE user_id = #{userId}
+        SELECT * FROM users WHERE user_id = #{userId}
+
     </select>
 
     <!-- 회원 등록 -->
     <insert id="insertUser" parameterType="com.cinepointer.dto.usersDto">
         INSERT INTO users (
-            user_id,
-            user_passwd,
-            user_name,
-            user_email,
-            user_status,
-            user_land_cd,
-            user_birth_date
+            user_id, user_passwd, user_name, user_email, user_status,
+            user_land_cd, user_birth_date
         ) VALUES (
-            #{user_id},
-            #{user_passwd},
-            #{user_name},
-            #{user_email},
-            #{user_status},
-            #{user_land_cd},
-            #{user_birth_date}
+            #{userId}, #{userPasswd}, #{userName}, #{userEmail}, #{userStatus},
+            #{userLandCd}, #{userBirthDate}
         )
     </insert>
-
+	
     <!-- 회원정보 수정 -->
     <update id="updateUser" parameterType="com.cinepointer.dto.usersDto">
         UPDATE users

@@ -32,7 +32,7 @@
 </head>
 <body>
     <!-- 공통 헤더 -->
-    <th:block th:replace="header.html"></th:block>
+    <th:block th:replace="fragment/header.html :: header"></th:block>
 
     <main>
         <div class="container">
@@ -94,7 +94,7 @@
     </main>
 
     <!-- 공통 푸터 -->
-    <th:block th:replace="footer.html"></th:block>
+    <th:block th:replace="fragment/footer.html :: footer"></th:block>
 
     <!-- 인기 영화 슬라이더 스크립트 -->
     <script>
