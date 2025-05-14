@@ -13,5 +13,6 @@ public class reviewDto {
 	private String reviewTime;
 	private int userNum;
 	private int movieNum;
+	private String userId; 
 	private List<reviewCommentDto> comments;
 }
