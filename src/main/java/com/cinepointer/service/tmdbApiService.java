@@ -107,4 +107,21 @@ public class tmdbApiService {
             return new ArrayList<>();
         }
     }
+    public tmdbMovieDto fetchMovie(int movieId) {
+        String url = baseUrl + "/movie/" + movieId + "?language=ko-KR";
+
+        try {
+            ResponseEntity<tmdbMovieDto> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                createAuthEntity(),
+                new ParameterizedTypeReference<tmdbMovieDto>() {}
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            System.err.println("영화 세부 정보 API 호출 실패: " + e.getMessage());
+            return null;
+        }
+    }
 }

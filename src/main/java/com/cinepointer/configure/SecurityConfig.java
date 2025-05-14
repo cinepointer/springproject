@@ -25,13 +25,16 @@ public class SecurityConfig {
                     "/js/**",
                     "/images/**"
                 ).permitAll()
-                .anyRequest().authenticated()
+                .anyRequest()
+                .permitAll()
+                //.authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/users/signin")
                 .loginProcessingUrl("/users/signin")
                 .defaultSuccessUrl("/mainpage", true)
                 .permitAll()
+                //.disable()
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")

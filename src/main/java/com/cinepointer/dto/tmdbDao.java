@@ -1,4 +1,4 @@
-package com.cinepointer.dao;
+package com.cinepointer.dto;
 
 import java.util.List;
 
