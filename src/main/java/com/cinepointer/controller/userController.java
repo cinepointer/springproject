@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.cinepointerService;
@@ -23,7 +24,12 @@ public class userController {
     public userController(cinepointerService cinepointerService) {
         this.cinepointerService = cinepointerService;
     }
-
+    @GetMapping("/user")
+    @ResponseBody
+    public String root() {
+    	
+    	return "main";
+    }
     // 로그인 폼
     @GetMapping("/signIn")
     public String signInForm(
@@ -49,10 +55,13 @@ public class userController {
     // 회원가입 처리
     @PostMapping("/users/signup")
     public String register(@ModelAttribute("user") usersDto user, Model model) {
-        try {
+    	System.out.println("회원가입 시도");
+    	try {
             cinepointerService.register(user);
-            return "redirect:/signIn?msg=회원가입이+완료되었습니다.+로그인해주세요.";
+            return "redirect:/user";
         } catch (Exception e) {
+        	System.out.print(e.getMessage());
+        	
             model.addAttribute("signupError", "회원가입에 실패했습니다: " + e.getMessage());
             return "signUp";
         }

@@ -8,9 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface userDao {
-    usersDto selectUserById(@Param("userId") String userId);
+	
+	usersDto selectUserById(String userId);
     void insertUser(usersDto user);
-
+    
     // 회원정보 수정
     void updateUser(usersDto user);
 
