@@ -6,7 +6,7 @@
     </insert>
     
     <select id="selectComment" parameterType="int" resultType="com.cinepointer.dto.reviewCommentDto">
-        select * from r_comment where review_num = #{reviewNum} order by r_comment_time desc
+        select rc.*,u.user_id from r_comment rc join users u on rc.user_num = u.user_num where rc.review_num = #{reviewNum} order by rc.r_comment_time desc
     </select>
     
     <update id="updateComment" parameterType="com.cinepointer.dto.reviewCommentDto">

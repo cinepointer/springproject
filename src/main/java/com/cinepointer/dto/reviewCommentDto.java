@@ -10,4 +10,5 @@ public class reviewCommentDto {
 	private Date rCommentTime;        
 	private int reviewNum;             
 	private int userNum;
+	private String userId;
 }
