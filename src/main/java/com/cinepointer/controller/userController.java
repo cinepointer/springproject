@@ -14,13 +14,11 @@ import com.cinepointer.service.cinepointerService;
 
 import jakarta.servlet.http.HttpSession;
 
-
 @Controller
 public class userController {
 
     private final cinepointerService cinepointerService;
 
-    @Autowired
     public userController(cinepointerService cinepointerService) {
         this.cinepointerService = cinepointerService;
     }
@@ -65,10 +63,10 @@ public class userController {
         usersDto user = cinepointerService.findById(user_id);
         if (user == null) {
             model.addAttribute("error", "회원을 찾을 수 없습니다.");
-            return "userInfo";
+            return "myPage";
         }
         model.addAttribute("user", user);
-        return "userInfo";
+        return "myPage";
     }
 
     // 회원정보 수정 폼
@@ -88,7 +86,7 @@ public class userController {
     public String editUser(@PathVariable String user_id, @ModelAttribute("user") usersDto user, Model model) {
         try {
             // user_id 보존
-            user.setUser_id(user_id);
+            //user.setUser_id(user_id);
             cinepointerService.updateUser(user); // updateUser 메서드가 서비스에 있어야 함
             return "redirect:/users/" + user_id + "?msg=회원정보가+수정되었습니다.";
         } catch (Exception e) {
@@ -106,7 +104,7 @@ public class userController {
             return "redirect:/signIn?msg=회원탈퇴가+완료되었습니다.";
         } catch (Exception e) {
             model.addAttribute("deleteError", "회원탈퇴에 실패했습니다: " + e.getMessage());
-            return "userInfo";
+            return "myPage";
         }
     }
 
@@ -115,7 +113,6 @@ public class userController {
     public String manageUsers(Model model) {
         model.addAttribute("users", cinepointerService.findAllUsers()); // findAllUsers 메서드 필요
         return "userManagement";
-    
     }
 
     // 로그인 에러

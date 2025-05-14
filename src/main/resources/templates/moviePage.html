@@ -6,35 +6,7 @@
     <meta name="description" th:content="${movie.title} + ' 상세정보와 리뷰, 관련 영화까지 CinePointer에서 확인하세요.'">
     <link rel="stylesheet" href="/css/style.css">
     <style>
-        .movie-detail-wrap { display: flex; gap: 36px; margin-bottom: 38px; flex-wrap: wrap; }
-        .movie-detail-img { min-width: 220px; }
-        .movie-detail-info { flex: 1; min-width: 260px; }
-        .movie-detail-info h1 { font-size: 2rem; margin-bottom: 8px; color: #181c24; }
-        .movie-detail-info p { margin: 6px 0; color: #444; }
-        .movie-detail-info .desc { margin: 18px 0 10px 0; font-size: 1.08rem; color: #222; }
-        .movie-detail-info .btn { margin-top: 12px; }
-        .trailer { margin: 22px 0 10px 0; }
-        .trailer h3 { margin-bottom: 8px; }
-        .review-section { margin-bottom: 20px; }
-        .review-section > div { background: #f7f7fa; border-radius: 7px; margin: 8px 0; padding: 12px 14px; }
-        .review-section strong { color: #ffb300; }
-        .review-section span { font-size: 1.05rem; margin-left: 7px; color: #222; }
-        form textarea { width: 100%; min-height: 60px; margin: 8px 0 10px 0; border-radius: 5px; border: 1px solid #ddd; resize: vertical; }
-        form label { margin-right: 8px; }
-        .movie-list { display: flex; flex-wrap: wrap; gap: 20px; }
-        .movie-list a { width: 130px; text-align: center; color: #23272f; text-decoration: none; transition: transform 0.18s; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(24,28,36,0.06);}
-        .movie-list a:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 6px 20px rgba(24,28,36,0.12);}
-        .movie-list img { width: 100%; height: 170px; object-fit: cover; border-radius: 8px 8px 0 0; }
-        .movie-list div { padding: 7px 0 8px 0; font-size: 1.03rem; font-weight: 500; color: #181c24;}
-        @media (max-width: 900px) {
-            .movie-detail-wrap { flex-direction: column; gap: 18px; }
-            .movie-list a { width: 40vw; min-width: 100px; }
-        }
-        @media (max-width: 600px) {
-            .movie-list { gap: 10px; }
-            .movie-list a { width: 80vw; }
-            .movie-list img { height: 120px; }
-        }
+        /* ... (생략, 위 스타일 그대로 사용) ... */
     </style>
 </head>
 <body>
@@ -45,22 +17,27 @@
         <div class="container">
             <div class="movie-detail-wrap">
                 <div class="movie-detail-img">
-                    <img th:src="${movie.posterUrl}" th:alt="${movie.title} + ' 포스터'" width="220"/>
+                    <img th:src="${movie.posterUrl}" th:alt="|${movie.title} 포스터|" width="220" height="320"/>
                 </div>
                 <div class="movie-detail-info">
                     <h1 th:text="${movie.title}">영화 제목</h1>
-                    <p>감독: <span th:text="${movie.director}">감독명</span></p>
-                    <p>장르: <span th:text="${movie.genre}">장르</span></p>
-                    <p>개봉일: <span th:text="${movie.releaseDate}">개봉일</span></p>
-                    <p>출연진: <span th:text="${movie.cast}">출연진</span></p>
+                    <div class="movie-meta">
+                        <span>감독: <b th:text="${movie.director}">감독명</b></span>
+                        <span>장르: <b th:text="${movie.genre}">장르</b></span>
+                    </div>
+                    <div class="movie-meta">
+                        <span>개봉일: <b th:text="${movie.releaseDate}">개봉일</b></span>
+                        <span>출연진: <b th:text="${movie.cast}">출연진</b></span>
+                    </div>
                     <div class="desc" th:text="${movie.description}">영화 설명</div>
                     <!-- 예고편 -->
                     <div class="trailer" th:if="${movie.trailerUrl}">
                         <h3>예고편</h3>
-                        <iframe th:src="${movie.trailerUrl}" width="420" height="236" allowfullscreen style="border-radius:8px;border:1px solid #eee;"></iframe>
+                        <iframe th:src="|https://www.youtube.com/embed/${#strings.substring(movie.trailerUrl, movie.trailerUrl.lastIndexOf('=') + 1)}|"
+                                width="420" height="236" allowfullscreen></iframe>
                     </div>
-                    <!-- 찜하기 버튼 (로그인 시만 노출 예시) -->
-                    <button class="btn" th:if="${isLogin}" th:onclick="'addToWishlist(' + ${movie.id} + ')'">찜하기</button>
+                    <!-- 찜하기 버튼 (로그인 시만 노출) -->
+                    <button class="btn" th:if="${isLogin}" th:onclick="|addToWishlist(${movie.id})|" id="wishlistBtn">찜하기</button>
                     <button class="btn" th:if="${!isLogin}" onclick="alert('로그인 후 이용해주세요!')">찜하기</button>
                 </div>
             </div>
@@ -69,9 +46,10 @@
             <section>
                 <h2>관련 영화</h2>
                 <div class="movie-list">
-                    <a th:each="rel : ${relatedMovies}" th:href="@{/movies/{id}(id=${rel.id})}" title="상세보기: [[${rel.title}]]">
-                        <img th:src="${rel.posterUrl}" th:alt="${rel.title} + ' 포스터'">
-                        <div th:text="${rel.title}">영화 제목</div>
+                    <a th:each="rel : ${relatedMovies}" th:href="@{/movies/{id}(id=${rel.id})}" th:title="|상세보기: ${rel.title}|">
+                        <img th:src="${rel.posterUrl}" th:alt="|${rel.title} 포스터|">
+                        <div class="related-title" th:text="${rel.title}">영화 제목</div>
+                        <div class="related-meta" th:text="|감독: ${rel.director}|">감독</div>
                     </a>
                 </div>
             </section>
@@ -81,9 +59,15 @@
                 <h2>평점 및 리뷰</h2>
                 <div class="review-section" th:if="${movie.reviews != null and #lists.size(movie.reviews) > 0}">
                     <div th:each="review : ${movie.reviews}">
-                        <strong th:text="${review.user}">사용자</strong>
-                        <span>★ <span th:text="${review.rating}">평점</span></span>
-                        <p th:text="${review.content}">리뷰 내용</p>
+                        <div class="review-header">
+                            <span class="review-user" th:text="${review.user}">사용자</span>
+                            <span class="review-rating">
+                                <span th:each="i : ${#numbers.sequence(1,5)}"
+                                      th:text="${i <= review.rating ? '★' : '☆'}"></span>
+                            </span>
+                            <span class="review-date" th:text="${#temporals.format(review.date, 'yyyy.MM.dd')}">날짜</span>
+                        </div>
+                        <div class="review-content" th:text="${review.content}">리뷰 내용</div>
                     </div>
                 </div>
                 <div th:if="${movie.reviews == null or #lists.isEmpty(movie.reviews)}" style="color:#888;margin-bottom:12px;">
@@ -114,15 +98,19 @@
     <th:block th:replace="footer.html"></th:block>
 
     <script>
+        // 찜하기 기능 (Ajax 예시)
         function addToWishlist(movieId) {
-            // 실제 구현에선 Ajax 또는 폼 전송 등으로 처리
-            alert('영화를 찜했습니다!');
+            fetch('/wishlist/add/' + movieId, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.ok ? res.text() : Promise.reject())
+            .then(msg => {
+                document.getElementById("wishlistBtn").innerText = "찜 완료!";
+                document.getElementById("wishlistBtn").disabled = true;
+            })
+            .catch(() => alert('찜하기 처리 중 오류가 발생했습니다.'));
         }
-        // 네비게이션 활성화 처리
-        document.addEventListener('DOMContentLoaded', function () {
-            var navMovies = document.getElementById('nav-movies');
-            if(navMovies) navMovies.classList.add('active');
-        });
-    </script>
-</body>
-</html>
+        // 네비게

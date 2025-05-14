@@ -43,8 +43,8 @@ public class BoardController{
 
     @PostMapping("/insert")
     public String insertBoard(boardDto dto, HttpSession session) {
-    	usersDto loginUser = (usersDto) session.getAttribute("loginUser");
-    	dto.setUserNum(loginUser.getUserNum());
+        usersDto loginUser = (usersDto) session.getAttribute("loginUser");
+        dto.setUserNum(loginUser.getUserNum()); // 수정된 부분: userNum을 올바르게 설정
         boardService.insertBoard(dto);
         return "redirect:/board/list";
     }

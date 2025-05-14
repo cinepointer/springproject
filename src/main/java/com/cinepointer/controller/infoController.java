@@ -12,17 +12,15 @@ import com.cinepointer.dto.movieDto;
 @Controller
 @RequestMapping("/info")
 public class infoController {
-	@GetMapping("/")
+	@GetMapping("/main")
 	public String myInfo(Model model) {
-        //List<usersDto> users = userService.getAllUsers();
-        //model.addAttribute("userList", users);
         return "myMoviePage";
     }
     @GetMapping("/myMovieList")
     public String MyMovie(Model model) {
         List<movieDto> myMovies=null;
         model.addAttribute("favoriteMovies", myMovies);
-        return "info/myMovieList :: myMovieList";  // fragment 이름 명시
+        return "info/myMovieList :: myMovieList";
     }
     
     @GetMapping("/myReviewList")

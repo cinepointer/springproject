@@ -19,8 +19,8 @@ public class cinepointerServiceImpl implements cinepointerService {
 
     @Override
     public usersDto register(usersDto user) {
-        user.setUser_passwd(passwordEncoder.encode(user.getUser_passwd()));
-        user.setUser_status("A"); // 활성화 상태
+        user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
+        user.setUserStatus("A"); // 활성화 상태
         userDao.insertUser(user);
         return user;
     }
@@ -33,8 +33,8 @@ public class cinepointerServiceImpl implements cinepointerService {
     @Override
     public void updateUser(usersDto user) {
         // 비밀번호가 변경되었을 때만 암호화 수행
-        if (user.getUser_passwd() != null && !user.getUser_passwd().isEmpty()) {
-            user.setUser_passwd(passwordEncoder.encode(user.getUser_passwd()));
+        if (user.getUserPasswd() != null && !user.getUserPasswd().isEmpty()) {
+            user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
         }
         userDao.updateUser(user);
     }

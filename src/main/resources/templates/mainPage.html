@@ -9,41 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/js/splide.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/css/splide.min.css">
     <style>
-        .main-shortcut-bar {
-            display: flex;
-            gap: 18px;
-            justify-content: flex-end;
-            margin-bottom: 18px;
-            margin-top: 8px;
-        }
-        .main-shortcut-bar .shortcut-btn {
-            background: #ffb300;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            padding: 9px 22px;
-            font-size: 1.04rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.16s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .main-shortcut-bar .shortcut-btn:hover {
-            background: #ff9100;
-        }
-        @media (max-width: 600px) {
-            .main-shortcut-bar {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            .main-shortcut-bar .shortcut-btn {
-                width: 100%;
-                padding: 11px 0;
-            }
-        }
-        /* 기존 스타일 유지 */
         .main-section { margin-bottom: 48px; }
         .movie-list { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 18px; }
         .movie-list a { display: block; width: 160px; text-align: center; color: #23272f; text-decoration: none; transition: transform 0.18s; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(24,28,36,0.06);}
@@ -71,13 +36,6 @@
 
     <main>
         <div class="container">
-
-            <!-- 상단 바로가기 버튼 -->
-            <div class="main-shortcut-bar">
-                <a th:href="@{/movies}" class="shortcut-btn" title="영화 전체 보기">영화 페이지 바로가기</a>
-                <a th:if="${isLogin}" th:href="@{/myPage}" class="shortcut-btn" title="나의 마이페이지로 이동">마이페이지 바로가기</a>
-                <a th:unless="${isLogin}" th:href="@{/signIn}" class="shortcut-btn" title="로그인 후 마이페이지 이용">마이페이지 바로가기</a>
-            </div>
 
             <!-- 인기 영화 슬라이더 -->
             <section class="main-section">
