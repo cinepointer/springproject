@@ -11,26 +11,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.usersDto;
-import com.cinepointer.service.cinepointerService;
+import com.cinepointer.service.userService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class userController {
 
-    private final cinepointerService cinepointerService;
+    private final userService cinepointerService;
 
-    public userController(cinepointerService cinepointerService) {
+    public userController(userService cinepointerService) {
         this.cinepointerService = cinepointerService;
     }
-    @GetMapping("/user")
-    @ResponseBody
-    public String root() {
-    	
-    	return "main";
-    }
     // 로그인 폼
-    @GetMapping("/signIn")
+    @GetMapping("signin")
     public String signInForm(
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "msg", required = false) String msg,
@@ -45,7 +39,7 @@ public class userController {
     }
 
     // 회원가입 폼
-    @GetMapping("/signUp")
+    @GetMapping("/signup")
     public String signUpForm(Model model) {
         model.addAttribute("user", new usersDto());
         return "signUp";
@@ -56,7 +50,7 @@ public class userController {
     public String register(@ModelAttribute("user") usersDto user, Model model) {
     	System.out.println("회원가입 시도");
     	try {
-            cinepointerService.register(user);
+            cinepointerService.registerUser(user);
             return "redirect:/signIn";
         } catch (Exception e) {
         	System.out.print(e.getMessage());
@@ -105,7 +99,7 @@ public class userController {
 
     // 회원탈퇴
     @PostMapping("/users/{user_id}/delete")
-    public String deleteUser(@PathVariable String user_id, HttpSession session, Model model) {
+    public String deleteUser(@PathVariable int user_id, HttpSession session, Model model) {
         try {
             cinepointerService.deleteUser(user_id); // deleteUser 메서드가 서비스에 있어야 함
             session.invalidate(); // 세션 종료(로그아웃)
@@ -119,7 +113,7 @@ public class userController {
     // 사용자 권한 관리 (관리자만 접근 예시)
     @GetMapping("/admin/users")
     public String manageUsers(Model model) {
-        model.addAttribute("users", cinepointerService.findAllUsers()); // findAllUsers 메서드 필요
+        //model.addAttribute("users", cinepointerService.findAllUsers()); // findAllUsers 메서드 필요
         return "userManagement";
     }
 

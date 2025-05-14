@@ -5,10 +5,11 @@
 
 <mapper namespace="com.cinepointer.dao.userDao">
 
-    <!-- 아이디 중복 조회 조회 -->
-    <select id="selectUserById" resultType="com.cinepointer.dto.usersDto">
-        SELECT * FROM users WHERE user_id = #{userId}
-
+    <!-- 아이디로 회원 조회 (로그인 및 중복 체크) -->
+    <select id="selectUserById" resultType="com.cinepointer.dto.usersDto" parameterType="string">
+        SELECT *
+        FROM users
+        WHERE user_id = #{userId}
     </select>
 
     <!-- 회원 등록 -->
@@ -21,37 +22,39 @@
             #{userLandCd}, #{userBirthDate}
         )
     </insert>
-	
-    <!-- 회원정보 수정 -->
+
+    <!-- 회원 정보 수정 (userNum 기준) -->
     <update id="updateUser" parameterType="com.cinepointer.dto.usersDto">
         UPDATE users
         SET
-            user_passwd = #{user_passwd},
-            user_name = #{user_name},
-            user_email = #{user_email},
-            user_status = #{user_status},
-            user_land_cd = #{user_land_cd},
-            user_birth_date = #{user_birth_date}
-        WHERE user_id = #{user_id}
+            user_passwd = #{userPasswd},
+            user_name = #{userName},
+            user_email = #{userEmail},
+            user_status = #{userStatus},
+            user_land_cd = #{userLandCd},
+            user_birth_date = #{userBirthDate}
+        WHERE user_num = #{userNum}
     </update>
 
-    <!-- 회원 삭제 -->
-    <delete id="deleteUser" parameterType="string">
-        DELETE FROM users WHERE user_id = #{userId}
+    <!-- 회원 삭제 (userNum 기준) -->
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM users
+        WHERE user_num = #{userNum}
     </delete>
 
-    <!-- 전체 회원 리스트 조회 -->
-    <select id="selectAllUsers" resultType="com.cinepointer.dto.usersDto">
-        SELECT 
-            user_id,
-            user_passwd,
-            user_name,
-            user_email,
-            user_status,
-            user_land_cd,
-            user_birth_date
+    <!-- 회원 번호로 조회 -->
+    <select id="findByUserNum" resultType="com.cinepointer.dto.usersDto" parameterType="int">
+        SELECT *
         FROM users
-        ORDER BY user_id
+        WHERE user_num = #{userNum}
+    </select>
+
+    <!-- 전체 회원 조회 -->
+    <select id="selectAllUsers" resultType="com.cinepointer.dto.usersDto">
+        SELECT *
+        FROM users
+        ORDER BY user_num
     </select>
 
 </mapper>
+
