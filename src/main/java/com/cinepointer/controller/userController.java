@@ -87,7 +87,7 @@ public class userController {
     public String editUser(@PathVariable String user_id, @ModelAttribute("user") usersDto user, Model model) {
         try {
             // user_id 보존
-            user.setUser_id(user_id);
+            //user.setUser_id(user_id);
             cinepointerService.updateUser(user); // updateUser 메서드가 서비스에 있어야 함
             return "redirect:/users/" + user_id + "?msg=회원정보가+수정되었습니다.";
         } catch (Exception e) {
