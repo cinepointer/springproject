@@ -1,6 +1,6 @@
 package com.cinepointer.dto;
 
-public class UsersDto {
+public class usersDto {
     private String userId;
     private String userPasswd;
     private String userName;
@@ -10,10 +10,10 @@ public class UsersDto {
     private String userBirthDate;
 
     // 기본 생성자
-    public UsersDto() {}
+    public usersDto() {}
 
     // 전체 필드 생성자
-    public UsersDto(String userId, String userPasswd, String userName, String userEmail,
+    public usersDto(String userId, String userPasswd, String userName, String userEmail,
                     String userStatus, String userLandCd, String userBirthDate) {
         this.userId = userId;
         this.userPasswd = userPasswd;

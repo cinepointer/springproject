@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface UserDao {
+public interface userDao {
     UsersDto selectUserById(@Param("userId") String userId);
     void insertUser(UsersDto user);
 

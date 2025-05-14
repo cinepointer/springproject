@@ -3,78 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <title>CinePointer - 메인</title>
+    <meta name="description" content="최신 인기 영화, 추천작, 장르별 영화까지 모두 볼 수 있는 영화 전문 플랫폼 CinePointer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/js/splide.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/css/splide.min.css">
+    <style>
+        .main-shortcut-bar {
+            display: flex;
+            gap: 18px;
+            justify-content: flex-end;
+            margin-bottom: 18px;
+            margin-top: 8px;
+        }
+        .main-shortcut-bar .shortcut-btn {
+            background: #ffb300;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 22px;
+            font-size: 1.04rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.16s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .main-shortcut-bar .shortcut-btn:hover {
+            background: #ff9100;
+        }
+        @media (max-width: 600px) {
+            .main-shortcut-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            .main-shortcut-bar .shortcut-btn {
+                width: 100%;
+                padding: 11px 0;
+            }
+        }
+        /* 기존 스타일 유지 */
+        .main-section { margin-bottom: 48px; }
+        .movie-list { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 18px; }
+        .movie-list a { display: block; width: 160px; text-align: center; color: #23272f; text-decoration: none; transition: transform 0.18s; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px rgba(24,28,36,0.06);}
+        .movie-list a:hover { transform: translateY(-8px) scale(1.03); box-shadow: 0 6px 20px rgba(24,28,36,0.12);}
+        .movie-list img { width: 100%; height: 220px; object-fit: cover; border-radius: 8px 8px 0 0; }
+        .movie-list div { padding: 10px 0 8px 0; font-size: 1.08rem; font-weight: 500; color: #181c24;}
+        .slide-title { font-size: 1.12rem; font-weight: bold; margin-top: 8px; }
+        .slide-desc { font-size: 0.98rem; color: #757575; }
+        @media (max-width: 900px) {
+            .movie-list a { width: 48vw; min-width: 110px; }
+            .movie-list img { height: 170px; }
+        }
+        @media (max-width: 600px) {
+            .movie-list { gap: 12px; }
+            .movie-list a { width: 90vw; }
+            .movie-list img { height: 160px; }
+        }
+        h1, h2 { color: #181c24; }
+        h3 { margin-top: 18px; color: #ffb300; }
+    </style>
 </head>
 <body>
     <!-- 공통 헤더 -->
-    <header>
-        <div class="container nav-flex">
-            <a href="/" class="logo">CinePointer</a>
-            <nav>
-                <ul>
-                    <li><a href="/" class="active">메인</a></li>
-                    <li><a href="/movies">영화</a></li>
-                    <li><a href="/myPage">마이페이지</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <a href="/signUp" class="btn nav-btn">회원가입</a>
-                <a href="/signIn" class="btn nav-btn">로그인</a>
-            </div>
-        </div>
-    </header>
+    <th:block th:replace="header.html"></th:block>
 
     <main>
         <div class="container">
-            <h1>인기 영화</h1>
-            <!-- 인기 영화 슬라이더 -->
-            <div id="popular-slider" class="splide" style="margin-bottom:40px;">
-                <div class="splide__track">
-                    <ul class="splide__list">
-                        <li class="splide__slide" th:each="movie : ${popularMovies}">
-                            <a th:href="@{/movies/{id}(id=${movie.id})}">
-                                <img th:src="${movie.posterUrl}" alt="영화 포스터">
-                                <div class="slide-title" th:text="${movie.title}">영화 제목</div>
-                                <div class="slide-desc" th:text="${movie.director}">감독</div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+
+            <!-- 상단 바로가기 버튼 -->
+            <div class="main-shortcut-bar">
+                <a th:href="@{/movies}" class="shortcut-btn" title="영화 전체 보기">영화 페이지 바로가기</a>
+                <a th:if="${isLogin}" th:href="@{/myPage}" class="shortcut-btn" title="나의 마이페이지로 이동">마이페이지 바로가기</a>
+                <a th:unless="${isLogin}" th:href="@{/signIn}" class="shortcut-btn" title="로그인 후 마이페이지 이용">마이페이지 바로가기</a>
             </div>
 
+            <!-- 인기 영화 슬라이더 -->
+            <section class="main-section">
+                <h1 style="margin-bottom:16px;">🔥 인기 영화</h1>
+                <div id="popular-slider" class="splide" style="margin-bottom:40px;">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide" th:each="movie : ${popularMovies}">
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
+                                    <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
+                                    <div class="slide-title" th:text="${movie.title}">영화 제목</div>
+                                    <div class="slide-desc" th:text="'감독: ' + ${movie.director}">감독</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
             <!-- 최신 개봉작 -->
-            <section>
-                <h2>최신 개봉작</h2>
-                <div class="movie-list" th:each="movie : ${latestMovies}">
-                    <a th:href="@{/movies/{id}(id=${movie.id})}">
-                        <img th:src="${movie.posterUrl}" alt="포스터">
+            <section class="main-section">
+                <h2>🎬 최신 개봉작</h2>
+                <div class="movie-list">
+                    <a th:each="movie : ${latestMovies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
+                        <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                         <div th:text="${movie.title}">영화 제목</div>
                     </a>
                 </div>
             </section>
 
-            <!-- 장르별 영화 섹션 -->
-            <section>
-                <h2>장르별 영화</h2>
+            <!-- 장르별 영화 -->
+            <section class="main-section">
+                <h2>🎞️ 장르별 영화</h2>
                 <div th:each="genre : ${genres}">
                     <h3 th:text="${genre.name}">장르명</h3>
-                    <div class="movie-list" th:each="movie : ${genre.movies}">
-                        <a th:href="@{/movies/{id}(id=${movie.id})}">
-                            <img th:src="${movie.posterUrl}" alt="포스터">
+                    <div class="movie-list">
+                        <a th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
+                            <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                             <div th:text="${movie.title}">영화 제목</div>
                         </a>
                     </div>
                 </div>
             </section>
 
-            <!-- 추천 영화 섹션 -->
-            <section>
-                <h2>추천 영화</h2>
-                <div class="movie-list" th:each="movie : ${recommendedMovies}">
-                    <a th:href="@{/movies/{id}(id=${movie.id})}">
-                        <img th:src="${movie.posterUrl}" alt="포스터">
+            <!-- 추천 영화 -->
+            <section class="main-section">
+                <h2>⭐ 추천 영화</h2>
+                <div class="movie-list">
+                    <a th:each="movie : ${recommendedMovies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
+                        <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                         <div th:text="${movie.title}">영화 제목</div>
                     </a>
                 </div>
@@ -82,13 +135,13 @@
         </div>
     </main>
 
-    <footer>
-        &copy; 2025 CinePointer. All Rights Reserved.
-    </footer>
+    <!-- 공통 푸터 -->
+    <th:block th:replace="footer.html"></th:block>
 
+    <!-- 인기 영화 슬라이더 스크립트 -->
     <script>
-      document.addEventListener( 'DOMContentLoaded', function () {
-        new Splide( '#popular-slider', {
+      document.addEventListener('DOMContentLoaded', function () {
+        new Splide('#popular-slider', {
           type   : 'loop',
           perPage: 4,
           gap    : '24px',
@@ -96,8 +149,12 @@
             900: { perPage: 2 },
             600: { perPage: 1 }
           }
-        } ).mount();
-      } );
+        }).mount();
+
+        // 네비게이션 active 처리
+        var navMain = document.getElementById('nav-main');
+        if(navMain) navMain.classList.add('active');
+      });
     </script>
 </body>
 </html>
