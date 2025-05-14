@@ -20,7 +20,6 @@ public class userController {
 
     private final cinepointerService cinepointerService;
 
-    @Autowired
     public userController(cinepointerService cinepointerService) {
         this.cinepointerService = cinepointerService;
     }
