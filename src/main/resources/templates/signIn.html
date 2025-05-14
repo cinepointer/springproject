@@ -4,43 +4,28 @@
     <meta charset="UTF-8">
     <title>로그인 - CinePointer</title>
     <link rel="stylesheet" href="/css/style.css">
+      <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/img/dark-logo.png}" alt="로고" height="40">
+        </a>
 </head>
 <body>
-    <header>
-        <div class="container nav-flex">
-            <a href="/" class="logo">CinePointer</a>
-            <nav>
-                <ul>
-                    <li><a href="/">메인</a></li>
-                    <li><a href="/movies">영화</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <a href="/signup" class="btn nav-btn">회원가입</a>
-                <a href="/signin" class="btn nav-btn active">로그인</a>
-            </div>
-        </div>
-    </header>
 
     <main>
-        <div class="container">
-            <div class="form-container">
-                <h2>로그인</h2>
-                <form th:action="@{/users/signin}" method="post">
-                    <label for="username">아이디</label>
-                    <input type="text" id="username" name="username" required autocomplete="username">
+        <div class="form-container">
+            <h2>로그인</h2>
+            <form th:action="@{/users/signin}" method="post">
+                <label for="username">아이디</label>
+                <input type="text" id="username" name="username" required autocomplete="username">
 
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
 
-                    <button type="submit" class="btn">로그인</button>
-                </form>
-            </div>
+                <button type="submit" class="btn">로그인</button>
+            </form>
         </div>
     </main>
 
-    <footer>
-        &copy; 2025 CinePointer. All Rights Reserved.
-    </footer>
+    <!-- 푸터 fragment 참조 -->
+    <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
 </body>
 </html>
