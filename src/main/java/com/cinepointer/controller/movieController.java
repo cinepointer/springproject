@@ -76,4 +76,9 @@ public class movieController {
         model.addAttribute("user", new usersDto());
         return "signUp";
     }
+   
+  
+
+
+    
 }

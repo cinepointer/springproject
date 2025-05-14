@@ -129,4 +129,18 @@ public class userController {
         model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
         return "signIn";
     }
+    
+    @GetMapping("/mypage")
+    public String myPage(Model model, HttpSession session) {
+        usersDto user = (usersDto) session.getAttribute("loginUser");
+        if (user == null) {
+            // 로그인 안했으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
+        }
+        // 사용자 정보를 모델에 담기
+        model.addAttribute("user", user);
+
+        // myPage.html 템플릿 반환
+        return "myPage";
+    }
 }

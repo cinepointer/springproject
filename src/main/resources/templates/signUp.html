@@ -8,22 +8,16 @@
 <body>
     <header>
         <div class="container nav-flex">
-            <a href="/" class="logo">CinePointer</a>
-            <nav>
-                <ul>
-                    <li><a href="/">메인</a></li>
-                    <li><a href="/movies">영화</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <a href="/signUp" class="btn nav-btn active">회원가입</a>
-                <a href="/signIn" class="btn nav-btn">로그인</a>
-            </div>
+         
+      <a class="navbar-brand" th:href="@{/}">
+            <img th:src="@{/img/dark-logo.png}" alt="로고" height="40">
+        </a>
+            
         </div>
     </header>
 
     <main>
-        <div class="container">
+        
             <div class="form-container">
                 <h2>회원가입</h2>
                 <form th:action="@{/users/signup}" th:object="${user}" method="post">
@@ -53,11 +47,16 @@
                     <input type="date" id="userBirthDate" th:field="*{userBirthDate}">
 
                     <button type="submit" class="btn">회원가입</button>
+                    <div class="nav-actions">
+                <a href="/signIn" class="btn nav-btn">로그인</a>
+            </div>
                 </form>
             </div>
         </div>
     </main>
 
+    <!-- 푸터 fragment 참조 -->
+    <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
 </body>
 </html>
 
