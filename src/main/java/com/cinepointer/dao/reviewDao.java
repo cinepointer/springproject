@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.cinepointer.dto.reviewCommentDto;
 import com.cinepointer.dto.reviewDto;
 
 @Mapper
@@ -18,6 +17,4 @@ public interface reviewDao {
     void deleteReview(int reviewNum);
     
     reviewDto selectReviewByNum(int reviewNum);
-    
-    List<reviewCommentDto> selectComment(int reviewNum);
 }

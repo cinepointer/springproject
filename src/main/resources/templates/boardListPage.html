@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>게시판 목록</title>
-    <!-- 외부 CSS 연결 -->
     <link rel="stylesheet" th:href="@{/css/boardList.css}">
 </head>
 <body>
@@ -28,9 +27,9 @@
                 <td th:text="${board.boardNum}">1</td>
                 <td>
                     <a th:href="@{/board/detail/{boardNum}(boardNum=${board.boardNum})}"
-                       th:text="${board.title}">게시글 제목</a>
+                       th:href="..." th:text="${board.boardTitle}">게시글 제목</a>
                 </td>
-                <td th:text="${board.writer}">작성자</td>
+                <td th:text="${board.userId}">작성자</td>
                 <td th:text="${#dates.format(board.regDate, 'yyyy-MM-dd HH:mm')}">2025-05-13 14:21</td>
                 <td th:text="${board.viewCnt}">0</td>
             </tr>

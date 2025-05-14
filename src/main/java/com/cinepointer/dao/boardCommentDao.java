@@ -16,4 +16,6 @@ public interface boardCommentDao {
 	public int updateComment(boardCommentDto comment);
 
 	public int deleteComment(@Param("commentNum") int commentNum);
+	
+	boardCommentDto getCommentByNum(@Param("commentNum") int commentNum);
 }

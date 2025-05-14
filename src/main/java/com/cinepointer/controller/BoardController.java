@@ -64,34 +64,61 @@ public class BoardController{
     }
 
     @PostMapping("/update")
-    public String boardUpdate(boardDto dto) {
+    public String boardUpdate(boardDto dto,HttpSession session) {
+    	usersDto user = (usersDto) session.getAttribute("user");
+        boardDto original = boardService.getBoardDetail(dto.getBoardNum());
+
+        if (user == null || user.getUserNum() != original.getUserNum()) {
+            return "redirect:/board/list?error=unauthorized";
+        }
         boardService.updateBoard(dto);
         return "redirect:/board/list";
     }
 
     @GetMapping("/delete/{boardNum}")
-    public String boardDelete(@PathVariable int boardNum) {
+    public String boardDelete(@PathVariable int boardNum,HttpSession session) {
+    	usersDto user = (usersDto) session.getAttribute("user");
+        boardDto board = boardService.getBoardDetail(boardNum);
+
+        if (user == null || board.getUserNum() != user.getUserNum()) {
+            return "redirect:/board/list?error=unauthorized";
+        }
         boardService.deleteBoard(boardNum);
         return "redirect:/board/list";
     }
 
     @PostMapping("/comment")
-    public String insertComment(@RequestParam int boardNum, @ModelAttribute boardCommentDto comment) {
+    public String insertComment(@RequestParam int boardNum, @ModelAttribute boardCommentDto comment,HttpSession session) {
+    	usersDto user = (usersDto) session.getAttribute("user");
+        if (user == null) return "redirect:/signin";
         comment.setBoardNum(boardNum);
+        comment.setUserNum(user.getUserNum());
         boardCommentService.insertComment(comment);
         return "redirect:/board/detail/" + boardNum;
     }
 
     @PostMapping("/commentEdit")
-    public String updateComment(@RequestParam int commentNum, @RequestParam int boardNum, @ModelAttribute boardCommentDto comment) {
+    public String updateComment(@RequestParam int commentNum, @RequestParam int boardNum, @ModelAttribute boardCommentDto comment,HttpSession session) {
+    	usersDto user = (usersDto) session.getAttribute("user");
+        boardCommentDto existing = boardCommentService.getCommentByNum(commentNum);
+
+        if (user == null || existing == null || existing.getUserNum() != user.getUserNum()) {
+            return "redirect:/board/detail/" + boardNum + "?error=unauthorized";
+        }
         comment.setCommentNum(commentNum);
         boardCommentService.updateComment(comment);
         return "redirect:/board/detail/" + boardNum;
     }
 
     @GetMapping("/commentDelete/{commentNum}/{boardNum}")
-    public String deleteComment(@PathVariable int commentNum, @PathVariable int boardNum) {
+    public String deleteComment(@PathVariable int commentNum, @PathVariable int boardNum,HttpSession session) {
+    	usersDto user = (usersDto) session.getAttribute("user");
+        boardCommentDto comment = boardCommentService.getCommentByNum(commentNum);
+
+        if (user == null || comment == null || comment.getUserNum() != user.getUserNum()) {
+            return "redirect:/board/detail/" + boardNum + "?error=unauthorized";
+        }
         boardCommentService.deleteComment(commentNum);
-        return "redirect:/board/detail/" + boardNum;  // 해당 게시글 상세로 리다이렉트
+        return "redirect:/board/detail/" + boardNum;
     }
 }

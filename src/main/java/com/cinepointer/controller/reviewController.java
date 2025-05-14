@@ -1,5 +1,7 @@
 package com.cinepointer.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,15 +31,29 @@ public class reviewController {
 
     @GetMapping("/reviews/{movieNum}")
     public String showReviewList(@PathVariable("movieNum") int movieNum, Model model) {
-        model.addAttribute("reviews", reviewService.getReviewsByMovie(movieNum));
+    	List<reviewDto> reviews = reviewService.getReviewsByMovie(movieNum);
+        model.addAttribute("reviews", reviews);
         model.addAttribute("movieNum", movieNum);
         return "reviewListPage";
     }
+    
+    @GetMapping("/view")
+    public String viewReview(@RequestParam("reviewNum") int reviewNum,
+                             @RequestParam("movieNum") int movieNum,
+                             Model model) {
+        reviewDto review = reviewService.getReviewWithCommentsByNum(reviewNum);
+        model.addAttribute("review", review);
+        model.addAttribute("movieNum", movieNum);
+        return "reviewDetailPage";
+    }
+
 
     @GetMapping("/form")
-    public String showReviewForm(@RequestParam("movieNum") int movieNum, Model model) {
+    public String showReviewForm(@RequestParam("movieNum") int movieNum, Model model, HttpSession session) {
+    	reviewDto dto = new reviewDto();
+        dto.setUserId((String) session.getAttribute("userId"));
         model.addAttribute("reviewDto", new reviewDto());
-        model.addAttribute("mov                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ieNum", movieNum);
+        model.addAttribute("movieNum", movieNum);
         return "reviewForm";
     }
 
@@ -57,7 +73,7 @@ public class reviewController {
         reviewDto review = reviewService.getReviewByNum(reviewNum);
         model.addAttribute("reviewDto", review);
         model.addAttribute("movieNum", movieNum);
-        return "reviewForm";
+        return "reviewUpdateForm";
     }
 
     @PostMapping("/update")
@@ -84,32 +100,26 @@ public class reviewController {
     @PostMapping("/comment/insert")
     public String insertComment(@ModelAttribute reviewCommentDto dto, @RequestParam("movieNum") int movieNum, HttpSession session) {
         Integer userNum = (Integer) session.getAttribute("userNum");
-        if (userNum == null) {
-            return "redirect:/signin";
-        }
+        if (userNum == null) return "redirect:/signin";
         dto.setUserNum(userNum);
         reviewCommentService.insertComment(dto);
-        return "redirect:/review/reviews/" + movieNum;
+        return "redirect:/review/view?reviewNum=" + dto.getReviewNum() + "&movieNum=" + movieNum;
     }
 
     @PostMapping("/comment/update")
     public String updateComment(@ModelAttribute reviewCommentDto dto, @RequestParam("movieNum") int movieNum, HttpSession session) {
         Integer userNum = (Integer) session.getAttribute("userNum");
-        if (userNum == null) {
-            return "redirect:/signin";
-        }
+        if (userNum == null) return "redirect:/signin";
         dto.setUserNum(userNum);
         reviewCommentService.updateComment(dto);
-        return "redirect:/review/reviews/" + movieNum;
+        return "redirect:/review/view?reviewNum=" + dto.getReviewNum() + "&movieNum=" + movieNum;
     }
 
     @GetMapping("/comment/delete")
-    public String deleteComment(@RequestParam("rCommentNum") int rCommentNum, @RequestParam("movieNum") int movieNum, HttpSession session) {
+    public String deleteComment(@RequestParam("rCommentNum") int rCommentNum, @RequestParam("movieNum") int movieNum, @RequestParam("reviewNum") int reviewNum, HttpSession session) {
         Integer userNum = (Integer) session.getAttribute("userNum");
-        if (userNum == null) {
-            return "redirect:/signin";
-        }
+        if (userNum == null) return "redirect:/signin";
         reviewCommentService.deleteComment(rCommentNum);
-        return "redirect:/review/reviews/" + movieNum;
+        return "redirect:/review/view?reviewNum=" + reviewNum + "&movieNum=" + movieNum;
     }
 }

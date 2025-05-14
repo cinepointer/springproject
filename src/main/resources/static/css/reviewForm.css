@@ -1,0 +1,26 @@
+@charset "UTF-8";
+.star-rating {
+  direction: rtl;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  width: 30px;
+  height: 30px;
+  background: url('/img/star-empty.svg') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+
+.star-rating input[type="radio"]:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+  background: url('/img/star-filled.svg') no-repeat center;
+  background-size: contain;
+}
