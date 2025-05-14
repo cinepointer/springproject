@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>마이페이지 - CinePointer</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <!-- 공통 헤더 -->
+    <header>
+        <div class="container nav-flex">
+            <a href="/" class="logo">CinePointer</a>
+            <nav>
+                <ul>
+                    <li><a href="/">메인</a></li>
+                    <li><a href="/movies">영화</a></li>
+                    <li><a href="/myPage" class="active">마이페이지</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="/logout" class="btn nav-btn">로그아웃</a>
+            </div>
+        </div>
+    </header>
 
+    <main>
+        <div class="container">
+            <h1>마이페이지</h1>
+            <section>
+                <h2>내 정보</h2>
+                <p>아이디: <span th:text="${user.username}">username</span></p>
+                <p>이메일: <span th:text="${user.email}">email</span></p>
+            </section>
+
+            <section>
+                <h2>내가 찜한 영화</h2>
+                <div class="movie-list" th:each="movie : ${wishlist}">
+                    <a th:href="@{/movies/{id}(id=${movie.id})}">
+                        <img th:src="${movie.posterUrl}" alt="포스터">
+                        <div th:text="${movie.title}">영화 제목</div>
+                    </a>
+                </div>
+            </section>
+
+            <section>
+                <h2>내가 작성한 리뷰</h2>
+                <div class="review-section" th:each="review : ${user.reviews}">
+                    <div>
+                        <a th:href="@{/movies/{id}(id=${review.movieId})}">
+                            <strong th:text="${review.movieTitle}">영화 제목</strong>
+                        </a>
+                        <span th:text="${review.rating}">평점</span>
+                        <p th:text="${review.content}">리뷰 내용</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2025 CinePointer. All Rights Reserved.
+    </footer>
 </body>
 </html>

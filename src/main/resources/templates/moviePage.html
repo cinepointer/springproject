@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <!-- 공통 헤더 -->
     <header>
         <div class="container nav-flex">
             <a href="/" class="logo">CinePointer</a>
@@ -13,6 +14,7 @@
                 <ul>
                     <li><a href="/">메인</a></li>
                     <li><a href="/movies" class="active">영화</a></li>
+                    <li><a href="/myPage">마이페이지</a></li>
                 </ul>
             </nav>
             <div class="nav-actions">
@@ -30,13 +32,64 @@
                 <p>감독: <span th:text="${movie.director}">감독명</span></p>
                 <p>장르: <span th:text="${movie.genre}">장르</span></p>
                 <p>개봉일: <span th:text="${movie.releaseDate}">개봉일</span></p>
+                <p>출연진: <span th:text="${movie.cast}">출연진</span></p>
                 <div class="desc" th:text="${movie.description}">영화 설명</div>
+                <!-- 예고편 -->
+                <div class="trailer" th:if="${movie.trailerUrl}">
+                    <h3>예고편</h3>
+                    <iframe th:src="${movie.trailerUrl}" width="420" height="236" allowfullscreen></iframe>
+                </div>
+                <!-- 찜하기 버튼 -->
+                <button class="btn" th:onclick="'addToWishlist(' + ${movie.id} + ')'">찜하기</button>
             </div>
+
+            <!-- 관련 영화 추천 -->
+            <section>
+                <h2>관련 영화</h2>
+                <div class="movie-list" th:each="rel : ${relatedMovies}">
+                    <a th:href="@{/movies/{id}(id=${rel.id})}">
+                        <img th:src="${rel.posterUrl}" alt="포스터">
+                        <div th:text="${rel.title}">영화 제목</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- 평점 및 리뷰 -->
+            <section>
+                <h2>평점 및 리뷰</h2>
+                <div class="review-section">
+                    <div th:each="review : ${movie.reviews}">
+                        <strong th:text="${review.user}">사용자</strong>
+                        <span th:text="${review.rating}">평점</span>
+                        <p th:text="${review.content}">리뷰 내용</p>
+                    </div>
+                </div>
+                <!-- 리뷰 작성 폼(로그인 시) -->
+                <form th:if="${isLogin}" th:action="@{/movies/{id}/review(id=${movie.id})}" method="post">
+                    <label>평점:
+                        <select name="rating">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </label>
+                    <textarea name="content" placeholder="리뷰를 남겨보세요"></textarea>
+                    <button type="submit" class="btn">리뷰 등록</button>
+                </form>
+            </section>
         </div>
     </main>
 
     <footer>
         &copy; 2025 CinePointer. All Rights Reserved.
     </footer>
+    <script>
+        function addToWishlist(movieId) {
+            // 찜하기 기능 구현 예시 (실제 구현은 백엔드 연동 필요)
+            alert('영화를 찜했습니다!');
+        }
+    </script>
 </body>
 </html>
