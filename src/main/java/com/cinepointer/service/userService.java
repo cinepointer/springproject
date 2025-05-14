@@ -26,19 +26,10 @@ public class userService {
     }
 
     public boolean registerUser(usersDto user) {
-
-        // 비밀번호 암호화
-        user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
-        // 아이디 중복 체크
-        usersDto existing = userDao.selectUserById(user.getUserId());
-        if (existing != null) {
-            return false; // 중복
-
         // 1. 아이디 중복 검사
         usersDto existingUser = userDao.selectUserById(user.getUserId());
         if (existingUser != null) {
             return false; // 아이디 이미 존재
-
         }
 
         // 2. 비밀번호 암호화
@@ -50,11 +41,11 @@ public class userService {
 
         return true;
     }
-    }
+
 
     // 로그인
     public usersDto login(String userId, String userPasswd, HttpSession session) {
-        usersDto user = userDao.selectUserById(userId);
+        usersDto user = userDao.findByUserId(userId);
         if (user != null && passwordEncoder.matches(userPasswd, user.getUserPasswd())) {
             session.setAttribute(USER_SESSION_KEY, user);
             return user;
@@ -67,9 +58,9 @@ public class userService {
         session.removeAttribute(USER_SESSION_KEY);
     }
 
-    // 회원정보 조회 (userId로 조회)
-    public usersDto getUserInfo(String userId) {
-        return userDao.selectUserById(userId);
+    // 회원정보 조회
+    public usersDto getUserInfo(int userNum) {
+        return userDao.findByUserNum(userNum);
     }
 
     // 회원정보 수정
@@ -82,7 +73,7 @@ public class userService {
     }
 
     // 회원탈퇴
-    public void deleteUser(String userId) {
-        userDao.deleteUser(userId);
+    public void deleteUser(int userNum) {
+        userDao.deleteUser(userNum);
     }
 }
