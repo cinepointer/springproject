@@ -15,10 +15,10 @@
     <!-- 회원 등록 -->
     <insert id="insertUser" parameterType="com.cinepointer.dto.usersDto">
         INSERT INTO users (
-            user_id, user_passwd, user_name, user_email, user_status,
+            user_id, user_passwd, user_name, user_email, role_name,
             user_land_cd, user_birth_date
         ) VALUES (
-            #{userId}, #{userPasswd}, #{userName}, #{userEmail}, #{userStatus},
+            #{userId}, #{userPasswd}, #{userName}, #{userEmail}, #{roleName},
             #{userLandCd}, #{userBirthDate}
         )
     </insert>

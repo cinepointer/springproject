@@ -1,6 +1,10 @@
 package com.cinepointer.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Collection;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,11 +12,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.userService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -24,7 +28,7 @@ public class userController {
         this.cinepointerService = cinepointerService;
     }
     // 로그인 폼
-    @GetMapping("signin")
+    @GetMapping("/signin")
     public String signInForm(
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "msg", required = false) String msg,
@@ -60,7 +64,32 @@ public class userController {
             return "signUp";
         }
     }
+    
+    @GetMapping("/login")
+    public String login(HttpServletRequest request, Authentication authentication) {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String loginId = auth.getName();
+    	request.getSession().setAttribute("userId", loginId);
+    	Collection<? extends GrantedAuthority> role = auth.getAuthorities();
+    	System.out.println(role);
+        return "fronttest";
+    }
+    
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        // 세션 객체를 가져옵니다.
+        HttpSession session = request.getSession(false); // 세션이 존재하면 가져오고, 없으면 null 반환
 
+        // 세션이 존재하면 userId를 제거하고 세션을 종료합니다.
+        if (session != null) {
+            session.removeAttribute("userId");  // "userId" 속성 제거
+            session.invalidate();  // 세션 종료
+        }
+
+        // 로그아웃 후 리다이렉트 또는 다른 페이지로 이동
+        return "redirect:/signin";  // 예: 로그인 페이지로 리다이렉트
+    }
+    
     // 회원정보 조회
     @GetMapping("/users/{user_id}")
     public String getUserInfo(@PathVariable("user_id") String user_id, Model model) {

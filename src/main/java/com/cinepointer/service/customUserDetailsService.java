@@ -21,7 +21,7 @@ public class customUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found with id: " + user_id);
         }
-        boolean enabled = "A".equals(user.getUserStatus());
+        boolean enabled = "A".equals(user.getRoleName());
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUserId())
                 .password(user.getUserPasswd())

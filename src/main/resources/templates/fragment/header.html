@@ -33,7 +33,7 @@
             </form>
      
             <!-- 비로그인 상태: 로그인/회원가입 -->
-            <ul class="navbar-nav" th:if="${session.user == null}">
+            <ul class="navbar-nav" th:if="${session.userId == null}">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/login}">로그인</a>
                 </li>
@@ -43,7 +43,7 @@
             </ul>
 
             <!-- 로그인 상태: 사용자 정보 / 로그아웃 -->
-            <ul class="navbar-nav" th:if="${session.user != null}">
+            <ul class="navbar-nav" th:if="${session.userId != null}">
                 <li class="nav-item">
                     <span class="nav-link" th:text="'안녕하세요'"></span>
                 </li>
