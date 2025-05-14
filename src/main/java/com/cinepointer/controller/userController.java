@@ -57,10 +57,9 @@ public class userController {
     	System.out.println("회원가입 시도");
     	try {
             cinepointerService.register(user);
-            return "redirect:/user";
+            return "redirect:/signIn";
         } catch (Exception e) {
         	System.out.print(e.getMessage());
-        	
             model.addAttribute("signupError", "회원가입에 실패했습니다: " + e.getMessage());
             return "signUp";
         }
