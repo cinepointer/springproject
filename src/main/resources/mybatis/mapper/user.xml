@@ -8,6 +8,7 @@
     <!-- 아이디 중복 조회 조회 -->
     <select id="selectUserById" resultType="com.cinepointer.dto.usersDto">
         SELECT * FROM users WHERE user_id = #{userId}
+
     </select>
 
     <!-- 회원 등록 -->
@@ -36,7 +37,7 @@
 
     <!-- 회원 삭제 -->
     <delete id="deleteUser" parameterType="string">
-        DELETE FROM users WHERE user_id = #{user_id}
+        DELETE FROM users WHERE user_id = #{userId}
     </delete>
 
     <!-- 전체 회원 리스트 조회 -->

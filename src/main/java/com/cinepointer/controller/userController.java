@@ -15,7 +15,6 @@ import com.cinepointer.service.cinepointerService;
 
 import jakarta.servlet.http.HttpSession;
 
-
 @Controller
 public class userController {
 
@@ -58,10 +57,9 @@ public class userController {
     	System.out.println("회원가입 시도");
     	try {
             cinepointerService.register(user);
-            return "redirect:/user";
+            return "redirect:/signIn";
         } catch (Exception e) {
         	System.out.print(e.getMessage());
-        	
             model.addAttribute("signupError", "회원가입에 실패했습니다: " + e.getMessage());
             return "signUp";
         }
@@ -73,10 +71,10 @@ public class userController {
         usersDto user = cinepointerService.findById(user_id);
         if (user == null) {
             model.addAttribute("error", "회원을 찾을 수 없습니다.");
-            return "userInfo";
+            return "myPage";
         }
         model.addAttribute("user", user);
-        return "userInfo";
+        return "myPage";
     }
 
     // 회원정보 수정 폼
@@ -114,7 +112,7 @@ public class userController {
             return "redirect:/signIn?msg=회원탈퇴가+완료되었습니다.";
         } catch (Exception e) {
             model.addAttribute("deleteError", "회원탈퇴에 실패했습니다: " + e.getMessage());
-            return "userInfo";
+            return "myPage";
         }
     }
 
@@ -123,7 +121,6 @@ public class userController {
     public String manageUsers(Model model) {
         model.addAttribute("users", cinepointerService.findAllUsers()); // findAllUsers 메서드 필요
         return "userManagement";
-    
     }
 
     // 로그인 에러
@@ -131,5 +128,19 @@ public class userController {
     public String loginError(Model model) {
         model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
         return "signIn";
+    }
+    
+    @GetMapping("/mypage")
+    public String myPage(Model model, HttpSession session) {
+        usersDto user = (usersDto) session.getAttribute("loginUser");
+        if (user == null) {
+            // 로그인 안했으면 로그인 페이지로 리다이렉트
+            return "redirect:/login";
+        }
+        // 사용자 정보를 모델에 담기
+        model.addAttribute("user", user);
+
+        // myPage.html 템플릿 반환
+        return "myPage";
     }
 }

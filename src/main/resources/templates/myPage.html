@@ -4,61 +4,70 @@
     <meta charset="UTF-8">
     <title>마이페이지 - CinePointer</title>
     <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
+
     <!-- 공통 헤더 -->
-    <header>
-        <div class="container nav-flex">
-            <a href="/" class="logo">CinePointer</a>
-            <nav>
-                <ul>
-                    <li><a href="/">메인</a></li>
-                    <li><a href="/movies">영화</a></li>
-                    <li><a href="/myPage" class="active">마이페이지</a></li>
-                </ul>
-            </nav>
-            <div class="nav-actions">
-                <a href="/logout" class="btn nav-btn">로그아웃</a>
-            </div>
-        </div>
-    </header>
+     <th:block th:replace="fragment/header.html :: headerFragment"></th:block>
 
     <main>
         <div class="container">
-            <h1>마이페이지</h1>
+            <h1 class="mypage-header">마이페이지</h1>
+            
+            <!-- 내 정보 -->
             <section>
-                <h2>내 정보</h2>
-                <p>아이디: <span th:text="${user.username}">username</span></p>
-                <p>이메일: <span th:text="${user.email}">email</span></p>
-            </section>
-
-            <section>
-                <h2>내가 찜한 영화</h2>
-                <div class="movie-list" th:each="movie : ${wishlist}">
-                    <a th:href="@{/movies/{id}(id=${movie.id})}">
-                        <img th:src="${movie.posterUrl}" alt="포스터">
-                        <div th:text="${movie.title}">영화 제목</div>
-                    </a>
+                <h2 class="section-title">내 정보</h2>
+                <div class="user-info-box">
+                    <p>아이디: <span th:text="${user.username}">username</span></p>
+                    <p>이메일: <span th:text="${user.email}">email</span></p>
                 </div>
             </section>
 
+            <!-- 내가 찜한 영화 -->
             <section>
-                <h2>내가 작성한 리뷰</h2>
-                <div class="review-section" th:each="review : ${user.reviews}">
-                    <div>
-                        <a th:href="@{/movies/{id}(id=${review.movieId})}">
+                <h2 class="section-title">내가 찜한 영화</h2>
+                <div class="movie-list" th:if="${wishlist != null and #lists.size(wishlist) > 0}">
+                    <a th:each="movie : ${wishlist}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
+                        <img th:src="${movie.posterUrl}" th:alt="${movie.title} + ' 포스터'">
+                        <div th:text="${movie.title}">영화 제목</div>
+                    </a>
+                </div>
+                <div th:if="${wishlist == null or #lists.isEmpty(wishlist)}" style="color:#888;margin-bottom:16px;">
+                    찜한 영화가 없습니다.
+                </div>
+            </section>
+
+            <!-- 내가 작성한 리뷰 -->
+            <section>
+                <h2 class="section-title">내가 작성한 리뷰</h2>
+                <div class="review-section" th:if="${user.reviews != null and #lists.size(user.reviews) > 0}">
+                    <div th:each="review : ${user.reviews}">
+                        <a th:href="@{/movies/{id}(id=${review.movieId})}" title="상세보기: [[${review.movieTitle}]]">
                             <strong th:text="${review.movieTitle}">영화 제목</strong>
                         </a>
-                        <span th:text="${review.rating}">평점</span>
+                        <span>★ <span th:text="${review.rating}">평점</span></span>
                         <p th:text="${review.content}">리뷰 내용</p>
                     </div>
+                </div>
+                <div th:if="${user.reviews == null or #lists.isEmpty(user.reviews)}" style="color:#888;">
+                    작성한 리뷰가 없습니다.
                 </div>
             </section>
         </div>
     </main>
 
-    <footer>
-        &copy; 2025 CinePointer. All Rights Reserved.
-    </footer>
+    <!-- 공통 푸터 -->
+     <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
+
+    <script>
+        // 네비게이션 활성화 처리
+        document.addEventListener('DOMContentLoaded', function () {
+            var navMypage = document.getElementById('nav-mypage');
+            if(navMypage) navMypage.classList.add('active');
+        });
+    </script>
+    
 </body>
 </html>

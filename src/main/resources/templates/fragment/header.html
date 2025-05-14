@@ -25,29 +25,32 @@
                     <a class="nav-link" th:href="@{/mypage}">마이페이지</a>
                 </li>
             </ul>
-			
-			
-            <!-- 비로그인 상태: 로그인/회원가입 -->
-			<ul class="navbar-nav" th:if="${session.user == null}">
-			    <li class="nav-item">
-			        <a class="nav-link" th:href="@{/login}">로그인</a>
-			    </li>
-			    <li class="nav-item">
-			        <a class="nav-link" th:href="@{/signup}">회원가입</a>
-			    </li>
-			</ul>
-			
-			<!-- 로그인 상태: 사용자 정보 / 로그아웃 -->
-			<ul class="navbar-nav" th:if="${session.user != null}">
-			    <li class="nav-item">
-			        <span class="nav-link" th:text="'안녕하세요'"></span>
-			    </li>
-			    <li class="nav-item">
-			        <a class="nav-link" th:href="@{/signout}">로그아웃</a>
-			    </li>
-			</ul>
 
-            
+       
+            <form class="d-flex me-3" th:action="@{/search}" method="get" role="search">
+                <input class="form-control me-2" type="search" name="keyword" placeholder="영화, 감독, 배우 검색" aria-label="검색">
+                <button class="btn btn-outline-light" type="submit">검색</button>
+            </form>
+     
+            <!-- 비로그인 상태: 로그인/회원가입 -->
+            <ul class="navbar-nav" th:if="${session.user == null}">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/login}">로그인</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/signup}">회원가입</a>
+                </li>
+            </ul>
+
+            <!-- 로그인 상태: 사용자 정보 / 로그아웃 -->
+            <ul class="navbar-nav" th:if="${session.user != null}">
+                <li class="nav-item">
+                    <span class="nav-link" th:text="'안녕하세요'"></span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/signout}">로그아웃</a>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>
