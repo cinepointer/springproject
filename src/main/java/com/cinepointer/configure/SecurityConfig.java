@@ -26,7 +26,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())  // CSRF 비활성화
             .cors(cors -> cors.disable())   // CORS 비활성화
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/loginForm", "/signin", "/signup", "/css/**", "/js/**", "/img/**").permitAll() // 공개 URL
+                .requestMatchers("/loginForm", "/signin", "/signup", "/css/**", "/js/**", "/img/**","users/signup").permitAll() // 공개 URL
                 .requestMatchers("/guest/**").permitAll()  // 게스트 전용
                 .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")  // ROLE_USER 또는 ROLE_ADMIN 권한
                 .requestMatchers("/admin/**").hasRole("ADMIN")  // ROLE_ADMIN 권한만
