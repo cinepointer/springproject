@@ -32,11 +32,11 @@
                     <label for="userEmail">이메일</label>
                     <input type="email" id="userEmail" th:field="*{userEmail}" required maxlength="100" autocomplete="email">
 
-                    <label for="userStatus">상태</label>
-                    <select id="userStatus" th:field="*{userStatus}" required>
+                    <label for="roleName">상태</label>
+                    <select id="roleNames" th:field="*{roleName}" required>
                         <option value="">-- 선택 --</option>
-                        <option value="A">활성</option>
-                        <option value="I">비활성</option>
+                        <option value="ADMIN">활성</option>
+                        <option value="USER">비활성</option>
                     </select>
 
                     <label for="userLandCd">국가코드</label>
