@@ -446,229 +446,176 @@ footer {
 }
 
 
-/* ====== 마이페이지 ====== */
-.mypage-container {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 38px 0 50px 0;
-}
-.mypage-header {
+/* 마이페이지 헤더(로고만 중앙) */
+.mypage-header-simple {
     display: flex;
+    justify-content: center;
     align-items: center;
-    font-size: 1.45rem;
-    font-weight: 800;
-    color: #2563eb;
-    margin-bottom: 28px;
-    letter-spacing: 0.02em;
+    height: 70px;
+    background: #222;
+    margin-bottom: 30px;
 }
-.mypage-icon {
-    width: 38px;
-    height: 38px;
-    margin-right: 12px;
-    vertical-align: middle;
+.mypage-logo-link {
+    text-decoration: none;
+}
+.mypage-logo-text {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* 마이페이지 전체 레이아웃 */
+.mypage-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.mypage-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: left;
 }
 .mypage-flex {
     display: flex;
-    gap: 32px;
-    align-items: flex-start;
+    gap: 30px;
 }
 .mypage-profile-card {
-    background: #fff;
-    border: 1.5px solid #e7ecf5;
-    border-radius: 15px;
-    box-shadow: 0 2px 14px rgba(37,99,235,0.07);
-    width: 230px;
     min-width: 180px;
-    padding: 32px 18px 22px 18px;
+    background: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 32px 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 15px;
-}
-.profile-img-area {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 16px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 2.5px solid #eaf2ff;
-    background: #f8fbff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.profile-img {
-    width: 76px;
-    height: 76px;
-    object-fit: cover;
-    border-radius: 50%;
 }
 .profile-basic {
     text-align: center;
 }
 .profile-username {
-    font-size: 1.09rem;
-    font-weight: 700;
-    color: #2563eb;
-    margin-bottom: 2px;
-    letter-spacing: 0.02em;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
 }
 .profile-email {
-    font-size: 0.97rem;
-    color: #6a7990;
-    margin-bottom: 0;
-    word-break: break-all;
+    font-size: 1rem;
+    color: #888;
 }
+
+/* 정보 영역 */
 .mypage-info-area {
     flex: 1;
-    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 26px;
+    gap: 24px;
 }
 .mypage-section-box {
     background: #fff;
-    border-radius: 13px;
-    box-shadow: 0 2px 12px rgba(37,99,235,0.045);
-    padding: 23px 18px 20px 18px;
-    margin-bottom: 0;
-    border: 1px solid #e7ecf5;
-    transition: border 0.13s, box-shadow 0.13s;
-    position: relative;
-}
-.mypage-section-box:hover {
-    border: 1px solid #38cfc5;
-    box-shadow: 0 4px 18px rgba(56,207,197,0.11);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 24px;
 }
 .section-title {
-    font-size: 1.04rem;
-    font-weight: 700;
-    color: #23272f;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #222;
     margin-bottom: 16px;
-    letter-spacing: 0.02em;
-    border-left: 3px solid #2563eb;
-    padding-left: 10px;
-}
-.user-info-box {
-    font-size: 1.01rem;
-    color: #23272f;
-    background: #f8fbff;
-    border-radius: 9px;
-    padding: 15px 18px;
-    border: 1px solid #e7ecf5;
-    margin-bottom: 0;
 }
 .user-info-box p {
     margin: 0 0 8px 0;
+    font-size: 1rem;
+}
+.user-info-box span {
+    color: #666;
+    margin-right: 10px;
+}
+.user-info-box strong {
+    color: #222;
+}
+
+/* 찜한 영화 */
+.mypage-movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+.movie-card {
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-.user-info-box p span {
-    color: #6a7990;
-    font-size: 0.97rem;
-    min-width: 55px;
-    display: inline-block;
-}
-.user-info-box p strong {
-    font-weight: 600;
-    color: #2563eb;
-}
-.mypage-movie-list {
-    margin-bottom: 0;
-}
-.mypage-movie-list .movie-card {
-    width: 90px;
-    min-width: 90px;
+    background: #f5f5f5;
     border-radius: 8px;
-    font-size: 0.97rem;
-    background: #f6f8fa;
-    border: 1px solid #eaf2ff;
-    box-shadow: none;
-    margin-bottom: 0;
+    padding: 10px 18px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: box-shadow 0.2s;
 }
-.mypage-movie-list .movie-card .title {
-    font-size: 0.92rem;
-    margin: 7px 0 8px 7px;
+.movie-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    background: #eaeaea;
 }
-.no-data {
-    color: #b6bbc5;
-    background: #f8fbff;
-    border-radius: 7px;
-    padding: 13px 0 13px 10px;
-    font-size: 0.98rem;
-    margin-bottom: 3px;
+.movie-card .title {
+    font-size: 1rem;
 }
+
+/* 내가 작성한 리뷰 */
 .review-section {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
 }
 .review-item {
-    background: #f8fbff;
-    border-radius: 9px;
-    border: 1px solid #e7ecf5;
-    padding: 13px 16px 12px 16px;
-    box-shadow: none;
-    margin-bottom: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+.review-item:last-child {
+    border-bottom: none;
 }
 .review-movie {
-    font-size: 1.01rem;
-    font-weight: 700;
-    color: #2563eb;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #3366cc;
+    text-decoration: none;
     margin-right: 10px;
 }
+.review-movie:hover {
+    text-decoration: underline;
+}
 .review-rating {
-    font-size: 0.98rem;
-    color: #ffb300;
-    margin-right: 8px;
-    font-weight: 600;
+    color: #f39c12;
+    margin-left: 8px;
+    font-weight: 500;
 }
 .review-content {
-    font-size: 0.97rem;
-    color: #23272f;
-    margin: 7px 0 0 0;
-    line-height: 1.6;
-    word-break: break-all;
+    margin: 8px 0 0 0;
+    color: #444;
+    font-size: 0.98rem;
 }
 
-/* ====== 반응형 마이페이지 ====== */
-@media (max-width: 900px) {
+/* no-data 메시지 */
+.no-data {
+    color: #aaa;
+    font-size: 1rem;
+    padding: 18px 0;
+    text-align: center;
+}
+
+/* 반응형 */
+@media (max-width: 700px) {
     .mypage-flex {
         flex-direction: column;
-        gap: 20px;
+        gap: 18px;
     }
     .mypage-profile-card {
-        width: 100%;
-        min-width: 0;
         flex-direction: row;
-        gap: 20px;
-        padding: 18px 14px 18px 14px;
-        margin-bottom: 0;
-        align-items: center;
+        justify-content: flex-start;
+        min-width: 0;
+        padding: 18px 12px;
     }
-    .profile-img-area {
-        margin-bottom: 0;
-        margin-right: 14px;
-    }
-    .profile-basic {
-        text-align: left;
-    }
-}
-@media (max-width: 600px) {
     .mypage-container {
-        padding: 18px 0 25px 0;
-    }
-    .mypage-header {
-        font-size: 1.11rem;
-    }
-    .mypage-profile-card {
-        padding: 12px 7px 12px 7px;
-    }
-    .mypage-section-box {
-        padding: 13px 7px 12px 7px;
-    }
-    .user-info-box {
-        padding: 10px 7px;
+        padding: 0 5px;
     }
 }

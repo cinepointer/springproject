@@ -62,6 +62,12 @@
         FROM users
         ORDER BY user_num
     </select>
-
+	
+	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movieDto">
+    SELECT m.*
+    FROM wishlist w
+    JOIN movie m ON w.movie_id = m.id
+    WHERE w.user_id = #{userId}
+</select>
 </mapper>
 

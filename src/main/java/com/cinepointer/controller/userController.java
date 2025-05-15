@@ -1,10 +1,14 @@
 package com.cinepointer.controller;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.userService;
 
@@ -22,12 +27,14 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class userController {
 
-    private final userService cinepointerService;
+    private final userService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public userController(userService cinepointerService) {
-        this.cinepointerService = cinepointerService;
+    public userController(userService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
-    // 로그인 폼
+
     @GetMapping("/signin")
     public String signInForm(
             @RequestParam(value = "error", required = false) String error,
@@ -42,31 +49,27 @@ public class userController {
         return "signIn";
     }
 
-    // 회원가입 폼
     @GetMapping("/signup")
     public String signUpForm(Model model) {
-    	usersDto user = new usersDto();
+        usersDto user = new usersDto();
         model.addAttribute("user", user);
         return "signUp";
     }
 
-    // 회원가입 처리
     @PostMapping("/users/signup")
     public String register(@ModelAttribute("user") usersDto user, Model model) {
-    	user.setRoleName("ROLE_USER");
-    	try {
-            cinepointerService.registerUser(user);
+        user.setRoleName("ROLE_USER");
+        try {
+            userService.registerUser(user);
             return "redirect:/signIn";
         } catch (Exception e) {
-        	System.out.print(e.getMessage());
+            System.out.print(e.getMessage());
             model.addAttribute("signupError", "회원가입에 실패했습니다: " + e.getMessage());
             return "redirect:/signin";
         }
     }
-    
-    //로그인 성공시 작동
-    @GetMapping("/login")
 
+    @GetMapping("/login")
     public String login(HttpServletRequest request, Authentication auth) {
         String loginId = auth.getName();
         request.getSession().setAttribute("userId", loginId);
@@ -78,43 +81,65 @@ public class userController {
         if (roleNames.contains("ROLE_ADMIN")) {
             return "redirect:/admin/main";
         }
-        //기본적으로 보일 페이지
         return "mainPage";
-
     }
 
-    
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
-        // 세션 객체를 가져옵니다.
-        HttpSession session = request.getSession(false); // 세션이 존재하면 가져오고, 없으면 null 반환
-
-        // 세션이 존재하면 userId를 제거하고 세션을 종료합니다.
+        HttpSession session = request.getSession(false);
         if (session != null) {
-            session.removeAttribute("userId");  // "userId" 속성 제거
-            session.invalidate();  // 세션 종료
+            session.removeAttribute("userId");
+            session.invalidate();
         }
-
-        // 로그아웃 후 리다이렉트 또는 다른 페이지로 이동
-        return "redirect:/signin";  // 예: 로그인 페이지로 리다이렉트
+        return "redirect:/signin";
     }
-    
-    // 회원정보 조회
-    @GetMapping("/users/{user_id}")
-    public String getUserInfo(@PathVariable("user_id") String user_id, Model model) {
-        usersDto user = cinepointerService.findById(user_id);
+
+    // 회원정보 조회 (세션 기반 마이페이지)
+    @GetMapping("/myPage")
+    public String myPage(Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            return "redirect:/login";
+        }
+        usersDto user = userService.findById(userId);
         if (user == null) {
-            model.addAttribute("error", "회원을 찾을 수 없습니다.");
-            return "myPage";
+            return "redirect:/login";
+        }
+        List<movieDto> wishlist;
+        try {
+            wishlist = userService.getwishList(userId);
+        } catch (Exception e) {
+            wishlist = new ArrayList<>();
         }
         model.addAttribute("user", user);
+        model.addAttribute("wishlist", wishlist);
         return "myPage";
     }
 
-    // 회원정보 수정 폼
+    // 회원정보 조회 (URL 접근, 방어코드 추가)
+    @GetMapping("/users/{user_id}")
+    public String getUserInfo(@PathVariable("user_id") String user_id, Model model) {
+        usersDto user = userService.findById(user_id);
+        List<movieDto> wishlist = new ArrayList<>();
+        if (user != null) {
+            try {
+                wishlist = userService.getwishList(user_id);
+            } catch (Exception e) {
+                // 무시
+            }
+            model.addAttribute("user", user);
+            model.addAttribute("wishlist", wishlist);
+        } else {
+            model.addAttribute("user", null);
+            model.addAttribute("wishlist", wishlist);
+            model.addAttribute("error", "회원을 찾을 수 없습니다.");
+        }
+        return "myPage";
+    }
+
     @GetMapping("/users/{user_id}/edit")
     public String editUserForm(@PathVariable("user_id") String user_id, Model model) {
-        usersDto user = cinepointerService.findById(user_id);
+        usersDto user = userService.findById(user_id);
         if (user == null) {
             model.addAttribute("error", "회원을 찾을 수 없습니다.");
             return "userEdit";
@@ -123,13 +148,10 @@ public class userController {
         return "userEdit";
     }
 
-    // 회원정보 수정 처리
     @PostMapping("/users/{user_id}/edit")
     public String editUser(@PathVariable("user_id") String user_id, @ModelAttribute("user") usersDto user, Model model) {
         try {
-            // user_id 보존
-            //user.setUser_id(user_id);
-            cinepointerService.updateUser(user); // updateUser 메서드가 서비스에 있어야 함
+            userService.updateUser(user);
             return "redirect:/users/" + user_id + "?msg=회원정보가+수정되었습니다.";
         } catch (Exception e) {
             model.addAttribute("editError", "회원정보 수정에 실패했습니다: " + e.getMessage());
@@ -137,12 +159,11 @@ public class userController {
         }
     }
 
-    // 회원탈퇴
     @PostMapping("/users/{user_id}/delete")
     public String deleteUser(@PathVariable("user_id") int user_id, HttpSession session, Model model) {
         try {
-            cinepointerService.deleteUser(user_id); // deleteUser 메서드가 서비스에 있어야 함
-            session.invalidate(); // 세션 종료(로그아웃)
+            userService.deleteUser(user_id);
+            session.invalidate();
             return "redirect:/signIn?msg=회원탈퇴가+완료되었습니다.";
         } catch (Exception e) {
             model.addAttribute("deleteError", "회원탈퇴에 실패했습니다: " + e.getMessage());
@@ -150,31 +171,49 @@ public class userController {
         }
     }
 
-    // 사용자 권한 관리 (관리자만 접근 예시)
     @GetMapping("/admin/users")
     public String manageUsers(Model model) {
-        //model.addAttribute("users", cinepointerService.findAllUsers()); // findAllUsers 메서드 필요
+        // model.addAttribute("users", userService.findAllUsers());
         return "userManagement";
     }
 
-    // 로그인 에러
     @GetMapping("/loginError")
     public String loginError(Model model) {
         model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
         return "signIn";
     }
-    
-    @GetMapping("/myPage")
-    public String myPage(Model model, HttpSession session) {
-        // 세션에서 유저 정보 꺼내기 (예시)
-        String userId = (String) session.getAttribute("userId");
-        if (userId == null) {
-            // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
-            return "redirect:/login";
+
+    // 비밀번호 변경
+    @PostMapping("/users/password-edit")
+    public String editPassword(
+        @RequestParam String currentPassword,
+        @RequestParam String newPassword,
+        @RequestParam String confirmPassword,
+        Principal principal,
+        Model model
+    ) {
+        String userId = principal.getName();
+        usersDto user = userService.findById(userId);
+        if (user == null) {
+            model.addAttribute("error", "사용자 정보를 찾을 수 없습니다.");
+            return "myPage";
         }
-        // 필요한 사용자 정보 모델에 담기 (예시)
-        model.addAttribute("userId", userId);
-        // myPage.html 템플릿 반환
-        return "myPage";
+
+        if (!passwordEncoder.matches(currentPassword, user.getUserPasswd())) {
+            model.addAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+            return "myPage";
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("error", "새 비밀번호가 일치하지 않습니다.");
+            return "myPage";
+        }
+
+        user.setUserPasswd(passwordEncoder.encode(newPassword));
+        userService.updateUser(user);
+
+        model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
+        return "redirect:/myPage";
     }
+
 }

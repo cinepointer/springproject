@@ -4,12 +4,22 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.cinepointer.dao.movieDao">
-    <!-- 검색, 필터, 정렬 -->
+
+    <!-- 영화 리스트 검색 및 정렬 (장르 검색 반영) -->
     <select id="searchMovies" resultType="com.cinepointer.dto.movieDto">
-        SELECT m.*, 
-               (SELECT AVG(rating) FROM review WHERE movie_id = m.movie_num) AS ratingAvg,
-               (SELECT COUNT(*) FROM like_movie WHERE movie_id = m.movie_num) AS likeCount
+        SELECT 
+            m.movie_num AS id,
+            m.movie_title AS title,
+            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            m.movie_overview AS description,
+            m.movie_release_date AS releaseDate,
+            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM movie m
+        LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
+        LEFT JOIN genre g ON mg.genre_num = g.genre_num
+        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+        LEFT JOIN actor a ON am.actor_num = a.actor_num
         <where>
             <if test="search != null and search != ''">
                 (m.movie_title LIKE CONCAT('%', #{search}, '%'))
@@ -17,20 +27,18 @@
             <if test="genre != null and genre != ''">
                 <choose>
                     <when test="search != null and search != ''">
-                        AND m.movie_genre = #{genre}
+                        AND g.genre_name = #{genre}
                     </when>
                     <otherwise>
-                        m.movie_genre = #{genre}
+                        g.genre_name = #{genre}
                     </otherwise>
                 </choose>
             </if>
         </where>
+        GROUP BY m.movie_num
         <choose>
             <when test="sort == 'release'">
                 ORDER BY m.movie_release_date DESC
-            </when>
-            <when test="sort == 'rating'">
-                ORDER BY ratingAvg DESC
             </when>
             <when test="sort == 'popular'">
                 ORDER BY likeCount DESC
@@ -43,38 +51,102 @@
             LIMIT #{limit}
         </if>
     </select>
-    
-    <!-- 상세 -->
+
+    <!-- 상세 조회 -->
     <select id="findById" parameterType="long" resultType="com.cinepointer.dto.movieDto">
-        SELECT m.*, 
-               (SELECT AVG(rating) FROM review WHERE movie_id = m.movie_num) AS ratingAvg,
-               (SELECT COUNT(*) FROM like_movie WHERE movie_id = m.movie_num) AS likeCount
+        SELECT 
+            m.movie_num AS id,
+            m.movie_title AS title,
+            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            m.movie_overview AS description,
+            m.movie_release_date AS releaseDate,
+            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM movie m
+        LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
+        LEFT JOIN genre g ON mg.genre_num = g.genre_num
+        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+        LEFT JOIN actor a ON am.actor_num = a.actor_num
         WHERE m.movie_num = #{id}
+        GROUP BY m.movie_num
     </select>
 
-    <!-- 장르별 인기 -->
+    <!-- 장르별 인기영화 -->
     <select id="findByGenre" resultType="com.cinepointer.dto.movieDto">
-        SELECT m.*, 
-               (SELECT AVG(rating) FROM review WHERE movie_id = m.movie_num) AS ratingAvg
+        SELECT 
+            m.movie_num AS id,
+            m.movie_title AS title,
+            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            m.movie_overview AS description,
+            m.movie_release_date AS releaseDate,
+            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM movie m
-        WHERE m.movie_genre = #{genre}
-        ORDER BY ratingAvg DESC
+        INNER JOIN movie_genre mg ON m.movie_num = mg.movie_num
+        INNER JOIN genre g ON mg.genre_num = g.genre_num
+        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+        LEFT JOIN actor a ON am.actor_num = a.actor_num
+        WHERE g.genre_name = #{genre}
+        GROUP BY m.movie_num
+        ORDER BY likeCount DESC
         <if test="limit != null">
             LIMIT #{limit}
         </if>
     </select>
-    
-    <!-- 최신 개봉작 -->
+
+    <!-- 최신 영화 -->
     <select id="findLatest" resultType="com.cinepointer.dto.movieDto">
-        SELECT * FROM movie ORDER BY movie_release_date DESC LIMIT #{limit}
+        SELECT 
+            m.movie_num AS id,
+            m.movie_title AS title,
+            m.movie_overview AS description,
+            m.movie_release_date AS releaseDate,
+            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+        FROM movie m
+        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+        LEFT JOIN actor a ON am.actor_num = a.actor_num
+        GROUP BY m.movie_num
+        ORDER BY m.movie_release_date DESC
+        LIMIT #{limit}
     </select>
-    
+
     <!-- 인기 영화 -->
     <select id="findPopular" resultType="com.cinepointer.dto.movieDto">
-        SELECT m.*, (SELECT COUNT(*) FROM like_movie WHERE movie_id = m.movie_num) AS likeCount
+        SELECT 
+            m.movie_num AS id,
+            m.movie_title AS title,
+            m.movie_overview AS description,
+            m.movie_release_date AS releaseDate,
+            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM movie m
+        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+        LEFT JOIN actor a ON am.actor_num = a.actor_num
+        GROUP BY m.movie_num
         ORDER BY likeCount DESC
         LIMIT #{limit}
     </select>
+
+    <!-- 내 위시리스트(찜 목록) 조회 -->
+    <select id="selectWishListByUserId" parameterType="string" resultType="com.cinepointer.dto.movieDto">
+        SELECT 
+            m.movie_num AS id,
+            m.movie_title AS title,
+            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            m.movie_overview AS description,
+            m.movie_release_date AS releaseDate,
+            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+        FROM users_movie um
+        INNER JOIN movie m ON um.movie_num = m.movie_num
+        LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
+        LEFT JOIN genre g ON mg.genre_num = g.genre_num
+        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+        LEFT JOIN actor a ON am.actor_num = a.actor_num
+        WHERE um.user_num = #{userId}
+        GROUP BY m.movie_num
+        ORDER BY m.movie_release_date DESC
+    </select>
+
 </mapper>
