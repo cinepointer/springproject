@@ -3,6 +3,7 @@ package com.cinepointer.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict; // 추가
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.userDao;
+import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -35,13 +37,11 @@ public class userServiceImpl implements userService, UserDetailsService {
         System.out.println("로그인 동작");
         if (user == null) {
             throw new UsernameNotFoundException("해당 아이디의 사용자를 찾을 수 없습니다: " + username);
-            
         }
-        System.out.println("");
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUserId())
                 .password(user.getUserPasswd()) // 암호화된 비밀번호
-                .roles("USER") // 필요 시 USER, ADMIN 등
+                .roles("USER")
                 .build();
     }
 
@@ -52,9 +52,7 @@ public class userServiceImpl implements userService, UserDetailsService {
         if (existingUser != null) {
             return false; // 아이디 중복
         }
-        
         user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
-        System.out.println(user);
         userDao.insertUser(user);
         return true;
     }
@@ -79,7 +77,9 @@ public class userServiceImpl implements userService, UserDetailsService {
         return userDao.findByUserNum(userNum);
     }
 
+    // 캐시 무효화: userCache라는 이름의 캐시에서 해당 userId에 해당하는 캐시 삭제
     @Override
+    @CacheEvict(value = "userCache", key = "#user.userId")
     public void updateUser(usersDto user) {
         if (user.getUserPasswd() != null && !user.getUserPasswd().isEmpty()) {
             user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
@@ -99,8 +99,11 @@ public class userServiceImpl implements userService, UserDetailsService {
     
     @Override
     public List<usersDto> findAll() {
-    	List<usersDto> users=userDao.selectAllUsers();
-    	return users;
+        return userDao.selectAllUsers();
+    }
+
+    @Override
+    public List<movieDto> getwishList(String userId) {
+        return userDao.selectWishListByUserId(userId);
     }
 }
-

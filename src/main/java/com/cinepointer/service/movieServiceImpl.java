@@ -1,9 +1,11 @@
 package com.cinepointer.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.cinepointer.dao.movieDao;
 import com.cinepointer.dto.movieDto;
-import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class movieServiceImpl implements movieService {
@@ -42,5 +44,9 @@ public class movieServiceImpl implements movieService {
     @Override
     public void insert(movieDto movie) {
         movieDao.insert(movie);
+    }
+    @Override
+    public List<movieDto> getWishList(String userId) {
+        return movieDao.selectWishListByUserId(userId);
     }
 }

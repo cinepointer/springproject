@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
 
 @Mapper
@@ -25,5 +26,7 @@ public interface userDao {
 
 	// 사용자 삭제 (회원탈퇴)
 	List<usersDto> selectAllUsers();
+	
+	List<movieDto> selectWishListByUserId(String userId);
 	
 }

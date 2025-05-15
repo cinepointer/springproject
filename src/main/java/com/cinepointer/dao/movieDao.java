@@ -1,9 +1,11 @@
 package com.cinepointer.dao;
 
-import com.cinepointer.dto.movieDto;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import java.util.List;
+
+import com.cinepointer.dto.movieDto;
 
 @Mapper
 public interface movieDao {
@@ -17,5 +19,6 @@ public interface movieDao {
     List<movieDto> findByGenre(@Param("genre") String genre, @Param("limit") Integer limit);
     List<movieDto> findPopular(@Param("limit") Integer limit);
     List<movieDto> findLatest(@Param("limit") Integer limit);
+    List<movieDto> selectWishListByUserId(String userId);
     void insert(movieDto movie);
 }

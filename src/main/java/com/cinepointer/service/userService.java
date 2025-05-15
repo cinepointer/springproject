@@ -2,8 +2,12 @@ package com.cinepointer.service;
 
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
+import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
+
 import jakarta.servlet.http.HttpSession;
 
 @Service
@@ -21,6 +25,10 @@ public interface userService {
 	void deleteUser(int userNum);
 	usersDto findById(String userId);
 	List<usersDto> findAll();
+	List<movieDto> getwishList(String userId);
+	
+	
 
+	
 }
 

@@ -1,5 +1,7 @@
 package com.cinepointer.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -13,4 +15,6 @@ public class usersDto {
     private String userLandCd;
     private String userBirthDate;
     private int userEnabled;
+    private List<boardDto> reviews;
+ 
 }

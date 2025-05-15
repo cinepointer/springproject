@@ -26,14 +26,13 @@
     <!-- 회원 정보 수정 (userNum 기준) -->
     <update id="updateUser" parameterType="com.cinepointer.dto.usersDto">
         UPDATE users
-        SET
-            user_passwd = #{userPasswd},
-            user_name = #{userName},
-            user_email = #{userEmail},
-            user_status = #{userStatus},
-            user_land_cd = #{userLandCd},
-            user_birth_date = #{userBirthDate}
-        WHERE user_num = #{userNum}
+   SET user_passwd = #{userPasswd},
+       user_name = #{userName},
+       user_email = #{userEmail},
+       user_land_cd = #{userLandCd},
+       user_birth_date = #{userBirthDate}
+ WHERE user_num = #{userNum}
+
     </update>
 
     <!-- 회원 삭제 (userNum 기준) -->
@@ -55,6 +54,12 @@
         FROM users
         ORDER BY user_num
     </select>
-
+	
+	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movieDto">
+    SELECT m.*
+    FROM wishlist w
+    JOIN movie m ON w.movie_id = m.id
+    WHERE w.user_id = #{userId}
+</select>
 </mapper>
 
