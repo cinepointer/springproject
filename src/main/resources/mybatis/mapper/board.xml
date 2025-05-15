@@ -8,10 +8,10 @@
         select b.*, u.user_id from board b join users u on b.user_num = u.user_num where board_num = #{boardNum}
     </select>
 	<insert id="insertBoard" parameterType="com.cinepointer.dto.boardDto">
-		insert into board(board_title, board_content, board_type, user_num) values(#{boardTitle},#{boardContent},#{boardType}, #{userNum})
+		insert into board(board_title, board_content, user_num) values(#{boardTitle},#{boardContent}, #{userNum})
 	</insert>
 	<update id="updateBoard" parameterType="com.cinepointer.dto.boardDto">
-		update board set board_title = #{boardTitle}, board_content = #{boardContent}, board_type = #{boardType}, board_mod_date = CURRENT_TIMESTAMP where board_num = #{boardNum}
+		update board set board_title = #{boardTitle}, board_content = #{boardContent}, board_mod_date = CURRENT_TIMESTAMP where board_num = #{boardNum}
 	</update>
 	<delete id="deleteBoard" parameterType="int">
         delete from board where board_num = #{boardNum}

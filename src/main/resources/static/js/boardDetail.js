@@ -1,6 +1,8 @@
 function showEditForm(commentNum) {
     const form = document.getElementById('editForm-' + commentNum);
-    form.classList.toggle('show');
+    if (form) {
+        form.classList.toggle('show');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -2,22 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cinepointer.dao.boardCommentDao">
 	<select id="getCommentsByBoardNum" parameterType="int" resultType="com.cinepointer.dto.boardCommentDto">
-        select bc.*, u.user_id from b_comment bc join users u on bc.user_num = u.user_num where bc.board_num = #{boardNum} order by bc.b_comment_time desc
+        select bc.b_comment_num AS commentNum, bc.b_comment_content AS commentContent, bc.b_comment_time AS commentTime,
+        bc.board_num AS boardNum, bc.user_num AS userNum, u.user_id AS userId from b_comment bc join users u on bc.user_num = u.user_num where bc.board_num = #{boardNum} order by bc.b_comment_time desc
     </select>
     
     <insert id="insertComment" parameterType="com.cinepointer.dto.boardCommentDto">
-        insert into b_comment (comment_content, board_num, user_num) values(#{commentContent}, #{boardNum}, #{userNum})
+        insert into b_comment (b_comment_content, board_num, user_num) values(#{commentContent}, #{boardNum}, #{userNum})
     </insert>
     
     <update id="updateComment" parameterType="com.cinepointer.dto.boardCommentDto">
-        update b_comment set comment_content = #{commentContent}, comment_time = current_timestamp where comment_num = #{commentNum}
+        update b_comment set b_comment_content = #{commentContent}, b_comment_time = current_timestamp where b_comment_num = #{commentNum}
     </update>
     
     <delete id="deleteComment" parameterType="int">
-        delete from b_comment where comment_num = #{commentNum}
+        delete from b_comment where b_comment_num = #{commentNum}
     </delete>
     
     <select id="getCommentByNum" parameterType="int" resultType="com.cinepointer.dto.boardCommentDto">
-    select bc.*, u.user_id from b_comment bc join users u on bc.user_num = u.user_num where bc.comment_num = #{commentNum}
+    select bc.*, u.user_id from b_comment bc join users u on bc.user_num = u.user_num where bc.b_comment_num = #{commentNum}
 </select>
 </mapper>

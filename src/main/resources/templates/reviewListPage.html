@@ -11,7 +11,11 @@
     <main>
         <div>
             <h2>영화 번호: <span th:text="${movieNum}"></span></h2>
-            <button th:onclick="|window.location.href='/review/form?movieNum=' + ${movieNum}|">리뷰 작성</button>
+            <!-- 로그인 되있으면 작성 -->
+			<button th:if="${session.userId != null}" th:onclick="|window.location.href='/review/form?movieNum=' + ${movieNum}|">리뷰 작성</button>
+			
+			<!-- 로그인 안되있으면 로그인 페이지로 -->
+			<button th:if="${session.userId == null}" th:onclick="'location.href=\'/signin\''">리뷰 작성 (로그인 필요)</button>
         </div>
 
         <div th:each="review : ${reviews}">
