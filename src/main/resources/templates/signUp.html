@@ -3,55 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입 - CinePointer</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
-<body>
-    <header>
-        <div class="container nav-flex">
-         
-      <a class="navbar-brand" th:href="@{/}">
-            <img th:src="@{/img/dark-logo.png}" alt="로고" height="40">
-        </a>
-            
-        </div>
-    </header>
+<body class="bg-light text-dark">
 
-    <main>
-            <div class="form-container">
-                <h2>회원가입</h2>
-                <form th:action="@{/users/signup}" th:object="${user}" method="post">
-                	
-                    <label for="userId">아이디</label>
-                    <input type="text" id="userId" th:field="*{userId}" required maxlength="20" autocomplete="username">
+    <!-- 헤더 fragment 삽입 -->
+    <th:block th:replace="fragment/header.html :: headerFragment"></th:block>
 
-                    <label for="userPasswd">비밀번호</label>
-                    <input type="password" id="userPasswd" th:field="*{userPasswd}" required maxlength="100" autocomplete="new-password">
+    <main class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow rounded-4">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">회원가입</h2>
+                        <form th:action="@{/users/signup}" th:object="${user}" method="post">
 
-                    <label for="userName">이름</label>
-                    <input type="text" id="userName" th:field="*{userName}" required maxlength="50">
+                            <div class="mb-3">
+                                <label for="userId" class="form-label">아이디</label>
+                                <input type="text" id="userId" th:field="*{userId}" class="form-control" required maxlength="20" autocomplete="username">
+                            </div>
 
-                    <label for="userEmail">이메일</label>
-                    <input type="email" id="userEmail" th:field="*{userEmail}" required maxlength="100" autocomplete="email">
+                            <div class="mb-3">
+                                <label for="userPasswd" class="form-label">비밀번호</label>
+                                <input type="password" id="userPasswd" th:field="*{userPasswd}" class="form-control" required maxlength="100" autocomplete="new-password">
+                            </div>
 
-                  
+                            <div class="mb-3">
+                                <label for="userName" class="form-label">이름</label>
+                                <input type="text" id="userName" th:field="*{userName}" class="form-control" required maxlength="50">
+                            </div>
 
-                    <label for="userLandCd">국가코드</label>
-                    <input type="text" id="userLandCd" th:field="*{userLandCd}" maxlength="10" placeholder="예: KR">
+                            <div class="mb-3">
+                                <label for="userEmail" class="form-label">이메일</label>
+                                <input type="email" id="userEmail" th:field="*{userEmail}" class="form-control" required maxlength="100" autocomplete="email">
+                            </div>
 
-                    <label for="userBirthDate">생년월일</label>
-                    <input type="date" id="userBirthDate" th:field="*{userBirthDate}">
+                            <div class="mb-3">
+                                <label for="userLandCd" class="form-label">국가코드</label>
+                                <input type="text" id="userLandCd" th:field="*{userLandCd}" class="form-control" maxlength="10" placeholder="예: KR">
+                            </div>
 
-                    <button type="submit" class="btn">회원가입</button>
-                    <div class="nav-actions">
-                <a href="/signIn" class="btn nav-btn">로그인</a>
-            </div>
-                </form>
+                            <div class="mb-4">
+                                <label for="userBirthDate" class="form-label">생년월일</label>
+                                <input type="date" id="userBirthDate" th:field="*{userBirthDate}" class="form-control" required>
+                            </div>
+
+                            <div class="d-grid gap-2 mb-3">
+                                <button type="submit" class="btn btn-dark">회원가입</button>
+                            </div>
+
+                            <div class="d-grid gap-2 mb-3">
+                                <a href="/signin" class="btn btn-outline-secondary">로그인</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- 푸터 fragment 참조 -->
+    <!-- 푸터 fragment 삽입 -->
     <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
+
+    <!-- Bootstrap JS -->
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>
 
