@@ -64,19 +64,6 @@ public class movieController {
         return "moviepage";
     }
 
-    // 로그인 폼
-    @GetMapping("/login")
-    public String loginForm() {
-        return "signIn";
-    }
-
-    // 회원가입 폼
-    @GetMapping("/signup")
-    public String signupForm(Model model) {
-        model.addAttribute("user", new usersDto());
-        return "signUp";
-    }
-   
   
 
 

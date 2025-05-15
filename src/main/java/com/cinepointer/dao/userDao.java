@@ -1,10 +1,10 @@
 package com.cinepointer.dao;
 
-import com.cinepointer.dto.usersDto;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.cinepointer.dto.usersDto;
 
 @Mapper
 public interface userDao {
@@ -23,5 +23,7 @@ public interface userDao {
 	// 사용자 삭제 (회원탈퇴)
 	void deleteUser(int userNum);
 
-
+	// 사용자 삭제 (회원탈퇴)
+	List<usersDto> selectAllUsers();
+	
 }

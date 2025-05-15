@@ -422,32 +422,253 @@ footer {
     margin-top: 30px;
 }
 
-/* ====== 반응형 ====== */
-@media (max-width: 1100px) {
-    .main-flex, .navbar .container-fluid { max-width: 100vw; }
-    .main-flex { padding: 28px 2vw 36px 2vw; }
-    .navbar .container-fluid { padding: 0 1.5vw; }
-    .main-sidebar { min-width: 80px; }
+/* ====== 실시간 검색 ====== */
+.search-box { margin: 32px 0 24px 0; position: relative; }
+.search-result-list {
+    border: 1px solid #ddd;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0; right: 0;
+    z-index: 1000;
+    display: none;
 }
+.search-result-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.search-result-list li:hover, .search-result-list a:hover {
+    background: #f0f0f0;
+}
+
+
+/* ====== 마이페이지 ====== */
+.mypage-container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 38px 0 50px 0;
+}
+.mypage-header {
+    display: flex;
+    align-items: center;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #2563eb;
+    margin-bottom: 28px;
+    letter-spacing: 0.02em;
+}
+.mypage-icon {
+    width: 38px;
+    height: 38px;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+.mypage-flex {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+}
+.mypage-profile-card {
+    background: #fff;
+    border: 1.5px solid #e7ecf5;
+    border-radius: 15px;
+    box-shadow: 0 2px 14px rgba(37,99,235,0.07);
+    width: 230px;
+    min-width: 180px;
+    padding: 32px 18px 22px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.profile-img-area {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2.5px solid #eaf2ff;
+    background: #f8fbff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.profile-img {
+    width: 76px;
+    height: 76px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.profile-basic {
+    text-align: center;
+}
+.profile-username {
+    font-size: 1.09rem;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 2px;
+    letter-spacing: 0.02em;
+}
+.profile-email {
+    font-size: 0.97rem;
+    color: #6a7990;
+    margin-bottom: 0;
+    word-break: break-all;
+}
+.mypage-info-area {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+.mypage-section-box {
+    background: #fff;
+    border-radius: 13px;
+    box-shadow: 0 2px 12px rgba(37,99,235,0.045);
+    padding: 23px 18px 20px 18px;
+    margin-bottom: 0;
+    border: 1px solid #e7ecf5;
+    transition: border 0.13s, box-shadow 0.13s;
+    position: relative;
+}
+.mypage-section-box:hover {
+    border: 1px solid #38cfc5;
+    box-shadow: 0 4px 18px rgba(56,207,197,0.11);
+}
+.section-title {
+    font-size: 1.04rem;
+    font-weight: 700;
+    color: #23272f;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+    border-left: 3px solid #2563eb;
+    padding-left: 10px;
+}
+.user-info-box {
+    font-size: 1.01rem;
+    color: #23272f;
+    background: #f8fbff;
+    border-radius: 9px;
+    padding: 15px 18px;
+    border: 1px solid #e7ecf5;
+    margin-bottom: 0;
+}
+.user-info-box p {
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.user-info-box p span {
+    color: #6a7990;
+    font-size: 0.97rem;
+    min-width: 55px;
+    display: inline-block;
+}
+.user-info-box p strong {
+    font-weight: 600;
+    color: #2563eb;
+}
+.mypage-movie-list {
+    margin-bottom: 0;
+}
+.mypage-movie-list .movie-card {
+    width: 90px;
+    min-width: 90px;
+    border-radius: 8px;
+    font-size: 0.97rem;
+    background: #f6f8fa;
+    border: 1px solid #eaf2ff;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+.mypage-movie-list .movie-card .title {
+    font-size: 0.92rem;
+    margin: 7px 0 8px 7px;
+}
+.no-data {
+    color: #b6bbc5;
+    background: #f8fbff;
+    border-radius: 7px;
+    padding: 13px 0 13px 10px;
+    font-size: 0.98rem;
+    margin-bottom: 3px;
+}
+.review-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.review-item {
+    background: #f8fbff;
+    border-radius: 9px;
+    border: 1px solid #e7ecf5;
+    padding: 13px 16px 12px 16px;
+    box-shadow: none;
+    margin-bottom: 0;
+}
+.review-movie {
+    font-size: 1.01rem;
+    font-weight: 700;
+    color: #2563eb;
+    margin-right: 10px;
+}
+.review-rating {
+    font-size: 0.98rem;
+    color: #ffb300;
+    margin-right: 8px;
+    font-weight: 600;
+}
+.review-content {
+    font-size: 0.97rem;
+    color: #23272f;
+    margin: 7px 0 0 0;
+    line-height: 1.6;
+    word-break: break-all;
+}
+
+/* ====== 반응형 마이페이지 ====== */
 @media (max-width: 900px) {
-    .main-flex { flex-direction: column !important; gap: 0 !important; }
-    .main-section { margin-bottom: 13px; }
-    .main-sidebar { min-width: 60px;}
-    .navbar .container-fluid { padding: 0 1vw; }
+    .mypage-flex {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .mypage-profile-card {
+        width: 100%;
+        min-width: 0;
+        flex-direction: row;
+        gap: 20px;
+        padding: 18px 14px 18px 14px;
+        margin-bottom: 0;
+        align-items: center;
+    }
+    .profile-img-area {
+        margin-bottom: 0;
+        margin-right: 14px;
+    }
+    .profile-basic {
+        text-align: left;
+    }
 }
-@media (max-width: 700px) {
-    .main-section { padding: 7px 2vw 5px 2vw; }
-    .movie-list { gap: 7px; }
-    .movie-card { width: 80px; min-width: 80px; }
-    .movie-card img { height: 90px; }
-    .main-flex { padding: 7px 1vw 12px 1vw; }
-    .auth-card,
-    .form-container { padding: 9px 2vw 4px 2vw; max-width: 97vw; margin-top: 14px;}
-    .navbar .container-fluid { padding: 0 0.5vw; }
-}
-@media (max-width: 500px) {
-    .main-section { padding: 3px 0 2px 0; }
-    .auth-card,
-    .form-container { padding: 5px 1vw 2px 1vw; }
-    footer { padding: 10px 0 7px 0; font-size: 12px;}
+@media (max-width: 600px) {
+    .mypage-container {
+        padding: 18px 0 25px 0;
+    }
+    .mypage-header {
+        font-size: 1.11rem;
+    }
+    .mypage-profile-card {
+        padding: 12px 7px 12px 7px;
+    }
+    .mypage-section-box {
+        padding: 13px 7px 12px 7px;
+    }
+    .user-info-box {
+        padding: 10px 7px;
+    }
 }

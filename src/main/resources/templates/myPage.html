@@ -5,61 +5,75 @@
     <title>마이페이지 - CinePointer</title>
     <link rel="stylesheet" href="/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <body>
 
     <!-- 공통 헤더 -->
-     <th:block th:replace="fragment/header.html :: headerFragment"></th:block>
+    <th:block th:replace="~{fragment/header.html :: headerFragment}"></th:block>
 
     <main>
-        <div class="container">
-            <h1 class="mypage-header">마이페이지</h1>
-            
-            <!-- 내 정보 -->
-            <section>
-                <h2 class="section-title">내 정보</h2>
-                <div class="user-info-box">
-                    <p>아이디: <span th:text="${user.username}">username</span></p>
-                    <p>이메일: <span th:text="${user.email}">email</span></p>
-                </div>
-            </section>
-
-            <!-- 내가 찜한 영화 -->
-            <section>
-                <h2 class="section-title">내가 찜한 영화</h2>
-                <div class="movie-list" th:if="${wishlist != null and #lists.size(wishlist) > 0}">
-                    <a th:each="movie : ${wishlist}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
-                        <img th:src="${movie.posterUrl}" th:alt="${movie.title} + ' 포스터'">
-                        <div th:text="${movie.title}">영화 제목</div>
-                    </a>
-                </div>
-                <div th:if="${wishlist == null or #lists.isEmpty(wishlist)}" style="color:#888;margin-bottom:16px;">
-                    찜한 영화가 없습니다.
-                </div>
-            </section>
-
-            <!-- 내가 작성한 리뷰 -->
-            <section>
-                <h2 class="section-title">내가 작성한 리뷰</h2>
-                <div class="review-section" th:if="${user.reviews != null and #lists.size(user.reviews) > 0}">
-                    <div th:each="review : ${user.reviews}">
-                        <a th:href="@{/movies/{id}(id=${review.movieId})}" title="상세보기: [[${review.movieTitle}]]">
-                            <strong th:text="${review.movieTitle}">영화 제목</strong>
-                        </a>
-                        <span>★ <span th:text="${review.rating}">평점</span></span>
-                        <p th:text="${review.content}">리뷰 내용</p>
+        <div class="mypage-container container">
+            <h1 class="mypage-header">
+                <img src="/img/profile-cinema.svg" alt="마이페이지" class="mypage-icon">
+                마이페이지
+            </h1>
+            <div class="mypage-flex">
+                <!-- 사이드 프로필 카드 -->
+                <aside class="mypage-profile-card">
+                    <div class="profile-img-area">
+                        <img src="/img/profile-default.png" alt="프로필 이미지" class="profile-img">
                     </div>
-                </div>
-                <div th:if="${user.reviews == null or #lists.isEmpty(user.reviews)}" style="color:#888;">
-                    작성한 리뷰가 없습니다.
-                </div>
-            </section>
+                    <div class="profile-basic">
+                        <div class="profile-username" th:text="${user != null ? user.userName : '정보없음'}">username</div>
+                        <div class="profile-email" th:text="${user != null ? user.userEmail : '정보없음'}">email</div>
+                    </div>
+                </aside>
+                <!-- 메인 정보 영역 -->
+                <section class="mypage-info-area">
+                    <!-- 내 정보 -->
+                    <div class="mypage-section-box">
+                        <h2 class="section-title">내 정보</h2>
+                        <div class="user-info-box">
+                            <p><span>아이디</span> <strong th:text="${user != null ? user.userName : '정보없음'}">username</strong></p>
+                            <p><span>이메일</span> <strong th:text="${user != null ? user.userEmail : '정보없음'}">email</strong></p>
+                        </div>
+                    </div>
+                    <!-- 내가 찜한 영화 -->
+                    <div class="mypage-section-box">
+                        <h2 class="section-title">내가 찜한 영화</h2>
+                        <div class="movie-list mypage-movie-list" th:if="${wishlist != null and #lists.size(wishlist) > 0}">
+                            <a class="movie-card" th:each="movie : ${wishlist}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
+                                <img th:src="${movie.posterUrl}" th:alt="|${movie.title} 포스터|">
+                                <div class="title" th:text="${movie.title}">영화 제목</div>
+                            </a>
+                        </div>
+                        <div th:if="${wishlist == null or #lists.isEmpty(wishlist)}" class="no-data">
+                            찜한 영화가 없습니다.
+                        </div>
+                    </div>
+                    <!-- 내가 작성한 리뷰 -->
+                    <div class="mypage-section-box">
+                        <h2 class="section-title">내가 작성한 리뷰</h2>
+                        <div class="review-section" th:if="${user != null and user.reviews != null and #lists.size(user.reviews) > 0}">
+                            <div class="review-item" th:each="review : ${user.reviews}">
+                                <a class="review-movie" th:href="@{/movies/{id}(id=${review.movieId})}" th:title="|상세보기: ${review.movieTitle}|">
+                                    <strong th:text="${review.movieTitle}">영화 제목</strong>
+                                </a>
+                                <span class="review-rating">★ <span th:text="${review.rating}">평점</span></span>
+                                <p class="review-content" th:text="${review.content}">리뷰 내용</p>
+                            </div>
+                        </div>
+                        <div th:if="${user == null or user.reviews == null or #lists.isEmpty(user.reviews)}" class="no-data">
+                            작성한 리뷰가 없습니다.
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
     </main>
 
     <!-- 공통 푸터 -->
-     <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
+    <th:block th:replace="~{fragment/footer.html :: footerFragment}"></th:block>
 
     <script>
         // 네비게이션 활성화 처리

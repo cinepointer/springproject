@@ -1,10 +1,10 @@
 package com.cinepointer.controller;
 
-import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +46,6 @@ public class userController {
     @GetMapping("/signup")
     public String signUpForm(Model model) {
     	usersDto user = new usersDto();
-        user.setUserBirthDate("1999-01-01"); // 기본값 설정
         model.addAttribute("user", user);
         return "signUp";
     }
@@ -61,19 +60,29 @@ public class userController {
         } catch (Exception e) {
         	System.out.print(e.getMessage());
             model.addAttribute("signupError", "회원가입에 실패했습니다: " + e.getMessage());
-            return "signUp";
+            return "redirect:/signin";
         }
     }
     
+    //로그인 성공시 작동
     @GetMapping("/login")
-    public String login(HttpServletRequest request, Authentication authentication) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    	String loginId = auth.getName();
-    	request.getSession().setAttribute("userId", loginId);
-    	Collection<? extends GrantedAuthority> role = auth.getAuthorities();
-    	System.out.println(role);
-        return "fronttest";
+
+    public String login(HttpServletRequest request, Authentication auth) {
+        String loginId = auth.getName();
+        request.getSession().setAttribute("userId", loginId);
+
+        Set<String> roleNames = auth.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toSet());
+        System.out.println(roleNames);
+        if (roleNames.contains("ROLE_ADMIN")) {
+            return "redirect:/admin/main";
+        }
+        //기본적으로 보일 페이지
+        return "mainPage";
+
     }
+
     
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
@@ -155,16 +164,16 @@ public class userController {
         return "signIn";
     }
     
-    @GetMapping("/mypage")
+    @GetMapping("/myPage")
     public String myPage(Model model, HttpSession session) {
-        usersDto user = (usersDto) session.getAttribute("loginUser");
-        if (user == null) {
-            // 로그인 안했으면 로그인 페이지로 리다이렉트
+        // 세션에서 유저 정보 꺼내기 (예시)
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
             return "redirect:/login";
         }
-        // 사용자 정보를 모델에 담기
-        model.addAttribute("user", user);
-
+        // 필요한 사용자 정보 모델에 담기 (예시)
+        model.addAttribute("userId", userId);
         // myPage.html 템플릿 반환
         return "myPage";
     }
