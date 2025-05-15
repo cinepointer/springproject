@@ -4,32 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시글 수정</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/board.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="/js/boardUpdate.js" defer></script>
 </head>
 <body>
 <div th:replace="~{fragment/header :: headerFragment}"></div>
-<div class="container">
-    <h2>게시글 수정</h2>
+<div class="container board-update-wrapper">
+    <h3>게시글 수정</h3>
 
-    <form th:action="@{/board/update}" method="post">
+    <form th:action="@{/board/update}" method="post" class="board-update-form">
         <input type="hidden" name="boardNum" th:value="${board.boardNum}">
-        
-        <div class="form-group">
-            <label for="title">제목</label>
-            <input type="text" id="title" name="boardTitle" th:value="${board.boardTitle}" required placeholder="제목을 입력하세요">
-        </div>
-		<div>
-			<span>작성자: <span th:text="${board.userId}">작성자</span></span>
-		</div>
-        <div class="form-group">
-            <label for="content">내용</label>
-            <textarea id="content" name="boardContent" rows="8" required placeholder="내용을 입력하세요" th:text="${board.boardContent}"></textarea>
+
+        <div class="mb-3">
+            <label for="title" class="form-label">제목</label>
+            <input type="text" id="title" name="boardTitle" th:value="${board.boardTitle}" class="form-control" required placeholder="제목을 입력하세요">
         </div>
 
-        <button type="submit">수정하기</button>
-        <button type="button" onclick="history.back();">취소</button>
+        <div class="mb-3">
+		    <span class="author-label">작성자: <span th:text="${board.userId}" class="author-name">작성자</span></span>
+		</div>
+
+
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea id="content" name="boardContent" rows="8" class="form-control" required placeholder="내용을 입력하세요" th:text="${board.boardContent}"></textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">수정하기</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
+        </div>
     </form>
 </div>
 <div th:replace="~{fragment/footer :: footerFragment}"></div>

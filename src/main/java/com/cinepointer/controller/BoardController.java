@@ -87,7 +87,7 @@ public class BoardController {
         }
 
         boardService.updateBoard(dto);
-        return "redirect:/board/list";
+        return "redirect:/board/detail/" + dto.getBoardNum();
     }
 
     @GetMapping("/delete/{boardNum}")
