@@ -50,8 +50,9 @@ public class userServiceImpl implements userService, UserDetailsService {
         if (existingUser != null) {
             return false; // 아이디 중복
         }
-
+        
         user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
+        System.out.println("회원가입");
         userDao.insertUser(user);
         return true;
     }
