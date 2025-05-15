@@ -43,7 +43,7 @@
 	</update>
 
 
-    <!-- 회원 삭제 (userNum 기준) -->
+    <!-- 회원 삭제 (userId 기준) -->
     <delete id="deleteUser" parameterType="String">
         DELETE FROM users
         WHERE user_Id = #{userId}
