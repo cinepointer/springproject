@@ -25,21 +25,28 @@
 
     <!-- 회원 정보 수정 (userNum 기준) -->
     <update id="updateUser" parameterType="com.cinepointer.dto.usersDto">
-        UPDATE users
-        SET
-            user_passwd = #{userPasswd},
-            user_name = #{userName},
-            user_email = #{userEmail},
-            user_status = #{userStatus},
-            user_land_cd = #{userLandCd},
-            user_birth_date = #{userBirthDate}
-        WHERE user_num = #{userNum}
-    </update>
+	    UPDATE users
+	    <set>
+	        <if test="userPasswd != null and userPasswd != ''">
+	            user_passwd = #{userPasswd},
+	        </if>
+	        user_name = #{userName},
+	        user_email = #{userEmail},
+	        role_name = #{roleName},
+	        user_land_cd = #{userLandCd},
+	        <if test="userBirthDate != null">
+	            user_birth_date = #{userBirthDate},
+	        </if>
+	        user_enabled = #{userEnabled}
+	    </set>
+	    WHERE user_num = #{userNum}
+	</update>
+
 
     <!-- 회원 삭제 (userNum 기준) -->
-    <delete id="deleteUser" parameterType="int">
+    <delete id="deleteUser" parameterType="String">
         DELETE FROM users
-        WHERE user_num = #{userNum}
+        WHERE user_Id = #{userId}
     </delete>
 
     <!-- 회원 번호로 조회 -->

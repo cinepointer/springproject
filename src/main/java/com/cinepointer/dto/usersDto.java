@@ -1,5 +1,9 @@
 package com.cinepointer.dto;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -11,6 +15,7 @@ public class usersDto {
     private String userEmail;
     private String roleName;
     private String userLandCd;
-    private String userBirthDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate userBirthDate;
     private int userEnabled;
 }

@@ -3,54 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>관리자 페이지</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body class="bg-light text-dark">
     <th:block th:replace="~{fragment/header.html :: headerFragment}"></th:block>
-	<main class="container my-5">
-	    <h2 class="mb-4">사용자 목록</h2>
-	
-	    <table class="table table-hover table-bordered bg-white text-dark align-middle">
-	        <thead class="table-light">
-	            <tr>
-	                <th>번호</th>
-	                <th>아이디</th>
-	                <th>이름</th>
-	                <th>이메일</th>
-	                <th>권한</th>
-	                <th>국가코드</th>
-	                <th>생년월일</th>
-	                <th>상태</th>
-	                <th>관리</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <tr th:each="user, iterStat : ${users}">
-	                <td th:text="${user.userNum}"></td>
-	                <td>
-	                    <a th:href="@{'/user/detail/' + ${user.userId}}" th:text="${user.userId}" class="text-decoration-none text-dark"></a>
-	                </td>
-	                <td th:text="${user.userName}"></td>
-	                <td th:text="${user.userEmail}"></td>
-	                <td th:text="${user.roleName}"></td>
-	                <td th:text="${user.userLandCd}"></td>
-	                <td th:text="${user.userBirthDate}"></td>
-	                <td>
-	                    <span th:text="${user.userEnabled == 1 ? '활성' : '비활성'}"
-	                          th:classappend="${user.userEnabled == 1 ? 'text-success' : 'text-danger'}">
-	                    </span>
-	                </td>
-	                <td>
-	                    <a th:href="@{'/user/edit/' + ${user.userId}}" class="btn btn-sm btn-outline-secondary">수정</a>
-	                    <a th:href="@{'/user/delete/' + ${user.userId}}" class="btn btn-sm btn-outline-danger"
-	                       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
-	                </td>
-	            </tr>
-	        </tbody>
-	    </table>
-	</main>
+    
+    <main class="container my-5">
+        <h2 class="mb-4">사용자 목록</h2>
+    
+        <table class="table table-hover table-bordered bg-white text-dark align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>번호</th>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>권한</th>
+                    <th>국가코드</th>
+                    <th>생년월일</th>
+                    <th>상태</th>
+                    <th>관리</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user, iterStat : ${users}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td>
+                        <a th:href="@{'/user/detail/' + ${user.userId}}" th:text="${user.userId}" class="text-decoration-none text-dark"></a>
+                    </td>
+                    <td th:text="${user.userName}"></td>
+                    <td th:text="${user.userEmail}"></td>
+                    <td th:text="${user.roleName}"></td>
+                    <td th:text="${user.userLandCd}"></td>
+                    <td th:text="${user.userBirthDate}"></td>
+                    <td>
+                        <span th:text="${user.userEnabled == 1 ? '활성' : '비활성'}"
+                              th:classappend="${user.userEnabled == 1 ? 'text-success' : 'text-danger'}">
+                        </span>
+                    </td>
+                    <td>
+                        <button type="button" 
+                                class="btn btn-sm btn-outline-secondary btn-edit" 
+                                th:attr="data-userid=${user.userId}">
+                            수정
+                        </button>
+                        <a th:href="@{'/admin/delete/' + ${user.userId}}" class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
+        <!-- 모달 영역: 비어있는 상태로 두고 AJAX로 컨텐츠를 불러와 삽입 -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" id="editModalContent">
+                    <!-- AJAX로 로드된 수정 폼이 여기 삽입됩니다 -->
+                </div>
+            </div>
+        </div>
+    </main>
 
     <th:block th:replace="~{fragment/footer.html :: footerFragment}"></th:block>
+    
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/admin.js}"></script>
 </body>
 </html>
+

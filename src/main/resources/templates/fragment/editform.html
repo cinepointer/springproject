@@ -1,0 +1,52 @@
+<!-- admin/editForm.html -->
+<div th:fragment="editFormFragment" th:with="uid=${user.userId}">
+    <form th:action="@{'/admin/edit/' + ${user.userId}}" th:object="${user}" method="post">
+        <div class="modal-header">
+            <h5 class="modal-title">사용자 정보 수정</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+			<input type="hidden" th:field="*{userNum}" class="form-control" th:id="'userNum__' + ${uid}">
+            <div class="mb-3">
+                <label th:for="'userName__' + ${uid}" class="form-label">이름</label>
+                <input type="text" th:field="*{userName}" class="form-control" th:id="'userName__' + ${uid}" required>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="'userEmail__' + ${uid}" class="form-label">이메일</label>
+                <input type="email" th:field="*{userEmail}" class="form-control" th:id="'userEmail__' + ${uid}" required>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="'roleName__' + ${uid}" class="form-label">권한</label>
+                <select th:field="*{roleName}" class="form-select" th:id="'roleName__' + ${uid}">
+                    <option value="USER" th:selected="${user.roleName == 'ROLE_USER'}">USER</option>
+                    <option value="ADMIN" th:selected="${user.roleName == 'ROLE_ADMIN'}">ADMIN</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label th:for="'userLandCd__' + ${uid}" class="form-label">국가코드</label>
+                <input type="text" th:field="*{userLandCd}" class="form-control" th:id="'userLandCd__' + ${uid}">
+            </div>
+
+            <div class="mb-3">
+                <label th:for="'userBirthDate__' + ${uid}" class="form-label">생년월일</label>
+                <input type="date" th:field="*{userBirthDate}" class="form-control" th:id="'userBirthDate__' + ${uid}">
+            </div>
+
+            <div class="mb-3">
+                <label th:for="'userEnabled__' + ${uid}" class="form-label">상태</label>
+                <select th:field="*{userEnabled}" class="form-select" th:id="'userEnabled__' + ${uid}">
+                    <option value="1" th:selected="${user.userEnabled == 1}">활성</option>
+                    <option value="0" th:selected="${user.userEnabled == 0}">비활성</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success">저장</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        </div>
+    </form>
+</div>

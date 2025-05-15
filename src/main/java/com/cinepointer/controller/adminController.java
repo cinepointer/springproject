@@ -2,12 +2,20 @@ package com.cinepointer.controller;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,14 +37,14 @@ public class adminController {
 	@Autowired
     private userService userservice;
 	
-	@RequestMapping("/ganre")
+	@GetMapping("/ganre")
 	@ResponseBody
 	public String insertgenre() {
 	    service.insertGenre();
 	    return "장르 테이블 추가";
 	}
 
-	@RequestMapping("/insertMovie")
+	@GetMapping("/insertMovie")
 	@ResponseBody
 	public String insertmovie() {
 		service.insertPopularMovies();
@@ -57,5 +65,27 @@ public class adminController {
 		model.addAttribute("users",users);
 	    return "adminPage";
 	}
+
+    // 회원정보 수정 처리
+	@PostMapping("/edit/{userId}")
+	public String updateUser(@PathVariable("userId") String userId, @ModelAttribute("user") usersDto userDto) {
+	    userservice.updateUser(userDto); // 이 메서드가 DB 갱신 수행
+	    return "redirect:/admin/main";
+	}
+	
+	@GetMapping("/editForm/{userId}")
+	public String getEditForm(@PathVariable("userId") String userId, Model model) {
+		    usersDto user = userservice.findById(userId);
+		    model.addAttribute("user", user);
+		return "fragment/editform :: editFormFragment";
+	}
+	
+	@PostMapping("/delete/{userId}")
+	public String deleteUser(@PathVariable("userId") String userId, Model model) {
+	    usersDto user = userservice.findById(userId);
+	    userservice.deleteUser(user.getUserNum());
+	    return "redirect:/admin/main";
+	}
+
 
 }
