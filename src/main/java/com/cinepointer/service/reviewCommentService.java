@@ -1,6 +1,9 @@
 package com.cinepointer.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.cinepointer.dao.reviewCommentDao;
 import com.cinepointer.dto.reviewCommentDto;
 
@@ -22,5 +25,9 @@ public class reviewCommentService {
 
     public void deleteComment(int rCommentNum) {
         commentDao.deleteComment(rCommentNum);
+    }
+    
+    public List<reviewCommentDto> getCommentsByReview(int reviewNum) {
+        return commentDao.selectComment(reviewNum);
     }
 }

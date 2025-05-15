@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 수정</title>
+</head>
+<body>
+    <h1>리뷰 수정</h1>
+
+    <form th:action="@{/review/update}" th:object="${reviewDto}" method="post">
+        <input type="hidden" name="movieNum" th:value="${movieNum}">
+        <input type="hidden" name="reviewNum" th:value="${reviewDto.reviewNum}">
+
+        <label for="reviewTitle">제목:</label>
+        <input type="text" id="reviewTitle" name="reviewTitle" th:field="*{reviewTitle}" required>
+        <span th:text="'작성자: ' + ${reviewDto.userId}"></span>
+        <br><br>
+
+        <label for="reviewContent">내용:</label><br>
+        <textarea id="reviewContent" name="reviewContent" th:field="*{reviewContent}" rows="5" required></textarea>
+        <br><br>
+
+        <label for="reviewRating">평점 (0~5):</label><br>
+        <input type="number" id="reviewRating" name="reviewRating" th:field="*{reviewRating}" step="0.5" min="0" max="5" required>
+        <br><br>
+
+        <button type="submit">수정 완료</button>
+    </form>
+
+    <br>
+    <button th:onclick="|window.location.href='/review/reviews/' + ${movieNum}|">취소</button>
+</body>
+</html>
