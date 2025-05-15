@@ -54,7 +54,7 @@ public class userController {
     // 회원가입 처리
     @PostMapping("/users/signup")
     public String register(@ModelAttribute("user") usersDto user, Model model) {
-    	System.out.println("회원가입 시도");
+    	user.setRoleName("ROLE_USER");
     	try {
             cinepointerService.registerUser(user);
             return "redirect:/signIn";

@@ -52,7 +52,7 @@ public class userServiceImpl implements userService, UserDetailsService {
         }
         
         user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
-        System.out.println("회원가입");
+        System.out.println(user);
         userDao.insertUser(user);
         return true;
     }
