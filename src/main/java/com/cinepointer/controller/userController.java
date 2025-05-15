@@ -81,7 +81,7 @@ public class userController {
         if (roleNames.contains("ROLE_ADMIN")) {
             return "redirect:/admin/main";
         }
-        return "mainPage";
+        return "redirect:/movies";
     }
 
     @GetMapping("/logout")
