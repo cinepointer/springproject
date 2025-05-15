@@ -1,5 +1,7 @@
 package com.cinepointer.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -93,6 +95,12 @@ public class userServiceImpl implements userService, UserDetailsService {
     @Override
     public usersDto findById(String userId) {
         return userDao.selectUserById(userId);
+    }
+    
+    @Override
+    public List<usersDto> findAll() {
+    	List<usersDto> users=userDao.selectAllUsers();
+    	return users;
     }
 }
 

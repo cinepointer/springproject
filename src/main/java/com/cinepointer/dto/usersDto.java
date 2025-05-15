@@ -12,5 +12,5 @@ public class usersDto {
     private String roleName;
     private String userLandCd;
     private String userBirthDate;
-
+    private int userEnabled;
 }
