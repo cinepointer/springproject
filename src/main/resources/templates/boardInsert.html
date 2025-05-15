@@ -9,7 +9,6 @@
     <script src="/js/boardInsert.js" defer></script>
 </head>
 <body>
-<!-- 헤더 -->
 <div th:replace="~{fragment/header :: headerFragment}"></div>
 
 	<div class="container board-insert-container">
@@ -25,7 +24,7 @@
 	                </div>
 	
 	                <div class="mb-3 board-insert-writer">
-	                    작성자: <span th:text="${userId}">userId</span>
+	                    작성자: <span th:text="${userId}">작성자</span>
 	                </div>
 	
 	                <div class="mb-4">
@@ -43,7 +42,6 @@
 	    </div>
 	</div>
 
-<!-- 푸터 -->
 <div th:replace="~{fragment/footer :: footerFragment}"></div>
 </body>
 </html>

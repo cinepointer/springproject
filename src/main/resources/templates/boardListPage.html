@@ -13,12 +13,10 @@
 </head>
 <body>
 
-  <!-- 공통 헤더 -->
   <div th:replace="~{fragment/header :: headerFragment}"></div>
 
   <main class="container mt-5">
     <div class="row">
-      <!-- 좌측 사이드 메뉴 -->
       <div class="col-md-3">
         <div class="list-group shadow-sm">
           <a class="list-group-item list-group-item-action active fw-bold bg-primary border-0 text-white">
@@ -30,12 +28,10 @@
         </div>
       </div>
 
-      <!-- 게시판 본문 -->
       <div class="col-md-9">
         <div class="card shadow-sm">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0 fw-bold">📢 게시판 목록</h5>
-            <!-- HTML -->
 				<div class="d-flex justify-content-end mb-2">
 				  <a href="/board/insertForm" class="btn btn-primary btn-gradient px-3">
 				    ✏ 글 작성
@@ -71,7 +67,6 @@
     </div>
   </main>
 
-  <!-- 공통 푸터 -->
   <div th:replace="~{fragment/footer :: footerFragment}"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

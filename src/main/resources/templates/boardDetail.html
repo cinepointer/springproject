@@ -9,12 +9,10 @@
 </head>
 <body>
 
-<!-- 헤더 -->
 <div th:replace="~{fragment/header :: headerFragment}"></div>
 
 <div class="container my-5">
 
-    <!-- 게시글 상세 -->
     <div class="card mb-4">
         <div class="card-body">
             <h3 class="card-title" th:text="${board.boardTitle}">게시글 제목</h3>
@@ -37,7 +35,6 @@
 
     <!-- 댓글 영역 -->
 	<div class="comments mt-5">
-	    <!-- 댓글 헤더 + 목록 버튼 -->
 	    <div class="d-flex justify-content-between align-items-center mb-3">
 	        <h4 class="mb-0">댓글</h4>
 	        <a th:href="@{/board/list}" class="btn btn-outline-secondary btn-md">목록으로</a>
@@ -85,7 +82,6 @@
 
 </div>
 
-<!-- 푸터 -->
 <div th:replace="~{fragment/footer :: footerFragment}"></div>
 
 </body>
