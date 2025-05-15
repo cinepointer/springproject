@@ -72,7 +72,7 @@ public class userController {
     	request.getSession().setAttribute("userId", loginId);
     	Collection<? extends GrantedAuthority> role = auth.getAuthorities();
     	System.out.println(role);
-        return "fronttest";
+        return "mainPage";
     }
     
     @GetMapping("/logout")
@@ -155,16 +155,16 @@ public class userController {
         return "signIn";
     }
     
-    @GetMapping("/mypage")
+    @GetMapping("/myPage")
     public String myPage(Model model, HttpSession session) {
-        usersDto user = (usersDto) session.getAttribute("loginUser");
-        if (user == null) {
-            // 로그인 안했으면 로그인 페이지로 리다이렉트
+        // 세션에서 유저 정보 꺼내기 (예시)
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {
+            // 로그인 안 되어 있으면 로그인 페이지로 리다이렉트
             return "redirect:/login";
         }
-        // 사용자 정보를 모델에 담기
-        model.addAttribute("user", user);
-
+        // 필요한 사용자 정보 모델에 담기 (예시)
+        model.addAttribute("userId", userId);
         // myPage.html 템플릿 반환
         return "myPage";
     }

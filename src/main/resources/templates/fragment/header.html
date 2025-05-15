@@ -13,31 +13,32 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/}">인기 영화</a>
+                    <a class="nav-link" href="#popular">인기 영화</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/movies}">최신 개봉작</a>
+                    <a class="nav-link" href="#latest">최신 개봉작</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/movies}">장르별 영화</a>
+                    <a class="nav-link" href="#genre">장르별 영화</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/movies}">추천 영화</a>
+                    <a class="nav-link" href="#recommend">추천 영화</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/board}">게시판</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/mypage}">마이페이지</a>
+                    <a class="nav-link" th:href="@{/myPage}">마이페이지</a>
                 </li>
             </ul>
+            <form class="d-flex me-3 position-relative" id="searchForm" role="search" onsubmit="return false;">
+    <input class="form-control me-2" type="search" name="keyword" id="searchInput" placeholder="영화, 감독, 배우 검색" aria-label="검색" autocomplete="off">
+    <button class="btn btn-outline-light" type="submit" onclick="searchMovies()">검색</button>
+    <ul id="search-result-list" class="search-result-list position-absolute w-100" style="z-index:1050; top:100%; left:0;"></ul>
+</form>
 
-       
-            <form class="d-flex me-3" th:action="@{/search}" method="get" role="search">
-                <input class="form-control me-2" type="search" name="keyword" placeholder="영화, 감독, 배우 검색" aria-label="검색">
-                <button class="btn btn-outline-light" type="submit">검색</button>
-            </form>
-     
+
+
             <!-- 비로그인 상태: 로그인/회원가입 -->
             <ul class="navbar-nav" th:if="${session.userId == null}">
                 <li class="nav-item">
@@ -47,7 +48,6 @@
                     <a class="nav-link" th:href="@{/signup}">회원가입</a>
                 </li>
             </ul>
-
             <!-- 로그인 상태: 사용자 정보 / 로그아웃 -->
             <ul class="navbar-nav" th:if="${session.userId != null}">
                 <li class="nav-item">
