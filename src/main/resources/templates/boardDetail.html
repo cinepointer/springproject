@@ -18,7 +18,8 @@
             <h3 class="card-title" th:text="${board.boardTitle}">게시글 제목</h3>
             <p class="text-muted mb-2">
                 작성자: <strong th:text="${board.userId}">작성자</strong> /
-                작성일: <span th:text="${board.boardRegDate}">작성일</span>
+                작성시간: <span th:text="${board.boardRegDate}">작성일</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/
+                수정시간: <span th:text="${board.boardModDate}">수정일</span>
             </p>
             <hr>
             <p class="card-text white-space-pre-wrap" th:text="${board.boardContent}">게시글 내용</p>
@@ -49,7 +50,8 @@
 	                <a href="javascript:void(0);" class="text-primary ms-2"
 	                   th:onclick="'showEditForm(' + ${comment.commentNum} + ');'">[수정]</a>
 	                <a th:href="@{'/board/commentDelete/' + ${comment.commentNum} + '/' + ${board.boardNum}}"
-	                   class="text-danger ms-1">[삭제]</a>
+					   class="text-danger ms-1"
+					   onclick="return confirm('정말 삭제하시겠습니까?');">[삭제]</a>
 	            </span>
 	        </p>
 	        <p class="white-space-pre-wrap" th:text="${comment.commentContent}" th:id="'content-' + ${comment.commentNum}">댓글 내용</p>

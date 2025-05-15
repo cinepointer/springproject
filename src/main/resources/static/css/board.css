@@ -94,3 +94,15 @@ form.d-flex .btn-success {
     color: #000000;
     font-weight: 600;
 }
+
+/* 링크 밑줄 제거 + inherit 색상 유지 */
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.14s;
+}
+
+a:hover, a:focus {
+    color: #2563eb;
+    text-decoration: underline;
+}
