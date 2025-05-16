@@ -11,6 +11,7 @@ public class movieDto {
     private Date releaseDate;
     private Integer likeCount; // 찜 수
     private List<String> actors; // 출연진
+    private String posterUrl;    // 포스터 URL 필드 추가
 
     // Getter, Setter
 
@@ -61,5 +62,12 @@ public class movieDto {
     }
     public void setActors(List<String> actors) {
         this.actors = actors;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 }

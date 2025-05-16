@@ -34,7 +34,7 @@
                                 <a th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
                                     <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                                     <div class="title" th:text="${movie.title}">영화 제목</div>
-                                    <div class="desc" th:text="'감독: ' + ${movie.director}">감독</div>
+                                    <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
                                 </a>
                             </li>
                         </ul>
@@ -49,7 +49,7 @@
                     <a class="movie-card" th:each="movie : ${latestMovies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
                         <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                         <div class="title" th:text="${movie.title}">영화 제목</div>
-                        <div class="desc" th:text="'감독: ' + ${movie.director}">감독</div>
+                        <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
                     </a>
                 </div>
             </section>
@@ -63,7 +63,7 @@
                         <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
                             <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                             <div class="title" th:text="${movie.title}">영화 제목</div>
-                            <div class="desc" th:text="'감독: ' + ${movie.director}">감독</div>
+                            <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
                         </a>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                     <a class="movie-card" th:each="movie : ${recommendedMovies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
                         <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
                         <div class="title" th:text="${movie.title}">영화 제목</div>
-                        <div class="desc" th:text="'감독: ' + ${movie.director}">감독</div>
+                        <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
                     </a>
                 </div>
             </section>

@@ -28,9 +28,9 @@ public class movieController {
     // 메인 페이지
     @GetMapping({"/", "/movies"})
     public String mainPage(
-        @RequestParam(required = false) String search,
-        @RequestParam(required = false) String genre,
-        @RequestParam(required = false) String sort,
+        @RequestParam(required = false,value="search") String search,
+        @RequestParam(required = false,value="genre") String genre,
+        @RequestParam(required = false,value="sort") String sort,
         Model model) {
 
         List<movieDto> movies = movieService.searchMovies(search, genre, sort, null);
@@ -47,7 +47,7 @@ public class movieController {
 
     // 영화 상세 페이지
     @GetMapping("/movies/{id}")
-    public String movieDetail(@PathVariable Long id, Model model, HttpSession session) {
+    public String movieDetail(@PathVariable("id") Long id, Model model, HttpSession session) {
         movieDto movie = movieService.findById(id);
         model.addAttribute("movie", movie);
 
