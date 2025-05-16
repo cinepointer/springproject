@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
@@ -215,5 +217,15 @@ public class userController {
         model.addAttribute("message", "비밀번호가 성공적으로 변경되었습니다.");
         return "redirect:/myPage";
     }
+    	
+    @PostMapping("/wishlist/add/{movieId}")
+    @ResponseBody
+    public ResponseEntity<?> addToWishlist(@PathVariable int movieId, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        boolean result = userService.addToWishlist(userId, movieId);
+        return result ? ResponseEntity.ok().build() : ResponseEntity.status(400).build();
+    }
 
-}
+    }
+
+

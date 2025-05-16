@@ -18,9 +18,9 @@
 
     <div class="container main-flex">
         <!-- 사이드바 -->
-        <div class="main-sidebar">
+        <aside class="main-sidebar">
             <th:block th:replace="~{fragment/sidebar.html :: sidebarFragment}"></th:block>
-        </div>
+        </aside>
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
 
@@ -31,10 +31,12 @@
                     <div class="splide__track">
                         <ul class="splide__list">
                             <li class="splide__slide" th:each="movie : ${popularMovies}">
-                                <a th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
-                                    <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
+                                <a th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
+                                    <img
+                                        th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                                        th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                                     <div class="title" th:text="${movie.title}">영화 제목</div>
-                                    <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
+                                    <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
                                 </a>
                             </li>
                         </ul>
@@ -46,24 +48,28 @@
             <section class="main-section" id="latest">
                 <h2>🎬 최신 개봉작</h2>
                 <div class="movie-list">
-                    <a class="movie-card" th:each="movie : ${latestMovies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
-                        <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
+                    <a class="movie-card" th:each="movie : ${latestMovies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
+                        <img
+                            th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                            th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                         <div class="title" th:text="${movie.title}">영화 제목</div>
-                        <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
+                        <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
                     </a>
                 </div>
             </section>
 
             <!-- 장르별 영화 -->
-            <section class="main-section" id="genre">
+            <section class="main-section" id="genre" th:if="${genres != null}">
                 <h2>🎞️ 장르별 영화</h2>
                 <div th:each="genre : ${genres}">
                     <h3 th:text="${genre.name}">장르명</h3>
                     <div class="movie-list">
-                        <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
-                            <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
+                        <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
+                            <img
+                                th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                                th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                             <div class="title" th:text="${movie.title}">영화 제목</div>
-                            <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
+                            <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
                         </a>
                     </div>
                 </div>
@@ -73,10 +79,12 @@
             <section class="main-section" id="recommend">
                 <h2>⭐ 추천 영화</h2>
                 <div class="movie-list">
-                    <a class="movie-card" th:each="movie : ${recommendedMovies}" th:href="@{/movies/{id}(id=${movie.id})}" title="상세보기: [[${movie.title}]]">
-                        <img th:src="${movie.posterUrl}" alt="[[${movie.title}]] 포스터">
+                    <a class="movie-card" th:each="movie : ${recommendedMovies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
+                        <img
+                            th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                            th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                         <div class="title" th:text="${movie.title}">영화 제목</div>
-                        <div class="desc" th:text="'출연: ' + ${#strings.arrayJoin(movie.actors, ', ')}">출연진</div>
+                        <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
                     </a>
                 </div>
             </section>
@@ -87,7 +95,7 @@
     <th:block th:replace="~{fragment/footer.html :: footerFragment}"></th:block>
 
     <!-- Splide 슬라이더 스크립트 (필요시) -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/splide.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/splide.min.js"></script>
     <!-- 메인 JS: 실시간 검색 및 기타 기능 -->
     <script src="/js/main.js"></script>
 </body>

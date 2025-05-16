@@ -6,68 +6,36 @@ import java.util.List;
 public class movieDto {
     private Long id;
     private String title;
-    private String genre; // 장르 필드 추가
+    private String genre;
     private String description;
     private Date releaseDate;
-    private Integer likeCount; // 찜 수
-    private List<String> actors; // 출연진
-    private String posterUrl;    // 포스터 URL 필드 추가
+    private Integer likeCount;
+    private List<String> actors;
+    private String posterPath;
 
     // Getter, Setter
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getGenre() {
-        return genre;
-    }
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
 
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
-    }
+    public Date getReleaseDate() { return releaseDate; }
+    public void setReleaseDate(Date releaseDate) { this.releaseDate = releaseDate; }
 
-    public Integer getLikeCount() {
-        return likeCount;
-    }
-    public void setLikeCount(Integer likeCount) {
-        this.likeCount = likeCount;
-    }
+    public Integer getLikeCount() { return likeCount; }
+    public void setLikeCount(Integer likeCount) { this.likeCount = likeCount; }
 
-    public List<String> getActors() {
-        return actors;
-    }
-    public void setActors(List<String> actors) {
-        this.actors = actors;
-    }
+    public List<String> getActors() { return actors; }
+    public void setActors(List<String> actors) { this.actors = actors; }
 
-    public String getPosterUrl() {
-        return posterUrl;
-    }
-    public void setPosterUrl(String posterUrl) {
-        this.posterUrl = posterUrl;
-    }
+    public String getPosterPath() { return posterPath; }
+    public void setPosterPath(String posterPath) { this.posterPath = posterPath; }
 }

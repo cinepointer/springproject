@@ -28,6 +28,12 @@ public interface userService {
 	List<usersDto> findAll();
 	List<movieDto> getwishList(String userId);
 	
+	// 영화 찜하기
+	boolean addToWishlist(String userId, int movieId);
+
+	// 영화 찜 해제
+	boolean removeFromWishlist(String userId, int movieId);
+
 	
 
 	

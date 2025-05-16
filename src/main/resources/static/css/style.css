@@ -18,81 +18,6 @@ a:hover, a:focus {
     text-decoration: underline;
 }
 
-/* ====== 네비게이션 ====== */
-.navbar {
-    background: #fff !important;
-    border-bottom: 1.5px solid #e7ecf5;
-    min-height: 48px;
-    font-size: 15px;
-    box-shadow: 0 2px 12px rgba(37,99,235,0.04);
-    padding: 0;
-}
-.navbar .container-fluid {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 16px;
-}
-.navbar-brand img {
-    height: 32px;
-    vertical-align: middle;
-}
-.navbar-nav .nav-link {
-    color: #23272f !important;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 6px;
-    margin: 0 2px;
-    font-size: 15px;
-    transition: background 0.13s, color 0.13s;
-}
-.navbar-nav .nav-link.active,
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link:focus {
-    background: #eaf2ff;
-    color: #2563eb !important;
-}
-.navbar-toggler {
-    border: none;
-    background: #eaf2ff;
-    border-radius: 6px;
-    padding: 4px 7px;
-}
-.form-control[type="search"] {
-    border-radius: 7px;
-    border: 1.2px solid #d0d6e1;
-    background: #fff;
-    color: #23272f;
-    font-size: 14px;
-    padding: 8px 13px;
-    transition: border 0.14s, background 0.14s;
-    margin-right: 6px;
-    min-width: 120px;
-    box-shadow: 0 1px 7px rgba(37,99,235,0.06);
-}
-.form-control[type="search"]:focus {
-    border: 1.2px solid #2563eb;
-    background: #f4f8ff;
-    color: #1e2330;
-    outline: none;
-}
-.btn.nav-btn, .btn-outline-light {
-    border: none;
-    color: #fff;
-    background: linear-gradient(90deg, #2563eb 80%, #38cfc5 100%);
-    font-weight: 600;
-    border-radius: 7px;
-    padding: 8px 22px;
-    font-size: 15px;
-    transition: background 0.13s, color 0.13s, box-shadow 0.13s;
-    box-shadow: 0 2px 8px rgba(56,207,197,0.09);
-    display: inline-block;
-}
-.btn.nav-btn:hover, .btn.nav-btn:focus, .btn-outline-light:hover, .btn-outline-light:focus {
-    background: linear-gradient(90deg, #38cfc5 60%, #2563eb 100%);
-    color: #fff;
-    box-shadow: 0 4px 18px rgba(56,207,197,0.14);
-}
-
 /* ====== 메인 레이아웃 ====== */
 .main-flex {
     display: flex;
@@ -250,6 +175,46 @@ a:hover, a:focus {
     line-height: 1.1;
 }
 
+/* ====== 인기영화 슬라이더 ====== */
+.slider-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 18px;
+}
+.slider-track {
+    display: flex;
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    gap: 13px;
+    will-change: transform;
+}
+.slider-arrow {
+    background: #eaf2ff;
+    color: #2563eb;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 10;
+    font-size: 18px;
+    transition: background 0.13s, color 0.13s;
+    opacity: 0.93;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.04);
+}
+.slider-arrow.left { left: 0; }
+.slider-arrow.right { right: 0; }
+.slider-arrow:hover, .slider-arrow:focus {
+    background: #38cfc5;
+    color: #fff;
+}
+
 /* ====== 슬라이더 점(페이지네이션) ====== */
 .slider-dots {
     display: flex;
@@ -270,32 +235,18 @@ a:hover, a:focus {
     background: #38cfc5;
 }
 
-/* ====== 슬라이더 화살표 ====== */
-.slider-arrow {
-    background: #eaf2ff;
-    color: #2563eb;
-    border: none;
-    border-radius: 50%;
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    z-index: 2;
-    font-size: 13px;
-    transition: background 0.13s, color 0.13s;
-    opacity: 0.9;
+/* ====== 슬라이더 반응형 ====== */
+@media (max-width: 900px) {
+    .slider-arrow.left { left: 0; }
+    .slider-arrow.right { right: 0; }
 }
-.slider-arrow:hover, .slider-arrow:focus {
-    background: #38cfc5;
-    color: #fff;
+@media (max-width: 600px) {
+    .slider-arrow {
+        width: 24px;
+        height: 24px;
+        font-size: 13px;
+    }
 }
-.slider-arrow.left { left: -15px; }
-.slider-arrow.right { right: -15px; }
 
 /* ====== 인증(로그인/회원가입) 카드 ====== */
 .auth-card,
@@ -422,8 +373,7 @@ footer {
     margin-top: 30px;
 }
 
-/* ====== 실시간 검색 ====== */
-.search-box { margin: 32px 0 24px 0; position: relative; }
+/* ====== 실시간 검색 결과 리스트 ====== */
 .search-result-list {
     border: 1px solid #ddd;
     max-height: 260px;
@@ -445,8 +395,7 @@ footer {
     background: #f0f0f0;
 }
 
-
-/* 마이페이지 헤더(로고만 중앙) */
+/* ====== 마이페이지 ====== */
 .mypage-header-simple {
     display: flex;
     justify-content: center;
@@ -464,8 +413,6 @@ footer {
     font-weight: bold;
     letter-spacing: 2px;
 }
-
-/* 마이페이지 전체 레이아웃 */
 .mypage-container {
     max-width: 900px;
     margin: 0 auto;
@@ -504,8 +451,6 @@ footer {
     font-size: 1rem;
     color: #888;
 }
-
-/* 정보 영역 */
 .mypage-info-area {
     flex: 1;
     display: flex;
@@ -535,8 +480,6 @@ footer {
 .user-info-box strong {
     color: #222;
 }
-
-/* 찜한 영화 */
 .mypage-movie-list {
     display: flex;
     flex-wrap: wrap;
@@ -560,8 +503,6 @@ footer {
 .movie-card .title {
     font-size: 1rem;
 }
-
-/* 내가 작성한 리뷰 */
 .review-section {
     display: flex;
     flex-direction: column;
@@ -594,8 +535,6 @@ footer {
     color: #444;
     font-size: 0.98rem;
 }
-
-/* no-data 메시지 */
 .no-data {
     color: #aaa;
     font-size: 1rem;
@@ -603,19 +542,226 @@ footer {
     text-align: center;
 }
 
-/* 반응형 */
-@media (max-width: 700px) {
-    .mypage-flex {
+/* ====== 전문 영화 상세(moviePage.html) 스타일 ====== */
+.movie-detail-container {
+    max-width: 900px;
+    margin: 36px auto 0;
+    padding: 0 16px;
+}
+.movie-detail-card {
+    display: flex;
+    gap: 38px;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(37,99,235,0.08);
+    padding: 36px 40px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+}
+.movie-poster-box {
+    flex-shrink: 0;
+}
+.movie-poster-img {
+    display: block;
+    width: 220px;
+    height: 320px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.11);
+    object-fit: cover;
+}
+.movie-info-box {
+    flex: 1;
+}
+.movie-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    letter-spacing: -0.03em;
+}
+.movie-info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px 0;
+}
+.movie-info-list li {
+    display: flex;
+    margin-bottom: 7px;
+}
+.info-label {
+    width: 64px;
+    color: #6b7a90;
+    font-weight: 500;
+    font-size: 1rem;
+    margin-right: 12px;
+}
+.info-value {
+    color: #23272f;
+    font-size: 1rem;
+}
+.movie-desc {
+    margin: 18px 0 24px 0;
+    line-height: 1.6;
+    color: #4a5363;
+}
+.movie-actions {
+    margin-top: 8px;
+}
+.wishlist-btn {
+    background: linear-gradient(90deg, #2563eb 80%, #38cfc5 100%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 7px;
+    padding: 10px 28px;
+    font-size: 1.05rem;
+    border: none;
+    box-shadow: 0 2px 8px rgba(56,207,197,0.09);
+    transition: background 0.13s, color 0.13s, box-shadow 0.13s;
+    cursor: pointer;
+}
+.wishlist-btn:disabled {
+    background: #eaf2ff;
+    color: #b5bccc;
+    cursor: not-allowed;
+}
+.related-movies-section {
+    margin-bottom: 40px;
+}
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: #2563eb;
+}
+.related-movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 22px;
+}
+.related-movie-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f7faff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.06);
+    padding: 14px 10px 13px 10px;
+    transition: box-shadow 0.16s, transform 0.16s;
+}
+.related-movie-card:hover {
+    box-shadow: 0 6px 24px rgba(56,207,197,0.14);
+    transform: translateY(-2px) scale(1.04);
+}
+.related-movie-img {
+    width: 110px;
+    height: 160px;
+    border-radius: 7px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.related-movie-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 4px;
+    color: #23272f;
+    text-align: center;
+}
+.related-movie-meta {
+    font-size: 0.95rem;
+    color: #6b7a90;
+    text-align: center;
+}
+.review-section {
+    margin-bottom: 40px;
+}
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 22px;
+}
+.review-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+    padding: 18px 20px 14px 20px;
+}
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 7px;
+}
+.review-username {
+    font-weight: 600;
+    color: #2563eb;
+}
+.review-rating {
+    color: #f3b300;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.review-content {
+    margin-bottom: 7px;
+    color: #23272f;
+}
+.review-date {
+    font-size: 0.9rem;
+    color: #6b7a90;
+    text-align: right;
+}
+.no-review, .review-login-guide {
+    color: #888;
+    margin-top: 14px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+.login-link {
+    color: #ffb300;
+    text-decoration: underline;
+}
+
+/* ====== 반응형 ====== */
+@media (max-width: 900px) {
+    .main-flex { flex-direction: column; gap: 8px; }
+    .movie-detail-card {
         flex-direction: column;
-        gap: 18px;
+        align-items: stretch;
+        padding: 24px 10px;
+        gap: 20px;
     }
-    .mypage-profile-card {
-        flex-direction: row;
-        justify-content: flex-start;
-        min-width: 0;
-        padding: 18px 12px;
+    .movie-poster-img {
+        width: 160px;
+        height: 220px;
+        margin: 0 auto;
     }
-    .mypage-container {
-        padding: 0 5px;
+    .movie-info-box {
+        padding: 0 4px;
+    }
+    .related-movie-list {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    }
+}
+@media (max-width: 600px) {
+    .movie-detail-container {
+        padding: 0 2px;
+    }
+    .movie-detail-card {
+        padding: 10px 2px;
+    }
+    .movie-title {
+        font-size: 1.35rem;
+    }
+    .movie-poster-img {
+        width: 90px;
+        height: 120px;
+    }
+    .related-movie-img {
+        width: 70px;
+        height: 90px;
+    }
+    .slider-arrow {
+        width: 24px;
+        height: 24px;
+        font-size: 13px;
     }
 }

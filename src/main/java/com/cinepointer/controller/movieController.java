@@ -28,9 +28,9 @@ public class movieController {
     // 메인 페이지
     @GetMapping({"/", "/movies"})
     public String mainPage(
-        @RequestParam(required = false,value="search") String search,
-        @RequestParam(required = false,value="genre") String genre,
-        @RequestParam(required = false,value="sort") String sort,
+        @RequestParam(required = false, value="search") String search,
+        @RequestParam(required = false, value="genre") String genre,
+        @RequestParam(required = false, value="sort") String sort,
         Model model) {
 
         List<movieDto> movies = movieService.searchMovies(search, genre, sort, null);
@@ -40,7 +40,7 @@ public class movieController {
         model.addAttribute("latestMovies", movieService.findLatest(8));
         model.addAttribute("actionMovies", movieService.findByGenre("액션", 4));
         model.addAttribute("romanceMovies", movieService.findByGenre("로맨스", 4));
-        model.addAttribute("recommendMovies", movieService.findPopular(4));
+        model.addAttribute("recommendedMovies", movieService.findPopular(4)); // 변수명 수정
 
         return "mainpage";
     }
@@ -61,11 +61,6 @@ public class movieController {
         Boolean isLogin = session.getAttribute("user") != null;
         model.addAttribute("isLogin", isLogin);
 
-        return "moviepage";
+        return "moviePage"; // <-- 파일명과 일치!
     }
-
-  
-
-
-    
 }
