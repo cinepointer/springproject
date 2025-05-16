@@ -8,7 +8,7 @@
     </insert>
 
     <select id="selectReview" parameterType="int" resultType="com.cinepointer.dto.reviewDto">
-        select r.*, u.user_id from review r join users u on r.user_num = u.user_num where r.movie_num = #{movieNum} order by r.review_time desc
+        select r.*, u.user_id, m.movie_title from review r join users u on r.user_num = u.user_num join movie m on r.movie_num = m.movie_num where r.movie_num = #{movieNum} order by r.review_time desc
     </select>
 
     <update id="updateReview" parameterType="com.cinepointer.dto.reviewDto">

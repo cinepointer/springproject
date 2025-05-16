@@ -8,14 +8,15 @@ body {
     padding: 0;
 }
 
-.container {
-    max-width: 800px;
-    margin: 40px auto;
+/* 기존 container는 제거하고 아래 클래스만 유지 */
+.review-list-container {
+    max-width: 960px;
+    margin: 0 auto;
     padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa; /* 배경 회색 */
+    color: #212529;
 }
+
 
 .page-title {
     text-align: center;
@@ -92,20 +93,38 @@ body {
     margin-top: 10px;
 }
 
-.comment-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    resize: vertical;
+/* 댓글 등록 버튼 - 글자가 세로로 보이는 문제 해결 */
+form.d-flex .btn-success {
+    min-width: 80px;
+    white-space: nowrap;
 }
 
-.comment-form button {
-    background-color: #28a745;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
+/* 댓글 입력 textarea 높이 조정 */
+.comments form textarea {
+    height: 100px !important;
+    resize: vertical;
+    font-size: 14px;
 }
+
+/* 댓글 수정 폼 textarea 높이 조정 */
+form[id^="edit-form-"] textarea {
+    height: 100px !important;
+    resize: vertical;
+    font-size: 14px;
+}
+
+/* 링크 밑줄 제거 + inherit 색상 유지 */
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.14s;
+}
+
+a:hover, a:focus {
+    color: #2563eb;
+    text-decoration: underline;
+}
+.white-space-pre-wrap {
+    white-space: pre-wrap;
+}
+

@@ -19,6 +19,10 @@
     </delete>
     
     <select id="getCommentByNum" parameterType="int" resultType="com.cinepointer.dto.boardCommentDto">
-    select bc.*, u.user_id from b_comment bc join users u on bc.user_num = u.user_num where bc.b_comment_num = #{commentNum}
-</select>
+	    select bc.*, u.user_id from b_comment bc join users u on bc.user_num = u.user_num where bc.b_comment_num = #{commentNum}
+	</select>
+	
+	<delete id="deleteAllByBoardNum">
+	    delete from b_comment where board_num = #{boardNum}
+	</delete>
 </mapper>

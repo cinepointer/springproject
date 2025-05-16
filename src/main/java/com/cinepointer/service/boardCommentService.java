@@ -33,4 +33,8 @@ public class boardCommentService {
     public boardCommentDto getCommentByNum(int commentNum) {
         return boardCommentDao.getCommentByNum(commentNum);
     }
+    
+    public int deleteAllByBoardNum(int boardNum) {
+    	return boardCommentDao.deleteAllByBoardNum(boardNum);
+    }
 }

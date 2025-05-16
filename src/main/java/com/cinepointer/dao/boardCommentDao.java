@@ -18,4 +18,6 @@ public interface boardCommentDao {
 	public int deleteComment(@Param("commentNum") int commentNum);
 	
 	boardCommentDto getCommentByNum(@Param("commentNum") int commentNum);
+	
+	public int deleteAllByBoardNum(@Param("boardNum") int boardNum);
 }
