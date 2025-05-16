@@ -61,7 +61,9 @@
             </div>
         </div>
     </main>
-
+		<script th:if="${errorMessage != null}">
+	    alert('[[${errorMessage}]]');
+	</script>
     <!-- 푸터 fragment 삽입 -->
     <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
 

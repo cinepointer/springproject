@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cinepointer.dto.movieDto;
+import com.cinepointer.dto.movie2Dto;
 import com.cinepointer.dto.usersDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -26,9 +26,8 @@ public interface userService {
 	void deleteUserById(String id);
 	usersDto findById(String userId);
 	List<usersDto> findAll();
-	List<movieDto> getwishList(String userId);
-	
-	
+	List<movie2Dto> getwishList(String userId);
+	String updateUserInfo(String userId, usersDto dto, String oldPassword, String newPassword, String newPasswordcheck);	
 
 	
 }

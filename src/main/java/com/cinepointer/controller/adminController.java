@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -37,6 +38,9 @@ public class adminController {
 	@Autowired
     private userService userservice;
 	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
+	
 	@GetMapping("/ganre")
 	@ResponseBody
 	public String insertgenre() {
@@ -61,8 +65,9 @@ public class adminController {
 	}
 	@GetMapping("/main")
 	public String adminMain(Model model) {
-		List<usersDto> users=userservice.findAll();
-		model.addAttribute("users",users);
+		List<usersDto> users = userservice.findAll();
+		model.addAttribute("users", users);
+
 	    return "adminPage";
 	}
 

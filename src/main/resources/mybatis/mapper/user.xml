@@ -42,7 +42,22 @@
 	    WHERE user_num = #{userNum}
 	</update>
 
-
+	<!-- 회원 정보 수정 (userNum 기준) -->
+    <update id="updateUserPw" parameterType="com.cinepointer.dto.usersDto">
+	    UPDATE users
+	    <set>
+	        user_passwd = #{userPasswd},
+	        user_name = #{userName},
+	        user_email = #{userEmail},
+	        role_name = #{roleName},
+	        user_land_cd = #{userLandCd},
+	        <if test="userBirthDate != null">
+	            user_birth_date = #{userBirthDate},
+	        </if>
+	        user_enabled = #{userEnabled}
+	    </set>
+	    WHERE user_num = #{userNum}
+	</update>
     <!-- 회원 삭제 (userId 기준) -->
     <delete id="deleteUser" parameterType="int">
         DELETE FROM users
@@ -68,11 +83,15 @@
         ORDER BY user_num
     </select>
 	
-	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movieDto">
-    SELECT m.*
-    FROM wishlist w
-    JOIN movie m ON w.movie_id = m.id
-    WHERE w.user_id = #{userId}
-</select>
+	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movie2Dto">
+		<![CDATA[
+		SELECT m.movie_title,m.movie_poster_path
+	    FROM users_movie um
+	    JOIN movie m ON um.movie_num = m.movie_num
+	    JOIN users u on u.user_num=um.user_num
+	    WHERE u.user_id = #{userId}
+		]]>
+	</select>
+
 </mapper>
 

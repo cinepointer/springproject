@@ -39,13 +39,15 @@ public class userController {
     public String signInForm(
             @RequestParam(value = "error", required = false) String error,
             @RequestParam(value = "msg", required = false) String msg,
+            HttpSession session,
             Model model) {
-        if (error != null) {
-            model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
+
+        String errorMessage = (String) session.getAttribute("errorMessage");
+        if (errorMessage != null) {
+            model.addAttribute("errorMessage", errorMessage);
+            session.removeAttribute("errorMessage"); // 세션에서 제거
         }
-        if (msg != null) {
-            model.addAttribute("msg", msg);
-        }
+
         return "signIn";
     }
 
@@ -60,12 +62,15 @@ public class userController {
     public String register(@ModelAttribute("user") usersDto user, Model model) {
         user.setRoleName("ROLE_USER");
         try {
-            userService.registerUser(user);
+            if(userService.registerUser(user)) {
+            	model.addAttribute("errorMessage", "이미 있는 아이디입니다.");
+            	return "redirect:/signup";
+            }
             return "redirect:/signIn";
         } catch (Exception e) {
             System.out.print(e.getMessage());
-            model.addAttribute("signupError", "회원가입에 실패했습니다: " + e.getMessage());
-            return "redirect:/signin";
+            model.addAttribute("errorMessage", "회원가입에 실패했습니다: " + e.getMessage());
+            return "redirect:/signup";
         }
     }
 
@@ -73,7 +78,8 @@ public class userController {
     public String login(HttpServletRequest request, Authentication auth) {
         String loginId = auth.getName();
         request.getSession().setAttribute("userId", loginId);
-
+        usersDto dto=userService.findById(loginId);
+        request.getSession().setAttribute("userNum", dto.getUserNum());
         Set<String> roleNames = auth.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toSet());
@@ -93,49 +99,33 @@ public class userController {
         }
         return "redirect:/signin";
     }
-
-    // 회원정보 조회 (세션 기반 마이페이지)
     @GetMapping("/myPage")
-    public String myPage(Model model, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-        if (userId == null) {
-            return "redirect:/login";
-        }
-        usersDto user = userService.findById(userId);
-        if (user == null) {
-            return "redirect:/login";
-        }
-        List<movieDto> wishlist;
-        try {
-            wishlist = userService.getwishList(userId);
-        } catch (Exception e) {
-            wishlist = new ArrayList<>();
-        }
-        model.addAttribute("user", user);
-        model.addAttribute("wishlist", wishlist);
+    public String mp() {
+        
         return "myPage";
     }
+    
 
-    // 회원정보 조회 (URL 접근, 방어코드 추가)
-    @GetMapping("/users/{user_id}")
-    public String getUserInfo(@PathVariable("user_id") String user_id, Model model) {
-        usersDto user = userService.findById(user_id);
-        List<movieDto> wishlist = new ArrayList<>();
-        if (user != null) {
-            try {
-                wishlist = userService.getwishList(user_id);
-            } catch (Exception e) {
-                // 무시
-            }
-            model.addAttribute("user", user);
-            model.addAttribute("wishlist", wishlist);
-        } else {
-            model.addAttribute("user", null);
-            model.addAttribute("wishlist", wishlist);
-            model.addAttribute("error", "회원을 찾을 수 없습니다.");
-        }
-        return "myPage";
-    }
+//    // 회원정보 조회 (URL 접근, 방어코드 추가)
+//    @GetMapping("/users/{user_id}")
+//    public String getUserInfo(@PathVariable("user_id") String user_id, Model model,HttpSession session) {
+//    	String userId = (String)session.getAttribute("userId");
+//        List<movieDto> wishlist = new ArrayList<>();
+//        if (user != null) {
+//            try {
+//                wishlist = userService.getwishList(user_id);
+//            } catch (Exception e) {
+//                // 무시
+//            }
+//            model.addAttribute("user", user);
+//            model.addAttribute("wishlist", wishlist);
+//        } else {
+//            model.addAttribute("user", null);
+//            model.addAttribute("wishlist", wishlist);
+//            model.addAttribute("error", "회원을 찾을 수 없습니다.");
+//        }
+//        return "myPage";
+//    }
 
     @GetMapping("/users/{user_id}/edit")
     public String editUserForm(@PathVariable("user_id") String user_id, Model model) {
@@ -171,11 +161,7 @@ public class userController {
         }
     }
 
-    @GetMapping("/admin/users")
-    public String manageUsers(Model model) {
-        // model.addAttribute("users", userService.findAllUsers());
-        return "userManagement";
-    }
+
 
     @GetMapping("/loginError")
     public String loginError(Model model) {

@@ -2,10 +2,9 @@ package com.cinepointer.configure;
 
 import java.io.IOException;
 
-import org.springframework.security.authentication.BadCredentialsException;
+
 import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -27,7 +26,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         } else if (exception instanceof CredentialsExpiredException) {
             errormsg = "비밀번호 유효기간이 만료되었습니다. 관리자에게 문의하세요.";
         }
-        System.out.println("\n\n로그인 실패 원인: " + exception.toString());
+        System.out.println("로그인 실패: " + exception.getMessage());
         // 에러 메시지를 세션에 저장
         request.getSession().setAttribute("errorMessage", errormsg);
 
