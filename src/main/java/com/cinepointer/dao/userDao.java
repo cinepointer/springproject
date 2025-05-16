@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.cinepointer.dto.movieDto;
+import com.cinepointer.dto.movie2Dto;
 import com.cinepointer.dto.usersDto;
 
 @Mapper
@@ -21,13 +21,15 @@ public interface userDao {
 	// 사용자 정보 수정 (비밀번호 포함)
 	void updateUser(usersDto user);
 	
+	void updateUserPw(usersDto user);
+	
 	// 사용자 삭제 (회원탈퇴)
 	void deleteUser(int userNum);
 
 	// 사용자 삭제 (회원탈퇴)
 	List<usersDto> selectAllUsers();
 	
-	List<movieDto> selectWishListByUserId(String userId);
+	List<movie2Dto> selectWishListByUserId(String userId);
 	
 	// 사용자 삭제 (회원탈퇴)
 	void deleteUserById(String id);

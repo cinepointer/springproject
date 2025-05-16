@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.userDao;
+import com.cinepointer.dto.movie2Dto;
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
 
@@ -56,6 +57,38 @@ public class userServiceImpl implements userService, UserDetailsService {
         userDao.insertUser(user);
         return true;
     }
+    
+	    @Override
+	    public String updateUserInfo(String userId, usersDto dto, String oldPassword, String newPassword, String newPasswordcheck) {
+	
+	        usersDto user = findById(userId);
+	
+	        if (oldPassword == null || oldPassword.isEmpty()) {
+	            return "기존 비밀번호는 필수 입력입니다.";
+	        }
+	
+	        if (!passwordEncoder.matches(oldPassword, user.getUserPasswd())) {
+	            return "기존 비밀번호가 일치하지 않습니다.";
+	        }
+	
+	        if (newPassword != null && !newPassword.isEmpty()) {
+	            if (!newPassword.equals(newPasswordcheck)) {
+	                return "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.";
+	            }
+	
+	            // 새 비밀번호 암호화 저장
+	            user.setUserPasswd(passwordEncoder.encode(newPassword));
+	        }
+	
+	        user.setUserName(dto.getUserName());
+	        user.setUserEmail(dto.getUserEmail());
+	        user.setUserBirthDate(dto.getUserBirthDate());
+	
+	        userDao.updateUser(user);
+	
+	        return "success";
+	    }
+
 
     @Override
     public usersDto login(String userId, String userPasswd, HttpSession session) {
@@ -108,7 +141,11 @@ public class userServiceImpl implements userService, UserDetailsService {
     }
 
     @Override
-    public List<movieDto> getwishList(String userId) {
-        return userDao.selectWishListByUserId(userId);
+    public List<movie2Dto> getwishList(String userId) {
+    	 List<movie2Dto> myMovies=userDao.selectWishListByUserId(userId);
+         for(movie2Dto movie:myMovies) {
+         	System.out.println(movie);
+         }
+        return myMovies;
     }
 }

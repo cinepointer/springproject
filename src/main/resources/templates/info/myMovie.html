@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<div th:fragment="myMovieList" class="container my-4">
+	<h2 class="mb-4">내 영화 목록</h2>
+    
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        <div class="col" th:each="movie : ${myMovies}">
+
+            <div class="card h-100 shadow-sm">
+                <img th:if="${movie.moviePosterPath}" th:src="${movie.moviePosterPath}" class="card-img-top" alt="포스터 이미지" />
+
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${movie.movieTitle}">영화 제목</h5>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

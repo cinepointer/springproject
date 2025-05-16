@@ -101,7 +101,8 @@ public class BoardController {
         if (user == null || board.getUserNum() != user.getUserNum()) {
             return "redirect:/board/list?error=unauthorized";
         }
-
+        
+        boardCommentService.deleteAllByBoardNum(boardNum);
         boardService.deleteBoard(boardNum);
         return "redirect:/board/list";
     }

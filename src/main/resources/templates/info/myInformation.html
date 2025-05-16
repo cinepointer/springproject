@@ -1,0 +1,73 @@
+<div th:fragment="myInformation">
+  <form method="post" action="/info/update">
+    <div class="row align-items-center mb-3">
+      <div class="col">
+        <h3 class="text-dark mb-0">개인정보</h3>
+      </div>
+      <div class="col text-end">
+        <button type="submit" class="btn btn-dark">저장</button>
+      </div>
+    </div>
+
+    <table class="table table-bordered">
+      <tbody>
+        <tr>
+          <th scope="row">회원번호</th>
+          <td th:text="${user.userNum}"></td>
+        </tr>
+        <tr>
+          <th scope="row">아이디</th>
+          <td th:text="${user.userId}"></td>
+        </tr>
+        <tr>
+          <th scope="row">비밀번호</th>
+          <td>
+
+            </button>
+
+              <input type="password" 
+                     name="oldPassword" 
+                     class="form-control mb-2" 
+                     placeholder="기존 비밀번호 입력" 
+                     autocomplete="off" 
+                     required/>
+              <input type="password" 
+                     name="newPassword" 
+                     class="form-control mb-2" 
+                     placeholder="새 비밀번호 입력" 
+                     autocomplete="off" />
+              <input type="password" 
+                     name="newPasswordcheck" 
+                     class="form-control" 
+                     placeholder="비밀번호 확인" 
+                     autocomplete="off" />
+
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">이름</th>
+          <td>
+            <input type="text" class="form-control" name="userName" th:value="${user.userName}" />
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">이메일</th>
+          <td>
+            <input type="email" class="form-control" name="userEmail" th:value="${user.userEmail}" />
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">생년월일</th>
+          <td>
+            <input type="date" class="form-control" name="userBirthDate"
+                   th:value="${user.userBirthDate != null} ? ${user.userBirthDate} : ''" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+
+  
+</div>
+
+

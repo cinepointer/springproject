@@ -1,0 +1,25 @@
+<div th:fragment="sidebarFragment" class="col-md-3 sidebar p-3 bg-light rounded">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="loadContent('myinfo')">🎬 개인정보</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="loadContent('myMovie')">🎬 영화</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="loadContent('myReview')">📝 리뷰</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="loadContent('myBoard')">📚 게시판</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" onclick="loadContent('myComment')">💬 댓글</a>
+        </li>
+        
+        <li class="nav-item" th:if="${session.loginUser != null and session.loginUser.role == 'A'}">
+            <a class="nav-link text-danger" href="javascript:void(0);" onclick="loadContent('userManagement')">
+                🛠️ 회원 관리
+            </a>
+        </li>
+    </ul>
+</div>
