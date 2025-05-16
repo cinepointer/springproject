@@ -23,6 +23,7 @@ public interface userService {
 	usersDto getUserInfo(int userNum);
 	void updateUser(usersDto user);
 	void deleteUser(int userNum);
+	void deleteUserById(String id);
 	usersDto findById(String userId);
 	List<usersDto> findAll();
 	List<movieDto> getwishList(String userId);

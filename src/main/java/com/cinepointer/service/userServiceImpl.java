@@ -93,6 +93,11 @@ public class userServiceImpl implements userService, UserDetailsService {
     }
     
     @Override
+    public void deleteUserById(String id) {
+        userDao.deleteUserById(id);
+    }
+    
+    @Override
     public usersDto findById(String userId) {
         return userDao.selectUserById(userId);
     }

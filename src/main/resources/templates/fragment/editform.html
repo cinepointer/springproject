@@ -20,8 +20,8 @@
             <div class="mb-3">
                 <label th:for="'roleName__' + ${uid}" class="form-label">권한</label>
                 <select th:field="*{roleName}" class="form-select" th:id="'roleName__' + ${uid}">
-                    <option value="USER" th:selected="${user.roleName == 'ROLE_USER'}">USER</option>
-                    <option value="ADMIN" th:selected="${user.roleName == 'ROLE_ADMIN'}">ADMIN</option>
+                    <option value="ROLE_USER" th:selected="${user.roleName == 'USER'}">USER</option>
+                    <option value="ROLE_ADMIN" th:selected="${user.roleName == 'ADMIN'}">ADMIN</option>
                 </select>
             </div>
 
@@ -36,12 +36,13 @@
             </div>
 
             <div class="mb-3">
-                <label th:for="'userEnabled__' + ${uid}" class="form-label">상태</label>
-                <select th:field="*{userEnabled}" class="form-select" th:id="'userEnabled__' + ${uid}">
-                    <option value="1" th:selected="${user.userEnabled == 1}">활성</option>
-                    <option value="0" th:selected="${user.userEnabled == 0}">비활성</option>
-                </select>
-            </div>
+			    <label th:for="'userEnabled__' + ${uid}" class="form-label fw-semibold">상태</label>
+			    <select th:field="*{userEnabled}" class="form-select form-select-sm" th:id="'userEnabled__' + ${uid}">
+			        <option value="1" th:selected="${user.userEnabled == 1}">활성</option>
+			        <option value="0" th:selected="${user.userEnabled == 0}">비활성</option>
+			    </select>
+			</div>
+
 
         </div>
         <div class="modal-footer">
