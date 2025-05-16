@@ -29,4 +29,7 @@ public interface userDao {
 	
 	List<movieDto> selectWishListByUserId(String userId);
 	
+	// 사용자 삭제 (회원탈퇴)
+	void deleteUserById(String id);
+	
 }

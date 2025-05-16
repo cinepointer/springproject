@@ -44,11 +44,16 @@
 
 
     <!-- 회원 삭제 (userId 기준) -->
-    <delete id="deleteUser" parameterType="String">
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM users
+        WHERE user_num = #{userNum}
+    </delete>
+    
+	<delete id="deleteUserById" parameterType="String">
         DELETE FROM users
         WHERE user_Id = #{userId}
     </delete>
-
+    
     <!-- 회원 번호로 조회 -->
     <select id="findByUserNum" resultType="com.cinepointer.dto.usersDto" parameterType="int">
         SELECT *
