@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title th:text="${movie.title} + ' - CinePointer'">영화 상세 - CinePointer</title>
     <meta name="description" th:content="${movie.title} + ' 상세정보와 리뷰, 관련 영화까지 CinePointer에서 확인하세요.'">
-    
     <style>
         /* ... (생략, 위 스타일 그대로 사용) ... */
     </style>
@@ -22,20 +21,18 @@
                 <div class="movie-detail-info">
                     <h1 th:text="${movie.title}">영화 제목</h1>
                     <div class="movie-meta">
-                        <span>감독: <b th:text="${movie.director}">감독명</b></span>
+                        <!-- 감독: actors의 첫 번째로 대체 (혹은 다른 실제 필드) -->
+                        <span>감독: <b th:text="${movie.actors != null and #lists.size(movie.actors) > 0 ? movie.actors[0] : '정보없음'}">감독명</b></span>
                         <span>장르: <b th:text="${movie.genre}">장르</b></span>
                     </div>
                     <div class="movie-meta">
-                        <span>개봉일: <b th:text="${movie.releaseDate}">개봉일</b></span>
-                        <span>출연진: <b th:text="${movie.cast}">출연진</b></span>
+                        <span>개봉일: <b th:text="${#dates.format(movie.releaseDate, 'yyyy-MM-dd')}">개봉일</b></span>
+                        <!-- 출연진: actors 전체를 ,로 연결 -->
+                        <span>출연진: <b th:text="${#strings.arrayJoin(movie.actors, ', ')}">출연진</b></span>
                     </div>
                     <div class="desc" th:text="${movie.description}">영화 설명</div>
-                    <!-- 예고편 -->
-                    <div class="trailer" th:if="${movie.trailerUrl}">
-                        <h3>예고편</h3>
-                        <iframe th:src="|https://www.youtube.com/embed/${#strings.substring(movie.trailerUrl, movie.trailerUrl.lastIndexOf('=') + 1)}|"
-                                width="420" height="236" allowfullscreen></iframe>
-                    </div>
+                    <!-- 예고편(trailerUrl) 부분은 movieDto에 없으므로 삭제 -->
+
                     <!-- 찜하기 버튼 (로그인 시만 노출) -->
                     <button class="btn" th:if="${isLogin}" th:onclick="|addToWishlist(${movie.id})|" id="wishlistBtn">찜하기</button>
                     <button class="btn" th:if="${!isLogin}" onclick="alert('로그인 후 이용해주세요!')">찜하기</button>
@@ -49,7 +46,8 @@
                     <a th:each="rel : ${relatedMovies}" th:href="@{/movies/{id}(id=${rel.id})}" th:title="|상세보기: ${rel.title}|">
                         <img th:src="${rel.posterUrl}" th:alt="|${rel.title} 포스터|">
                         <div class="related-title" th:text="${rel.title}">영화 제목</div>
-                        <div class="related-meta" th:text="|감독: ${rel.director}|">감독</div>
+                        <!-- 감독: rel.actors의 첫 번째로 대체 -->
+                        <div class="related-meta" th:text="|감독: ${rel.actors != null and #lists.size(rel.actors) > 0 ? rel.actors[0] : '정보없음'}|">감독</div>
                     </a>
                 </div>
             </section>
@@ -57,36 +55,14 @@
             <!-- 평점 및 리뷰 -->
             <section>
                 <h2>평점 및 리뷰</h2>
-                <div class="review-section" th:if="${movie.reviews != null and #lists.size(movie.reviews) > 0}">
-                    <div th:each="review : ${movie.reviews}">
-                        <div class="review-header">
-                            <span class="review-user" th:text="${review.user}">사용자</span>
-                            <span class="review-rating">
-                                <span th:each="i : ${#numbers.sequence(1,5)}"
-                                      th:text="${i <= review.rating ? '★' : '☆'}"></span>
-                            </span>
-                            <span class="review-date" th:text="${#temporals.format(review.date, 'yyyy.MM.dd')}">날짜</span>
-                        </div>
-                        <div class="review-content" th:text="${review.content}">리뷰 내용</div>
-                    </div>
+                <!-- 
+                    movieDto에 reviews, user, rating 등 필드가 없으므로
+                    실제 리뷰 출력/작성은 불가. 
+                    추후 리뷰 기능을 추가하면 해당 영역 구현 가능.
+                -->
+                <div style="color:#888;margin-bottom:12px;">
+                    리뷰 데이터가 없습니다.
                 </div>
-                <div th:if="${movie.reviews == null or #lists.isEmpty(movie.reviews)}" style="color:#888;margin-bottom:12px;">
-                    아직 리뷰가 없습니다.
-                </div>
-                <!-- 리뷰 작성 폼(로그인 시) -->
-                <form th:if="${isLogin}" th:action="@{/movies/{id}/review(id=${movie.id})}" method="post" style="margin-top:16px;">
-                    <label>평점:
-                        <select name="rating" required>
-                            <option value="5">5점</option>
-                            <option value="4">4점</option>
-                            <option value="3">3점</option>
-                            <option value="2">2점</option>
-                            <option value="1">1점</option>
-                        </select>
-                    </label>
-                    <textarea name="content" placeholder="리뷰를 남겨보세요" required maxlength="500"></textarea>
-                    <button type="submit" class="btn">리뷰 등록</button>
-                </form>
                 <div th:if="${!isLogin}" style="color:#888;margin-top:14px;">
                     <a href="/signIn" style="color:#ffb300;text-decoration:underline;">로그인</a> 후 리뷰를 작성할 수 있습니다.
                 </div>
@@ -95,7 +71,7 @@
     </main>
 
     <!-- 공통 푸터 -->
-    <th:block th:replace="footer.html"></th:block>
+    <th:block th:replace="~{fragment/footer.html :: footerFragment}"></th:block>
 
     <script>
         // 찜하기 기능 (Ajax 예시)
@@ -113,4 +89,6 @@
             })
             .catch(() => alert('찜하기 처리 중 오류가 발생했습니다.'));
         }
-        // 네비게
+    </script>
+</body>
+</html>
