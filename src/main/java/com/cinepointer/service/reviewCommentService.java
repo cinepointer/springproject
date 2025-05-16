@@ -30,4 +30,8 @@ public class reviewCommentService {
     public List<reviewCommentDto> getCommentsByReview(int reviewNum) {
         return commentDao.selectComment(reviewNum);
     }
+    
+    public void deleteAllByReviewNum(int reviewNum) {
+        commentDao.deleteAllByReviewNum(reviewNum);
+    }
 }

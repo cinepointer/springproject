@@ -3,6 +3,7 @@ package com.cinepointer.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.cinepointer.dto.reviewCommentDto;
 
@@ -15,4 +16,6 @@ public interface reviewCommentDao {
     void updateComment(reviewCommentDto dto);
     
     void deleteComment(int rCommentNum);
+    
+    void deleteAllByReviewNum(@Param("reviewNum") int reviewNum);
 }
