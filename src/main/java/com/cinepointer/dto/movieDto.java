@@ -3,6 +3,8 @@ package com.cinepointer.dto;
 import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+@Data
 public class movieDto {
     private Long id;
     private String title;
