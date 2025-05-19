@@ -11,6 +11,157 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/splide.min.css">
     <!-- 통합 커스텀 CSS -->
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+
+.movie-card {
+    background: #181818;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px #000b;
+    border: none;
+    width: 160px;
+    min-width: 130px;
+    color: #fff;
+    text-align: left;
+    transition: 
+        transform 0.16s cubic-bezier(.4,0,.2,1), 
+        box-shadow 0.16s, 
+        outline 0.14s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 10px 10px 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.movie-card:hover, .movie-card:focus {
+    transform: scale(1.07);
+    box-shadow: 0 8px 32px #e5091444, 0 2px 12px #000b;
+    outline: 2.5px solid #e50914;
+    z-index: 2;
+}
+
+.movie-poster {
+    width: 100%;
+    max-width: 160px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px #000a;
+    margin-bottom: 10px;
+    background: #222;
+    transition: box-shadow 0.18s;
+}
+.movie-card:hover .movie-poster {
+    box-shadow: 0 6px 32px #e5091455, 0 4px 16px #000b;
+}
+
+/* 카드 내부 텍스트 */
+.movie-card .title {
+    font-size: 1.07rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 6px 0 2px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.1;
+}
+.movie-card .desc {
+    color: #b3b3b3;
+    font-size: 0.96rem;
+    margin: 0 0 7px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+/* ====== 인기영화 슬라이더(포인트 강조) ====== */
+.splide__slide a {
+    display: block;
+    background: #222;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px #000a;
+    padding: 12px 10px 10px 10px;
+    text-align: center;
+    border: none;
+    transition: 
+        transform 0.17s cubic-bezier(.4,0,.2,1), 
+        box-shadow 0.18s, 
+        outline 0.14s;
+    position: relative;
+    overflow: hidden;
+}
+.splide__slide a:hover, .splide__slide a:focus {
+    transform: scale(1.09) rotate(-1deg);
+    box-shadow: 0 10px 36px #e5091466, 0 2px 12px #000b;
+    outline: 2.5px solid #e50914;
+    z-index: 3;
+}
+.splide__slide a::after {
+    /* 레드 글로우 포인트 효과 */
+    content: "";
+    display: block;
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 80%; height: 90%;
+    pointer-events: none;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 0 #e5091440, 0 0 0 0 #e5091410;
+    transition: box-shadow 0.35s;
+}
+.splide__slide a:hover::after {
+    box-shadow: 0 0 32px 8px #e5091440, 0 0 4px 0 #e5091410;
+}
+
+/* 슬라이더 내부 포스터 효과 */
+.splide__slide a .movie-poster {
+    transition: box-shadow 0.18s;
+}
+.splide__slide a:hover .movie-poster {
+    box-shadow: 0 8px 32px #e5091455, 0 4px 16px #000b;
+}
+
+/* 슬라이더 타이틀 강조 */
+.splide__slide .title {
+    font-size: 1.07rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 6px 0 2px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 6px #e5091422;
+}
+.splide__slide .desc {
+    color: #b3b3b3;
+    font-size: 0.96rem;
+    margin: 0 0 7px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+/* ====== 반응형 ====== */
+@media (max-width: 1100px) {
+    .movie-card { width: 120px; min-width: 100px;}
+}
+@media (max-width: 800px) {
+    .movie-card { width: 95px; min-width: 80px; }
+    .movie-poster { max-width: 74px; height: 108px;}
+}
+@media (max-width: 600px) {
+    .movie-card { width: 72px; min-width: 60px; padding: 5px 2px 6px 2px;}
+    .movie-poster { max-width: 52px; height: 74px;}
+}
+</style>
+    
 </head>
 <body>
     <!-- 헤더 -->
@@ -30,7 +181,7 @@
                             <li class="splide__slide" th:each="movie : ${popularMovies}">
                                 <a th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
                                     <img
-                                        th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                                        th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
                                         th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                                     <div class="title" th:text="${movie.title}">영화 제목</div>
                                     <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
@@ -47,7 +198,7 @@
                 <div class="movie-list">
                     <a class="movie-card" th:each="movie : ${latestMovies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
                         <img
-                            th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                            th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
                             th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                         <div class="title" th:text="${movie.title}">영화 제목</div>
                         <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
@@ -63,7 +214,7 @@
                     <div class="movie-list">
                         <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
                             <img
-                                th:src="@https://image.tmdb.org/t/p/w500/+ ${movie.posterPath}}"
+                                th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
                                 th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                             <div class="title" th:text="${movie.title}">영화 제목</div>
                             <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
@@ -78,7 +229,7 @@
                 <div class="movie-list">
                     <a class="movie-card" th:each="movie : ${recommendedMovies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
                         <img
-                            th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                            th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
                             th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                         <div class="title" th:text="${movie.title}">영화 제목</div>
                         <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>

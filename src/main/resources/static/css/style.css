@@ -248,6 +248,74 @@ a:hover, a:focus {
     }
 }
 
+/* ====== 영화관 네온 스타일 버튼 ====== */
+.main-btn, .btn, .form-container .btn, .detail-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 0;
+    background: linear-gradient(90deg, #2563eb 80%, #38cfc5 100%);
+    color: #fff;
+    border: none;
+    border-radius: 11px;
+    font-size: 1.17rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition:
+        background 0.18s,
+        transform 0.15s cubic-bezier(.4,0,.2,1),
+        box-shadow 0.18s;
+    margin-top: 18px;
+    margin-bottom: 3px;
+    box-shadow:
+        0 0 0 rgba(56,207,197,0),
+        0 2px 18px rgba(56,207,197,0.09),
+        0 0 12px 2px #38cfc540 inset;
+    display: block;
+    text-shadow: 0 0 8px #38cfc5, 0 1px 0 #2563eb90;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-btn:hover, .main-btn:focus,
+.btn:hover, .btn:focus,
+.form-container .btn:hover, .form-container .btn:focus,
+.detail-btn:hover, .detail-btn:focus {
+    background: linear-gradient(90deg, #38cfc5 60%, #2563eb 100%);
+    transform: translateY(-2px) scale(1.045);
+    box-shadow:
+        0 0 14px 4px #38cfc5,
+        0 6px 32px #2563eb55,
+        0 0 14px 2px #38cfc570 inset;
+    color: #fff;
+    text-shadow:
+        0 0 18px #38cfc5,
+        0 0 8px #2563eb77,
+        0 1px 0 #15161a;
+    outline: none;
+}
+
+.main-btn::after, .btn::after, .detail-btn::after, .form-container .btn::after {
+    content: "";
+    position: absolute;
+    left: -60%; top: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(120deg, rgba(255,255,255,0.24) 0%, rgba(56,207,197,0.08) 100%);
+    transform: skewX(-18deg);
+    transition: left 0.38s cubic-bezier(.4,0,.2,1);
+    z-index: 1;
+    pointer-events: none;
+}
+.main-btn:hover::after, .btn:hover::after, .detail-btn:hover::after, .form-container .btn:hover::after {
+    left: 110%;
+}
+
+/* 버튼 내부 텍스트 효과 */
+.main-btn span, .btn span, .detail-btn span {
+    position: relative;
+    z-index: 2;
+}
+
 /* ====== 인증(로그인/회원가입) 카드 ====== */
 .auth-card,
 .form-container {
@@ -319,31 +387,6 @@ a:hover, a:focus {
     border: 1.2px solid #2563eb;
     background: #eaf2ff;
     outline: none;
-}
-.main-btn, .btn,
-.form-container .btn {
-    width: 100%;
-    padding: 9px 0;
-    background: linear-gradient(90deg, #2563eb 80%, #38cfc5 100%);
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    font-size: 1.01rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: background 0.13s, transform 0.13s;
-    margin-top: 18px;
-    margin-bottom: 3px;
-    box-shadow: 0 2px 8px rgba(56,207,197,0.07);
-    display: block;
-}
-.main-btn:hover, .main-btn:focus,
-.btn:hover, .btn:focus,
-.form-container .btn:hover,
-.form-container .btn:focus {
-    background: linear-gradient(90deg, #38cfc5 60%, #2563eb 100%);
-    transform: translateY(-1px) scale(1.02);
 }
 .auth-link {
     margin-top: 12px;
