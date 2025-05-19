@@ -105,11 +105,6 @@ public class infoController {
 
         int userId = (int) session.getAttribute("userNum");
         List<reviewDto> reviews=us.selectMyReview(userId);
-        
-        for(reviewDto r:reviews) {
-        	System.out.println(r);
-        	
-        }
         model.addAttribute("reviews",reviews);
         return "info/myReview :: myReview";  // fragment 이름 명시
     }
@@ -117,9 +112,10 @@ public class infoController {
     @GetMapping("/myBoard")
     public String Myboard(HttpSession session,Model model) {
     	int userId = (int) session.getAttribute("userNum");
-        List<boardDto> board=us.selectMyBoard(userId);
-        model.addAttribute("board",board);
-        return "info/my :: myMovieList";  // fragment 이름 명시
+        List<boardDto> boards=us.selectMyBoard(userId);
+
+        model.addAttribute("boards",boards);
+        return "info/myBoard :: myBoard";  // fragment 이름 명시
     }
     
     @GetMapping("/myComment")
@@ -127,9 +123,9 @@ public class infoController {
     	int userId = (int) session.getAttribute("userNum");
     	List<boardCommentDto> bcomment=us.selectMyBoardComment(userId);
     	List<reviewCommentDto> rcomment=us.selectMyReviewComment(userId);
-        model.addAttribute("Rcomment",rcomment);
-        model.addAttribute("Bcomment",bcomment);
-        return "info/myMovieList :: myMovieList";  // fragment 이름 명시
+        model.addAttribute("reviewcomments",rcomment);
+        model.addAttribute("boardcomments",bcomment);
+        return "info/myComment :: myComment";  // fragment 이름 명시
     }
    
 

@@ -123,7 +123,7 @@
             m.movie_overview AS description,
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
-            m.movie_poster_path AS posterUrl,
+            m.movie_poster_path AS posterPath,
             GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM movie m
         LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
