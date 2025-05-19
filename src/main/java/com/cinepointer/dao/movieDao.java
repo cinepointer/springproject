@@ -21,4 +21,7 @@ public interface movieDao {
     List<movieDto> findLatest(@Param("limit") Integer limit);
     List<movieDto> selectWishListByUserId(String userId);
     void insert(movieDto movie);
+    int countWish(String userId, Long movieId); // 찜 여부 확인
+    int insertWish(String userId, Long movieId); // 찜하기
+
 }

@@ -1,7 +1,6 @@
 package com.cinepointer.service;
 
 import java.util.List;
-
 import com.cinepointer.dto.movieDto;
 
 public interface movieService {
@@ -11,6 +10,8 @@ public interface movieService {
     List<movieDto> findLatest(Integer limit);
     List<movieDto> findPopular(Integer limit);
     List<movieDto> getWishList(String userId);
-    void insert(movieDto movie);
-    // ... update/delete 등 생략
+
+    // 찜하기 기능 추가
+    boolean addWish(String userId, Long movieId);
+    boolean isWished(String userId, Long movieId);
 }

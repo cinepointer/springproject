@@ -13,6 +13,9 @@ public class movieDto {
     private List<String> actors;
     private String posterPath;
 
+    // ⭐️ 찜(위시리스트) 여부 필드 추가
+    private Boolean wished;
+
     // Getter, Setter
 
     public Long getId() { return id; }
@@ -38,4 +41,8 @@ public class movieDto {
 
     public String getPosterPath() { return posterPath; }
     public void setPosterPath(String posterPath) { this.posterPath = posterPath; }
+
+    // ⭐️ 찜(위시리스트) 여부 Getter, Setter
+    public Boolean getWished() { return wished; }
+    public void setWished(Boolean wished) { this.wished = wished; }
 }

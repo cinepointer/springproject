@@ -155,4 +155,26 @@
         ORDER BY m.movie_release_date DESC
     </select>
 
+    <!-- ======================== -->
+    <!--      찜하기 기능 추가     -->
+    <!-- ======================== -->
+
+    <!-- 1. 찜 여부 확인 -->
+    <select id="countWish" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM users_movie
+        WHERE user_num = #{userId} AND movie_num = #{movieId}
+    </select>
+
+    <!-- 2. 찜 추가 -->
+    <insert id="insertWish" parameterType="map">
+        INSERT INTO users_movie (user_num, movie_num)
+        VALUES (#{userId}, #{movieId})
+    </insert>
+
+    <!-- 3. 찜 삭제(찜 해제) -->
+    <delete id="deleteWish" parameterType="map">
+        DELETE FROM users_movie
+        WHERE user_num = #{userId} AND movie_num = #{movieId}
+    </delete>
+
 </mapper>

@@ -19,9 +19,11 @@ function getAllMovies() {
 document.addEventListener("DOMContentLoaded", function(){
   const input = document.getElementById('searchInput');
   const resultList = document.getElementById('search-result-list');
+  const searchBtn = document.getElementById('searchBtn'); // 검색 버튼 가져오기
   let allMovies = getAllMovies();
 
-  input.addEventListener('input', function() {
+  // 검색 및 결과 표시 함수 (input, 버튼에서 모두 사용)
+  function searchAndDisplay() {
     const keyword = input.value.trim().toLowerCase();
     resultList.innerHTML = '';
     if (!keyword) {
@@ -47,7 +49,26 @@ document.addEventListener("DOMContentLoaded", function(){
       resultList.appendChild(li);
     }
     resultList.style.display = 'block';
-  });
+  }
+
+  input.addEventListener('input', searchAndDisplay);
+
+  // 검색 버튼 클릭 시에도 검색
+  if (searchBtn) {
+    searchBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      searchAndDisplay();
+    });
+  }
+
+  // 엔터로 submit 시에도 버튼과 동일하게 동작
+  const searchForm = document.getElementById('searchForm');
+  if (searchForm) {
+    searchForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      searchAndDisplay();
+    });
+  }
 
   // 검색 결과 클릭 시 입력창 초기화 및 리스트 숨김
   resultList.addEventListener('click', function(e) {

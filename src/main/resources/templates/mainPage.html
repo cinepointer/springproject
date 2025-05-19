@@ -66,7 +66,7 @@
                     <div class="movie-list">
                         <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
                             <img
-                                th:src="@{${#httpServletRequest.getScheme()} + '://' + ${#httpServletRequest.getServerName()} + (${#httpServletRequest.getServerPort()} == 80 || ${#httpServletRequest.getServerPort()} == 443 ? '' : ':' + ${#httpServletRequest.getServerPort()}) + ${movie.posterPath}}"
+                                th:src="@https://image.tmdb.org/t/p/w500/+ ${movie.posterPath}}"
                                 th:alt="|${movie.title} 포스터|" loading="lazy" class="movie-poster">
                             <div class="title" th:text="${movie.title}">영화 제목</div>
                             <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>

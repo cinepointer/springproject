@@ -5,12 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.cinepointer.dto.movieDto;
-import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.movieService;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,17 +28,16 @@ public class movieController {
         @RequestParam(required = false, value="search") String search,
         @RequestParam(required = false, value="genre") String genre,
         @RequestParam(required = false, value="sort") String sort,
-        Model model) {
-
+        Model model
+    ) {
         List<movieDto> movies = movieService.searchMovies(search, genre, sort, null);
         model.addAttribute("movies", movies);
-
         model.addAttribute("popularMovies", movieService.findPopular(5));
         model.addAttribute("latestMovies", movieService.findLatest(8));
         model.addAttribute("actionMovies", movieService.findByGenre("액션", 4));
         model.addAttribute("romanceMovies", movieService.findByGenre("로맨스", 4));
-        model.addAttribute("recommendedMovies", movieService.findPopular(4)); // 변수명 수정
-
+        model.addAttribute("recommendedMovies", movieService.findPopular(4));
+        model.addAttribute("pageType", "main");
         return "mainpage";
     }
 
@@ -51,16 +47,61 @@ public class movieController {
         movieDto movie = movieService.findById(id);
         model.addAttribute("movie", movie);
 
-        // 관련 영화 (예: 같은 장르 4개)
+        // 관련 영화 (같은 장르 4개, 자기 자신 제외)
         List<movieDto> related = movieService.findByGenre(movie.getGenre(), 4);
-        // 자기 자신은 제외
         related.removeIf(m -> m.getId().equals(id));
         model.addAttribute("relatedMovies", related);
 
         // 로그인 여부
-        Boolean isLogin = session.getAttribute("user") != null;
+        boolean isLogin = session.getAttribute("userId") != null;
         model.addAttribute("isLogin", isLogin);
 
-        return "moviePage"; // <-- 파일명과 일치!
+        // 찜 여부 및 userId 전달
+        boolean isWished = false;
+        String userId = null;
+        if (isLogin) {
+            userId = (String) session.getAttribute("userId");
+            isWished = movieService.isWished(userId, id);
+            model.addAttribute("userId", userId);
+        }
+        model.addAttribute("isWished", isWished);
+
+        return "moviePage";
     }
+
+    // 찜하기 (Wish 추가)
+    @PostMapping("/movies/{id}/wish")
+    @ResponseBody
+    public String addWish(@PathVariable("id") Long movieId, HttpSession session) {
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return "fail"; // 로그인 필요
+        }
+        String userId = (String) userIdObj;
+        boolean result = movieService.addWish(userId, movieId);
+        return result ? "success" : "fail";
+    }
+
+    // 내 찜한 영화 목록
+    @GetMapping("/my/wishlist")
+    public String myWishList(Model model, HttpSession session) {
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return "redirect:/login";
+        }
+        String userId = (String) userIdObj;
+        List<movieDto> myMovies = movieService.getWishList(userId);
+        model.addAttribute("myMovies", myMovies);
+        return "myMovie"; // myMovie.html 사용
+    }
+
+    // (좋아요 기능은 서비스에 없으므로 주석 처리)
+    /*
+    @PostMapping("/movies/{id}/like")
+    @ResponseBody
+    public String likeMovie(@PathVariable("id") Long id, HttpSession session) {
+        // likesService.addLike 등 구현 필요
+        return "fail";
+    }
+    */
 }

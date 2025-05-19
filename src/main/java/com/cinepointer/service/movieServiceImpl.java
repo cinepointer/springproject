@@ -45,8 +45,24 @@ public class movieServiceImpl implements movieService {
     public void insert(movieDto movie) {
         movieDao.insert(movie);
     }
+
     @Override
     public List<movieDto> getWishList(String userId) {
         return movieDao.selectWishListByUserId(userId);
+    }
+
+    // --- 찜하기 기능 구현 ---
+    @Override
+    public boolean addWish(String userId, Long movieId) {
+        // 이미 찜했는지 확인
+        if (movieDao.countWish(userId, movieId) > 0) {
+            return false;
+        }
+        return movieDao.insertWish(userId, movieId) > 0;
+    }
+
+    @Override
+    public boolean isWished(String userId, Long movieId) {
+        return movieDao.countWish(userId, movieId) > 0;
     }
 }
