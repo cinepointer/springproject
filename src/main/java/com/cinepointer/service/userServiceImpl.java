@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.userDao;
 import com.cinepointer.dto.movie2Dto;
-import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -143,9 +142,12 @@ public class userServiceImpl implements userService, UserDetailsService {
     @Override
     public List<movie2Dto> getwishList(String userId) {
     	 List<movie2Dto> myMovies=userDao.selectWishListByUserId(userId);
-         for(movie2Dto movie:myMovies) {
-         	System.out.println(movie);
-         }
         return myMovies;
     }
+    @Override
+    public void deleteMovie(int userId, Long movieNum) {
+    	userDao.deleteMyMovie(userId,movieNum);
+    	
+    }
+
 }

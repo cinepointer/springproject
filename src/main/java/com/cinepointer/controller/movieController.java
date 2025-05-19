@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.service.movieService;
@@ -74,13 +78,16 @@ public class movieController {
     @ResponseBody
     public String addWish(@PathVariable("id") Long movieId, HttpSession session) {
         Object userIdObj = session.getAttribute("userId");
+        System.out.println("userId in session: " + userIdObj);
         if (userIdObj == null) {
-            return "fail"; // 로그인 필요
+            return "fail";
         }
         String userId = (String) userIdObj;
         boolean result = movieService.addWish(userId, movieId);
+        System.out.println("addWish result: " + result);
         return result ? "success" : "fail";
     }
+
 
     // 내 찜한 영화 목록
     @GetMapping("/my/wishlist")

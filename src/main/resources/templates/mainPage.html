@@ -17,10 +17,7 @@
     <th:block th:replace="~{fragment/header.html :: headerFragment}"></th:block>
 
     <div class="container main-flex">
-        <!-- 사이드바 -->
-        <aside class="main-sidebar">
-            <th:block th:replace="~{fragment/sidebar.html :: sidebarFragment}"></th:block>
-        </aside>
+        
         <!-- 메인 컨텐츠 -->
         <main class="main-content">
 
@@ -59,7 +56,7 @@
             </section>
 
             <!-- 장르별 영화 -->
-            <section class="main-section" id="genre" th:if="${genres != null}">
+            <section class="main-section" id="genre" >
                 <h2>🎞️ 장르별 영화</h2>
                 <div th:each="genre : ${genres}">
                     <h3 th:text="${genre.name}">장르명</h3>

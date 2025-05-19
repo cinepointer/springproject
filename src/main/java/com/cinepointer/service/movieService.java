@@ -11,7 +11,10 @@ public interface movieService {
     List<movieDto> findPopular(Integer limit);
     List<movieDto> getWishList(String userId);
 
-    // 찜하기 기능 추가
+    // 찜하기 기능
     boolean addWish(String userId, Long movieId);
     boolean isWished(String userId, Long movieId);
+
+    // 영화 등록
+    void insert(movieDto movie);
 }

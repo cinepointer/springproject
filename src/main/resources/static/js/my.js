@@ -1,23 +1,20 @@
-/**
- * 영화 찜하기 버튼 클릭 시 서버에 요청을 보내는 예시 코드
- * 반드시 credentials: 'include'를 사용하여 세션 쿠키가 전달되게 합니다.
- */
+// /js/my.js
 
-function addToWishlist(movieId) {
-	fetch('/wishlist/add/' + movieId, {
-	    method: 'POST',
-	    headers: { 'X-Requested-With': 'XMLHttpRequest' },
-	    credentials: 'include' // << 이 줄 추가!
-	})
-
-    .then(response => {
-        if (response.status === 401) {
-            alert('로그인이 필요합니다!');
-            // 로그인 페이지로 이동하거나, 로그인 모달을 띄울 수 있음
-        } else if (response.ok) {
-            alert('찜하기 완료!');
+function addToWishlist(btn, movieId) {
+    fetch('/movies/' + movieId + '/wish', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        credentials: 'include'
+    })
+    .then(response => response.text())
+    .then(result => {
+        if (result === "success") {
+            // 버튼 텍스트 및 상태 변경
+            btn.innerText = '💖 찜완료';
+            btn.disabled = true; // 한 번만 가능하게 하고 싶으면 추가
+            btn.classList.add('active'); // 스타일 적용 원할 때
         } else {
-            alert('찜하기에 실패했습니다.');
+            alert('찜하기에 실패했습니다. (로그인 필요 또는 서버 오류)');
         }
     })
     .catch(error => {

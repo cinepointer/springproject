@@ -28,7 +28,9 @@ public interface userService {
 	List<usersDto> findAll();
 
 	List<movie2Dto> getwishList(String userId);
-	String updateUserInfo(String userId, usersDto dto, String oldPassword, String newPassword, String newPasswordcheck);	
+	String updateUserInfo(String userId, usersDto dto, String oldPassword, String newPassword, String newPasswordcheck);
+
+	void deleteMovie(int userId, Long movieNum);	
 
 
 	

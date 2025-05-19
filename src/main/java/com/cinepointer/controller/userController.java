@@ -204,14 +204,7 @@ public class userController {
         return "redirect:/myPage";
     }
     	
-    @PostMapping("/wishlist/add/{movieId}")
-    @ResponseBody
-    public ResponseEntity<?> addToWishlist(@PathVariable int movieId, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-        boolean result = userService.addToWishlist(userId, movieId);
-        return result ? ResponseEntity.ok().build() : ResponseEntity.status(400).build();
-    }
-
+    
     }
 
 

@@ -1,9 +1,7 @@
 package com.cinepointer.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.cinepointer.dao.movieDao;
 import com.cinepointer.dto.movieDto;
 
@@ -42,16 +40,11 @@ public class movieServiceImpl implements movieService {
     }
 
     @Override
-    public void insert(movieDto movie) {
-        movieDao.insert(movie);
-    }
-
-    @Override
     public List<movieDto> getWishList(String userId) {
         return movieDao.selectWishListByUserId(userId);
     }
 
-    // --- 찜하기 기능 구현 ---
+    // 찜하기 기능
     @Override
     public boolean addWish(String userId, Long movieId) {
         // 이미 찜했는지 확인
@@ -64,5 +57,11 @@ public class movieServiceImpl implements movieService {
     @Override
     public boolean isWished(String userId, Long movieId) {
         return movieDao.countWish(userId, movieId) > 0;
+    }
+
+    // 영화 등록
+    @Override
+    public void insert(movieDto movie) {
+        movieDao.insert(movie);
     }
 }

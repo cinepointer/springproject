@@ -42,7 +42,7 @@
                     </ul>
                     <div class="movie-desc" th:text="${movie.description}">영화 설명</div>
                     <div class="movie-actions">
-                        <button class="btn wishlist-btn" type="button" th:if="${isLogin}" th:onclick="|addToWishlist(${movie.id})|" id="wishlistBtn">💖 찜하기</button>
+                        <button class="btn wishlist-btn" type="button" th:if="${isLogin}" th:onclick="|addToWishlist(this, ${movie.id})|">💖 찜하기</button>
                         <button class="btn wishlist-btn" type="button" th:if="${!isLogin}" onclick="alert('로그인 후 이용해주세요!')">💖 찜하기</button>
                     </div>
                 </div>
