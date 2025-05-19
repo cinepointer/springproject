@@ -85,7 +85,7 @@
 	
 	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movie2Dto">
 		<![CDATA[
-		SELECT m.movie_title,m.movie_poster_path
+		SELECT m.movie_num,m.movie_title,m.movie_poster_path
 	    FROM users_movie um
 	    JOIN movie m ON um.movie_num = m.movie_num
 	    JOIN users u on u.user_num=um.user_num

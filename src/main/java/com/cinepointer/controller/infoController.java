@@ -25,13 +25,21 @@ public class infoController {
 	@Autowired
 	userService us;
 	
+	
+	@GetMapping("/main")
+	public String main(
+            Model model) {
+		model.addAttribute("fragment", "myInformation");
+		return "myPage";
+		}
+	
 	@GetMapping("")
 	public String myInfo(
             @ModelAttribute("message") String message,
             Model model) {
 		
 		return "myPage";
-		}
+	}
 	@GetMapping("/myinfo")
 	public String information(Model model, HttpSession session) {
 	    String userId = (String) session.getAttribute("userId");
@@ -76,6 +84,12 @@ public class infoController {
         return "info/myMovie :: myMovieList";
     }
     
+    @PostMapping("/movie/delete")
+    public String deleteMovieFromMyList(@RequestParam("movieNum") Long movieNum, Model model) {
+        //us.deleteMovie(movieNum); // 삭제 로직 실행
+        return "redirect:/info"; // 다시 목록으로 리다이렉트
+    }
+
     @GetMapping("/myReview")
     public String MyReview(Model model) {
         // 예시: 찜한 영화 리스트

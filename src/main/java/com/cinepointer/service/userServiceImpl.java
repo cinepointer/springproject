@@ -143,9 +143,6 @@ public class userServiceImpl implements userService, UserDetailsService {
     @Override
     public List<movie2Dto> getwishList(String userId) {
     	 List<movie2Dto> myMovies=userDao.selectWishListByUserId(userId);
-         for(movie2Dto movie:myMovies) {
-         	System.out.println(movie);
-         }
         return myMovies;
     }
 }
