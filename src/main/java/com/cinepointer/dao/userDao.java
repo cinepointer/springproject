@@ -3,8 +3,13 @@ package com.cinepointer.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
+import com.cinepointer.dto.boardCommentDto;
+import com.cinepointer.dto.boardDto;
 import com.cinepointer.dto.movie2Dto;
+import com.cinepointer.dto.reviewCommentDto;
+import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
 
 @Mapper
@@ -33,5 +38,14 @@ public interface userDao {
 	
 	// 사용자 삭제 (회원탈퇴)
 	void deleteUserById(String id);
+
+	void deleteMyMovie(@Param("userId") int userId, @Param("movieNum") Long movieNum);
 	
+	List<reviewDto> selectMyReview(@Param("userNum") int userNum);
+	
+	List<boardDto> selectMyBoard(@Param("userNum") int userNum);
+	
+	List<boardCommentDto> selectMyBoardComment(@Param("userNum") int userNum);
+	
+	List<reviewCommentDto> selectMyReviewComment(@Param("userNum") int userNum);
 }

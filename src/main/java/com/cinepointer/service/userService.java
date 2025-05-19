@@ -5,7 +5,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.cinepointer.dto.boardCommentDto;
+import com.cinepointer.dto.boardDto;
 import com.cinepointer.dto.movie2Dto;
+import com.cinepointer.dto.reviewCommentDto;
+import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -27,10 +31,19 @@ public interface userService {
 	usersDto findById(String userId);
 	List<usersDto> findAll();
 
+	//사용자용 기능
 	List<movie2Dto> getwishList(String userId);
-	String updateUserInfo(String userId, usersDto dto, String oldPassword, String newPassword, String newPasswordcheck);	
+	String updateUserInfo(String userId, usersDto dto, String oldPassword, String newPassword, String newPasswordcheck);
 
+	void deleteMovie(int userId, Long movieNum);	
 
+	List<reviewDto> selectMyReview(int userNum);
+	
+	List<boardDto> selectMyBoard(int userNum);
+	
+	List<boardCommentDto> selectMyBoardComment(int userNum);
+	
+	List<reviewCommentDto> selectMyReviewComment(int userNum);
 	
 }
 

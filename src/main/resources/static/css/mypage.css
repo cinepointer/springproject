@@ -1,0 +1,96 @@
+/* 카드 기본 스타일 */
+.movie-card {
+    font-size: 0.85rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+    margin: 3px;
+}
+
+/* 카드 호버 시 살짝 확대 */
+.movie-card:hover {
+    transform: scale(1.02);
+}
+
+/* 삭제 버튼 */
+.delete-button-form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 4px;
+    z-index: 3;
+}
+
+/* 포스터 이미지 */
+.movie-poster {
+	width: 100%;
+    height: 160px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border: 1px solid black;
+    padding: 5px;
+
+}
+
+/* 줄거리 오버레이 */
+.movie-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    padding: 10px;
+    text-align: center;
+    z-index: 2;
+}
+
+/* 카드에 hover 시 줄거리 표시 */
+.movie-card:hover .movie-overlay {
+    opacity: 1;
+}
+
+/* 줄거리 텍스트 박스 */
+.scroll-box {
+    max-height: 120px;
+    overflow-y: auto;
+    font-size: 0.75rem;
+    padding-right: 5px;
+}
+
+/* 스크롤바 스타일 (크롬 기준) */
+.scroll-box::-webkit-scrollbar {
+    width: 6px;
+}
+.scroll-box::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+}
+
+/* 삭제 버튼 위치 및 커스터마이징 */
+.delete-form {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+}
+
+.delete-btn {
+    background-color: transparent !important; /* 투명 */
+    border: none;
+    font-size: 1rem;
+    padding: 0.2rem 0.5rem;
+    color: white !important;
+    line-height: 1;
+}
+
+.delete-btn:hover {
+    color: #ff4d4d !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}

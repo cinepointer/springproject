@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <div th:fragment="myMovieList" class="container my-4">
-    <h4 class="mb-3 text-center">내 영화 목록</h4>
+    <h4 class="mb-3 text-left">내 영화 목록</h4>
 
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
         <div class="col" th:each="movie : ${myMovies}">
-            <div class="card h-100 shadow-sm position-relative" style="font-size: 0.85rem;">
-                
-                <!-- 삭제 버튼 (오른쪽 상단) -->
+            <div class="card movie-card shadow-sm position-relative p-2">
+
+                <!-- 삭제 버튼 -->
                 <form th:action="@{/info/movie/delete}" method="post" 
-                      th:object="${movie}" class="position-absolute top-0 end-0 m-1">
-                    <input type="hidden" th:name="movieNum" th:value="${movie.movieNum}" />
-                    <button type="submit" class="btn btn-sm btn-danger px-2 py-0">×</button>
-                </form>
+				      th:object="${movie}" class="delete-form">
+				    <input type="hidden" th:name="movieNum" th:value="${movie.movieNum}" />
+				    <button type="submit" class="btn btn-sm btn-light text-white delete-btn">×</button>
+				</form>
+
 
                 <!-- 포스터 이미지 -->
                 <img th:src="'https://image.tmdb.org/t/p/w200/' + ${movie.moviePosterPath}"
-                     class="card-img-top"
-                     style="object-fit: contain; height: 200px; background-color: #f8f9fa;"
+                     class="movie-poster card-img-top"
                      alt="포스터" />
 
-                <!-- 제목 -->
+                <!-- 줄거리 오버레이 -->
+                <div class="movie-overlay">
+                    <div class="scroll-box">
+                        <p th:text="${movie.movieOverview}">영화 줄거리</p>
+                    </div>
+                </div>
+
+                <!-- 영화 제목 -->
                 <div class="card-body p-2 text-center">
                     <h6 class="card-title mb-1" th:text="${movie.movieTitle}">영화 제목</h6>
                 </div>
@@ -27,3 +34,4 @@
         </div>
     </div>
 </div>
+

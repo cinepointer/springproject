@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>마이페이지 - CinePointer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/mypage.css">
 </head>
 <body class="bg-light">
 		<div th:replace="~{fragment/header :: headerFragment}"></div>
@@ -22,9 +23,27 @@
 	<div th:replace="~{fragment/footer :: footerFragment}"></div>
 	<!-- Bootstrap JS -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="/js/info.js"></script>
-	<script th:if="${message != null}">
+	<script th:if="${message != null and message != ''}">
 	    alert('[[${message}]]');
 	</script>
+
+
+	<script th:inline="javascript">
+	    let fragment = /*[[${fragment}]]*/ null;
+	    console.log("현재 fragment 값:", fragment);
+	    if (fragment) {
+	        loadContent(fragment);
+	    }
+	
+	    function loadContent(fragmentName) {
+	        fetch('/info/' + fragmentName)
+	            .then(res => res.text())
+	            .then(html => {
+	                document.getElementById('mainContent').innerHTML = html;
+	            })
+	            .catch(err => console.error('Fragment load error:', err));
+	    }
+	</script>
+
 </body>
 </html>
