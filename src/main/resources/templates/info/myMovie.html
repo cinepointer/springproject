@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <div th:fragment="myMovieList" class="container my-4">
-	<h2 class="mb-4">내 영화 목록</h2>
-    
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <h4 class="mb-3 text-left">내 영화 목록</h4>
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
         <div class="col" th:each="movie : ${myMovies}">
+            <div class="card movie-card shadow-sm position-relative p-2">
 
-            <div class="card h-100 shadow-sm">
-                <img th:if="${movie.moviePosterPath}" th:src="${movie.moviePosterPath}" class="card-img-top" alt="포스터 이미지" />
+                <!-- 삭제 버튼 -->
+                <form th:action="@{/info/movie/delete}" method="post" 
+				      th:object="${movie}" class="delete-form">
+				    <input type="hidden" th:name="movieNum" th:value="${movie.movieNum}" />
+				    <button type="submit" class="btn btn-sm btn-light text-white delete-btn">×</button>
+				</form>
 
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${movie.movieTitle}">영화 제목</h5>
+
+                <!-- 포스터 이미지 -->
+                <img th:src="'https://image.tmdb.org/t/p/w200/' + ${movie.moviePosterPath}"
+                     class="movie-poster card-img-top"
+                     alt="포스터" />
+
+                <!-- 줄거리 오버레이 -->
+                <div class="movie-overlay">
+                    <div class="scroll-box">
+                        <p th:text="${movie.movieOverview}">영화 줄거리</p>
+                    </div>
+                </div>
+
+                <!-- 영화 제목 -->
+                <div class="card-body p-2 text-center">
+                    <h6 class="card-title mb-1" th:text="${movie.movieTitle}">영화 제목</h6>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+

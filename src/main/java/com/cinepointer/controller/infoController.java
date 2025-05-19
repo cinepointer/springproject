@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cinepointer.dto.boardCommentDto;
+import com.cinepointer.dto.boardDto;
 import com.cinepointer.dto.movie2Dto;
+import com.cinepointer.dto.reviewCommentDto;
+import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.userService;
 
@@ -25,13 +29,22 @@ public class infoController {
 	@Autowired
 	userService us;
 	
+	
+	@GetMapping("/main")
+	public String main(
+            Model model) {
+		model.addAttribute("fragment", "myinfo");
+		return "myPage";
+	}
+	
 	@GetMapping("")
 	public String myInfo(
+			@RequestParam(value = "fragment", required = false) String fragment,
             @ModelAttribute("message") String message,
             Model model) {
-		
+		model.addAttribute("fragment", fragment);
 		return "myPage";
-		}
+	}
 	@GetMapping("/myinfo")
 	public String information(Model model, HttpSession session) {
 	    String userId = (String) session.getAttribute("userId");
@@ -59,7 +72,7 @@ public class infoController {
 	    	redirectAttributes.addAttribute("message", result);
 	        return "redirect:/info";
 	    }
-
+	    redirectAttributes.addAttribute("fragment","myInfo");
 	    redirectAttributes.addAttribute("message", "정보가 성공적으로 수정되었습니다.");
 	    return "redirect:/info";
 	}
@@ -76,25 +89,46 @@ public class infoController {
         return "info/myMovie :: myMovieList";
     }
     
+    @PostMapping("/movie/delete")
+    public String deleteMovieFromMyList(@RequestParam("movieNum") Long movieNum, 
+    		RedirectAttributes redirectAttributes,
+    		HttpSession session
+    		) {
+    	redirectAttributes.addAttribute("fragment","myMovie");
+    	int userId = (int) session.getAttribute("userNum");
+        us.deleteMovie(userId,movieNum); // 삭제 로직 실행
+        return "redirect:/info"; // 다시 목록으로 리다이렉트
+    }
+
     @GetMapping("/myReview")
-    public String MyReview(Model model) {
-        // 예시: 찜한 영화 리스트
-        List<String> favoriteMovies = List.of("인셉션", "인터스텔라", "다크나이트");
-        model.addAttribute("favoriteMovies", favoriteMovies);
-        return "info/myMovie :: myMovieList";  // fragment 이름 명시
+    public String MyReview(HttpSession session,Model model) {
+
+        int userId = (int) session.getAttribute("userNum");
+        List<reviewDto> reviews=us.selectMyReview(userId);
+        
+        for(reviewDto r:reviews) {
+        	System.out.println(r);
+        	
+        }
+        model.addAttribute("reviews",reviews);
+        return "info/myReview :: myReview";  // fragment 이름 명시
     }
+    
     @GetMapping("/myBoard")
-    public String Myboard(Model model) {
-        // 예시: 찜한 영화 리스트
-        List<String> favoriteMovies = List.of("인셉션", "인터스텔라", "다크나이트");
-        model.addAttribute("favoriteMovies", favoriteMovies);
-        return "info/myMovieList :: myMovieList";  // fragment 이름 명시
+    public String Myboard(HttpSession session,Model model) {
+    	int userId = (int) session.getAttribute("userNum");
+        List<boardDto> board=us.selectMyBoard(userId);
+        model.addAttribute("board",board);
+        return "info/my :: myMovieList";  // fragment 이름 명시
     }
+    
     @GetMapping("/myComment")
-    public String MyComment(Model model) {
-        // 예시: 찜한 영화 리스트
-        List<String> favoriteMovies = List.of("인셉션", "인터스텔라", "다크나이트");
-        model.addAttribute("favoriteMovies", favoriteMovies);
+    public String MyComment(HttpSession session,Model model) {
+    	int userId = (int) session.getAttribute("userNum");
+    	List<boardCommentDto> bcomment=us.selectMyBoardComment(userId);
+    	List<reviewCommentDto> rcomment=us.selectMyReviewComment(userId);
+        model.addAttribute("Rcomment",rcomment);
+        model.addAttribute("Bcomment",bcomment);
         return "info/myMovieList :: myMovieList";  // fragment 이름 명시
     }
    

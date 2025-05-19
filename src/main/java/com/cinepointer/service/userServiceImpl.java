@@ -11,7 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.userDao;
+import com.cinepointer.dto.boardCommentDto;
+import com.cinepointer.dto.boardDto;
 import com.cinepointer.dto.movie2Dto;
+import com.cinepointer.dto.reviewCommentDto;
+import com.cinepointer.dto.reviewDto;
+//github.com/cinepointer/springproject.git
 import com.cinepointer.dto.usersDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -144,10 +149,37 @@ public class userServiceImpl implements userService, UserDetailsService {
     	 List<movie2Dto> myMovies=userDao.selectWishListByUserId(userId);
         return myMovies;
     }
+
+    
     @Override
     public void deleteMovie(int userId, Long movieNum) {
     	userDao.deleteMyMovie(userId,movieNum);
     	
+    }
+    
+    @Override
+    public List<boardDto> selectMyBoard(int userNum) {
+    	
+    	return userDao.selectMyBoard(userNum);
+    }
+    
+    @Override
+    public List<boardCommentDto> selectMyBoardComment(int userNum) {
+    	
+    	return userDao.selectMyBoardComment(userNum);
+    }
+    
+    @Override
+    public List<reviewDto> selectMyReview(int userNum) {
+    	
+    	return userDao.selectMyReview(userNum);
+    }
+    
+    @Override
+    public List<reviewCommentDto> selectMyReviewComment(int userNum) {
+    	
+    	return userDao.selectMyReviewComment(userNum);
+
     }
 
 }

@@ -85,13 +85,30 @@
 	
 	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movie2Dto">
 		<![CDATA[
-		SELECT m.movie_title,m.movie_poster_path
+		SELECT m.movie_num,m.movie_title,m.movie_poster_path,m.movie_overview
 	    FROM users_movie um
 	    JOIN movie m ON um.movie_num = m.movie_num
 	    JOIN users u on u.user_num=um.user_num
 	    WHERE u.user_id = #{userId}
 		]]>
 	</select>
+	<delete id="deleteMyMovie">
+	    DELETE FROM users_movie
+	    WHERE user_num = #{userId} AND movie_num = #{movieNum}
+	</delete>
+	
+	<select id="selectMyReview" resultType="com.cinepointer.dto.reviewDto">
+        SELECT r.*,m.movie_title
+        FROM review r 
+        JOIN movie m ON r.movie_num=m.movie_num 
+        WHERE user_num = #{userNum}
+    </select>
+    
+    <select id="selectMyBoard" resultType="com.cinepointer.dto.boardDto">
+        SELECT *
+        FROM board
+        WHERE user_num = #{userNum}
+    </select>
 
 </mapper>
 

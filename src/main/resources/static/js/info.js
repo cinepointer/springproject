@@ -1,3 +1,15 @@
+document.addEventListener("DOMContentLoaded", function () {
+    checkFragment();
+});
+
+function checkFragment() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fragment = urlParams.get("fragment");
+    if (fragment) {
+        loadContent(fragment);
+    }
+}
+
 function loadContent(fragmentName) {
     fetch('/info/' + fragmentName)
         .then(res => res.text())
@@ -6,7 +18,7 @@ function loadContent(fragmentName) {
         })
         .catch(err => console.error('Fragment load error:', err));
 }
-
+/*
 document.addEventListener('DOMContentLoaded', function() {
     const btn = document.getElementById('btnTogglePassword');
     const pwdFields = document.getElementById('passwordFields');
@@ -22,3 +34,5 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   });
+  
+*/

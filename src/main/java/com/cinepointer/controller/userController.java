@@ -204,7 +204,9 @@ public class userController {
         return "redirect:/myPage";
     }
     	
-    
-    }
+
+
+}
+
 
 
