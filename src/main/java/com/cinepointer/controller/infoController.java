@@ -18,6 +18,7 @@ import com.cinepointer.dto.movie2Dto;
 import com.cinepointer.dto.reviewCommentDto;
 import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
+import com.cinepointer.service.reviewService;
 import com.cinepointer.service.userService;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,12 +29,13 @@ public class infoController {
 
 	@Autowired
 	userService us;
-	
+	@Autowired
+	reviewService rs;
 	
 	@GetMapping("/main")
 	public String main(
             Model model) {
-		model.addAttribute("fragment", "myinfo");
+		model.addAttribute("fragment", "myInfo");
 		return "myPage";
 	}
 	
@@ -45,7 +47,7 @@ public class infoController {
 		model.addAttribute("fragment", fragment);
 		return "myPage";
 	}
-	@GetMapping("/myinfo")
+	@GetMapping("/myInfo")
 	public String information(Model model, HttpSession session) {
 	    String userId = (String) session.getAttribute("userId");
 	    usersDto user = us.findById(userId);
@@ -67,12 +69,12 @@ public class infoController {
 	    String userId = (String) session.getAttribute("userId");
 
 	    String result = us.updateUserInfo(userId, dto, oldPassword, newPassword, newPasswordcheck);
-
+	    redirectAttributes.addAttribute("fragment","myInfo");
 	    if (!result.equals("success")) {
 	    	redirectAttributes.addAttribute("message", result);
+	    	
 	        return "redirect:/info";
 	    }
-	    redirectAttributes.addAttribute("fragment","myInfo");
 	    redirectAttributes.addAttribute("message", "정보가 성공적으로 수정되었습니다.");
 	    return "redirect:/info";
 	}
@@ -90,7 +92,7 @@ public class infoController {
     }
     
     @PostMapping("/movie/delete")
-    public String deleteMovieFromMyList(@RequestParam("movieNum") Long movieNum, 
+    public String deleteMyMovie(@RequestParam("movieNum") Long movieNum, 
     		RedirectAttributes redirectAttributes,
     		HttpSession session
     		) {
@@ -108,6 +110,17 @@ public class infoController {
         model.addAttribute("reviews",reviews);
         return "info/myReview :: myReview";  // fragment 이름 명시
     }
+    
+    @PostMapping("/review/delete")
+    public String deleteMyReview(@RequestParam("reviewNum") int reviewNum, 
+    		RedirectAttributes redirectAttributes,
+    		HttpSession session
+    		) {
+    	redirectAttributes.addAttribute("fragment","myReview");
+        rs.deleteReview(reviewNum); // 삭제 로직 실행
+        return "redirect:/info"; // 다시 목록으로 리다이렉트
+    }
+    
     
     @GetMapping("/myBoard")
     public String Myboard(HttpSession session,Model model) {

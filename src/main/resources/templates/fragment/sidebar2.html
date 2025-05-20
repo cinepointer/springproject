@@ -1,25 +1,31 @@
-<div th:fragment="sidebarFragment" class="col-md-3 sidebar p-3 bg-light rounded">
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadContent('myinfo')">🎬 개인정보</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadContent('myMovie')">🎬 영화</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadContent('myReview')">📝 리뷰</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadContent('myBoard')">📚 게시판</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#" onclick="loadContent('myComment')">💬 댓글</a>
-        </li>
-        
-        <li class="nav-item" th:if="${session.loginUser != null and session.loginUser.role == 'A'}">
-            <a class="nav-link text-danger" href="javascript:void(0);" onclick="loadContent('userManagement')">
-                🛠️ 회원 관리
-            </a>
-        </li>
+<div th:fragment="sidebarFragment" class="col-md-3 mt-4"> <!-- 상단 마진 추가 -->
+
+  <div class="bg-white rounded shadow-sm w-100 fs-6" style="max-width: 180px;"> <!-- 전체 폰트 크기 통일: fs-5 -->
+  
+    <!-- 마이페이지 헤더 -->
+    <h5 class="w-100 text-center text-white bg-secondary py-3 px-2 rounded-top mb-0 fs-5">
+      마이페이지
+    </h5>
+
+    <ul class="nav flex-column mt-2" id="sidebarNav">
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="#" onclick="loadContent('myinfo', this)">🎬 개인정보</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="#" onclick="loadContent('myMovie', this)">🎬 영화</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="#" onclick="loadContent('myReview', this)">📝 리뷰</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="#" onclick="loadContent('myBoard', this)">📚 게시판</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-dark" href="#" onclick="loadContent('myComment', this)">💬 댓글</a>
+      </li>
+
     </ul>
+    
+  </div>
+
 </div>

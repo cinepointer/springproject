@@ -23,12 +23,12 @@
                     <td th:text="${board.boardViewCnt}">조회수</td>
                     <td>
                         <a th:href="@{'/board/edit'(boardNum=${board.boardNum})}" class="btn btn-sm btn-outline-dark me-1">
-                            <i class="bi bi-pencil"></i> 수정
+                             수정
                         </a>
                         <form th:action="@{/board/delete}" method="post" class="d-inline">
                             <input type="hidden" name="boardNum" th:value="${board.boardNum}" />
                             <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">
-                                <i class="bi bi-trash"></i> 삭제
+                                 삭제
                             </button>
                         </form>
                     </td>

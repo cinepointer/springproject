@@ -38,14 +38,25 @@
 	        loadContent(fragment);
 	    }
 	
-	    function loadContent(fragmentName) {
+	    function loadContent(fragmentName, clickedElement = null) {
 	        fetch('/info/' + fragmentName)
 	            .then(res => res.text())
 	            .then(html => {
 	                document.getElementById('mainContent').innerHTML = html;
+
+	                if (clickedElement) {
+	                    // 기존 항목들 강조 제거
+	                    document.querySelectorAll('#sidebarNav .nav-link').forEach(link => {
+	                        link.classList.remove('bg-secondary', 'text-white', 'fw-bold');
+	                    });
+
+	                    // 클릭된 항목 강조
+	                    clickedElement.classList.add('bg-secondary', 'text-white', 'fw-bold');
+	                }
 	            })
 	            .catch(err => console.error('Fragment load error:', err));
 	    }
+
 	</script>
 
 </body>
