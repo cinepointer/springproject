@@ -54,5 +54,4 @@ public class reviewService {
         List<reviewDto> reviews = reviewDao.selectReview(movieNum);
         return reviews.size() > limit ? reviews.subList(0, limit) : reviews;
     }
-    
 }

@@ -48,7 +48,7 @@ public class reviewController {
         model.addAttribute("movie", movie);
         return "reviewListPage";
     }
-
+    
     @GetMapping("/view")
     public String viewReview(@RequestParam("reviewNum") int reviewNum,
                              @RequestParam("movieNum") int movieNum,

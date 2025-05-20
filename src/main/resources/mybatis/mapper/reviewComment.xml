@@ -20,4 +20,5 @@
     <delete id="deleteAllByReviewNum">
 	    delete from r_comment where review_num = #{reviewNum}
 	</delete>
+	
 </mapper>

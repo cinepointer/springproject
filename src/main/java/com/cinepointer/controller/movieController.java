@@ -25,7 +25,7 @@ public class movieController {
     private final reviewService reviewService; // 추가
 
     @Autowired
-    public movieController(movieService movieService,reviewService reviewService) { // 생성자 추가
+    public movieController(movieService movieService,reviewService reviewService) { // 추가
         this.movieService = movieService;
         this.reviewService = reviewService; // 추가
     }
