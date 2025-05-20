@@ -1,5 +1,52 @@
-<!DOCTYPE html>
 <div th:fragment="myComment" class="container my-4">
     <h4 class="mb-3 text-left">내 댓글 목록</h4>
-
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 8%;">번호</th>
+                    <th style="width: 10%;">유형</th>
+                    <th style="width: 40%;">내용</th>
+                    <th style="width: 25%;">작성 시간</th>
+                    <th style="width: 15%;">작업</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 게시판 댓글 -->
+                <tr th:each="comment, stat : ${boardcomments}">
+                    <td th:text="${stat.count}">1</td>
+                    <td>게시판</td>
+                    <td>
+                        <span th:text="${#strings.length(comment.commentContent) > 25} ? ${#strings.substring(comment.commentContent, 0, 25)} + '...' : ${comment.commentContent}"
+                              th:title="${comment.commentContent}">
+                            댓글 내용
+                        </span>
+                    </td>
+                    <td th:text="${comment.commentTime}">2025-05-01</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-dark">수정</button>
+                        <button class="btn btn-sm btn-outline-danger">삭제</button>
+                    </td>
+                </tr>
+                <!-- 리뷰 댓글 -->
+                <tr th:each="comment, stat : ${reviewcomments}">
+                    <td th:text="${stat.count + boardcomments.size()}">6</td>
+                    <td>리뷰</td>
+                    <td>
+                        <span th:text="${#strings.length(comment.rCommentContent) > 25} ? ${#strings.substring(comment.rCommentContent, 0, 25)} + '...' : ${comment.rCommentContent}"
+                              th:title="${comment.rCommentContent}">
+                            댓글 내용
+                        </span>
+                    </td>
+                    <td th:text="${comment.rCommentTime}">2025-05-02</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-dark">수정</button>
+                        <button class="btn btn-sm btn-outline-danger">삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+

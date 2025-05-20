@@ -119,7 +119,7 @@
     
     <select id="selectMyReviewComment" resultType="com.cinepointer.dto.reviewCommentDto">
         SELECT *
-        FROM board
+        FROM r_comment
         WHERE user_num = #{userNum}
     </select>
 

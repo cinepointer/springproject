@@ -7,6 +7,10 @@
     margin: 3px;
 }
 
+.min-vh-75 {
+  min-height: 75vh;
+}
+
 /* 카드 호버 시 살짝 확대 */
 .movie-card:hover {
     transform: scale(1.02);
@@ -27,7 +31,7 @@
     height: 160px;
     object-fit: contain;
     background-color: #f8f9fa;
-    border: 1px solid black;
+    
     padding: 5px;
 
 }

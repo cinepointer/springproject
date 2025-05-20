@@ -28,10 +28,7 @@
             <tbody>
                 <tr th:each="user, iterStat : ${users}">
 	                <td th:text="${iterStat.count}"></td>
-	                <td>
-	                    <a th:href="@{'/user/detail/' + ${user.userId}}" th:text="${user.userId}"
-	                        class="text-decoration-none text-dark"></a>
-	                </td>
+	                <td th:text="${user.userId}"></td>
 	                <td th:text="${user.userName}"></td>
 	                <td th:text="${user.userEmail}"></td>
 	                <td th:text="${user.roleName}"></td>

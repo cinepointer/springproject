@@ -123,6 +123,8 @@ public class infoController {
     	int userId = (int) session.getAttribute("userNum");
     	List<boardCommentDto> bcomment=us.selectMyBoardComment(userId);
     	List<reviewCommentDto> rcomment=us.selectMyReviewComment(userId);
+
+    	
         model.addAttribute("reviewcomments",rcomment);
         model.addAttribute("boardcomments",bcomment);
         return "info/myComment :: myComment";  // fragment 이름 명시

@@ -2,30 +2,32 @@
     <h4 class="mb-3 text-left">내 게시글 목록</h4>
 
     <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle text-center">
+        <table class="table table-hover table-bordered align-middle text-center" style="table-layout: fixed; width: 100%;">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">번호</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">조회수</th>
-                    <th scope="col">관리</th>
+                    <th style="width: 8%;">번호</th>
+                    <th style="width: 40%;">제목</th>
+                    <th style="width: 25%;">작성시간</th>
+                    <th style="width: 10%;">조회수</th>
+                    <th style="width: 17%;">관리</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="board : ${boards}">
                     <td th:text="${board.boardNum}">1</td>
-                    <td th:text="${board.boardTitle}">제목</td>
+                    
+                    <!-- 제목: 8글자 이상이면 말줄임 처리 -->
+                    <td class="text-start text-truncate" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" th:title="${board.boardTitle}" th:text="${board.boardTitle}">제목</td>
+                    
+                    <td th:text="${board.boardRegDate}">작성시간</td>
                     <td th:text="${board.boardViewCnt}">조회수</td>
                     <td>
-                        <!-- 수정 버튼 -->
-                        <a th:href="@{'/board/edit'(boardNum=${board.boardNum})}" 
-                           class="btn btn-sm btn-outline-secondary me-1">
+                        <a th:href="@{'/board/edit'(boardNum=${board.boardNum})}" class="btn btn-sm btn-outline-dark me-1">
                             <i class="bi bi-pencil"></i> 수정
                         </a>
-                        <!-- 삭제 버튼 -->
                         <form th:action="@{/board/delete}" method="post" class="d-inline">
                             <input type="hidden" name="boardNum" th:value="${board.boardNum}" />
-                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">
                                 <i class="bi bi-trash"></i> 삭제
                             </button>
                         </form>
