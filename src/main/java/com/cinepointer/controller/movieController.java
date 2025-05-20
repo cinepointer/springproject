@@ -91,16 +91,8 @@ public class movieController {
         return "redirect:/movies/" + movieNum;
     }
 
-    // 내 찜 목록
-    @GetMapping("/my-wishlist")
-    public String myWishList(Model model, HttpSession session) {
-        Integer userNum = (Integer) session.getAttribute("userNum");
-        if (userNum != null) {
-            List<movieDto> wishList = movieService.getWishList(userNum);
-            model.addAttribute("wishList", wishList);
-        }
-        return "myWishList";
-    }
+   
+    
 
     // (좋아요 기능은 서비스에 없으므로 주석 처리)
     /*
