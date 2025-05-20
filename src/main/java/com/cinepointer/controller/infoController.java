@@ -18,6 +18,7 @@ import com.cinepointer.dto.movie2Dto;
 import com.cinepointer.dto.reviewCommentDto;
 import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
+import com.cinepointer.service.reviewCommentService;
 import com.cinepointer.service.reviewService;
 import com.cinepointer.service.userService;
 
@@ -29,8 +30,12 @@ public class infoController {
 
 	@Autowired
 	userService us;
+	
 	@Autowired
 	reviewService rs;
+	
+	@Autowired
+	reviewCommentService rcs;
 	
 	@GetMapping("/main")
 	public String main(
@@ -117,6 +122,7 @@ public class infoController {
     		HttpSession session
     		) {
     	redirectAttributes.addAttribute("fragment","myReview");
+    	rcs.deleteAllByReviewNum(reviewNum);
         rs.deleteReview(reviewNum); // 삭제 로직 실행
         return "redirect:/info"; // 다시 목록으로 리다이렉트
     }
