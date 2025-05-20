@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.service.movieService;
@@ -91,8 +92,17 @@ public class movieController {
         return "redirect:/movies/" + movieNum;
     }
 
-   
-    
+    // 내 찜 목록 (경로와 반환값을 myMovie로 변경)
+    @GetMapping("/my-movie")
+    public String myMovie(Model model, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId != null) {
+            List<movieDto> myMovies = us.getwishList(userId);
+            model.addAttribute("myMovies", myMovies);
+        }
+        return "info/myMovie :: myMovieList";
+    }
+
 
     // (좋아요 기능은 서비스에 없으므로 주석 처리)
     /*

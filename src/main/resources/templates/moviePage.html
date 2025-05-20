@@ -49,7 +49,10 @@
                             <button class="btn wishlist-btn btn-warning" type="submit">💖 찜 취소</button>
                         </form>
                         <!-- 내 찜 목록 이동 버튼 -->
-                        <a href="#" class="btn btn-outline-primary ms-2" onclick="loadContent('myMovie'); return false;">내 찜 목록으로 이동</a>
+                        <a href="/my-movie" class="btn btn-primary">
+    💖 내가 찜한 영화 보기
+</a>
+                        
                     </div>
                 </div>
             </section>
@@ -112,7 +115,7 @@
         .catch(() => alert('서버 오류가 발생했습니다.'));
     }
     </script>
-    <!-- my.js는 닫는 태그 없이 src만 -->
+   
     <script src="/js/my.js"></script>
 </body>
 </html>
