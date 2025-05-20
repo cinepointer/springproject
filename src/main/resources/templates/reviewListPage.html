@@ -14,41 +14,51 @@
 <div th:replace="~{fragment/header :: headerFragment}"></div>
 
 <div class="review-list-container my-5">
-    <header class="mb-4">
-        <h3 class="text-dark"><span th:text="${#lists.isEmpty(reviews) ? '제목 없음' : reviews[0].movieTitle}"></span> 리뷰</h3>
-    </header>
 
-    <div class="d-flex justify-content-end mb-4">
-        <!-- 로그인 상태 -->
+    <!-- ✅ 영화 정보 영역 -->
+    <div class="movie-info-box">
+        <img th:src="${posterPath}" alt="포스터" />
+        <div class="movie-details">
+            <h2 class="movie-title" th:text="${#lists.isEmpty(reviews) ? '영화 제목 없음' : reviews[0].movieTitle}">영화 제목</h2>
+            <p class="movie-release-date" th:text="${movie.releaseDate}">개봉일</p>
+            <p class="movie-description" th:text="${movie.description}">영화 줄거리 또는 설명</p>
+        </div>
+    </div>
+
+    <!-- 리뷰 작성 버튼 -->
+    <div class="d-flex justify-content-end mb-3">
         <button th:if="${session.userId != null}" 
-                class="btn btn-primary"
+                class="btn btn-primary btn-write"
                 th:onclick="|window.location.href='/review/form?movieNum=' + ${movieNum}|">
             리뷰 작성
         </button>
-
-        <!-- 비로그인 상태 -->
         <button th:if="${session.userId == null}" 
-                class="btn btn-outline-secondary"
+                class="btn btn-outline-secondary btn-write"
                 th:onclick="'location.href=\'/signin\''">
             로그인 후 작성
         </button>
     </div>
 
+    <!-- 리뷰 목록 -->
     <div th:each="review : ${reviews}" class="card mb-3">
         <div class="card-body">
             <h5 class="card-title">
                 <a th:href="@{/review/view(reviewNum=${review.reviewNum}, movieNum=${movieNum})}"
                    th:text="${review.reviewTitle}">리뷰 제목</a>
             </h5>
-            <h6 class="card-subtitle mb-2 text-muted"
-                th:text="'작성자: ' + ${review.userId} + ' | 평점: ' + ${review.reviewRating} + ' / 5'">
+            <div class="review-meta" th:text="'작성자: ' + ${review.userId} + ' | 평점: ' + ${review.reviewRating} + ' / 5'">
                 작성자 | 평점
-            </h6>
+            </div>
             <p class="card-text"
-               th:text="${#strings.length(review.reviewContent) > 50} ? ${review.reviewContent.substring(0, 50)} + '...' : ${review.reviewContent}">
+               th:text="${#strings.length(review.reviewContent) > 200} ? ${review.reviewContent.substring(0, 200)} + '...' : ${review.reviewContent}">
                리뷰 요약
             </p>
         </div>
+    </div>
+
+    <!-- 영화 정보 보기 버튼 -->
+    <div class="text-end mt-4">
+        <a th:href="@{/movies/{id}(id=${movieNum})}" class="btn btn-outline-info btn-sm">🎬 영화 정보 보기</a>
     </div>
 </div>
 

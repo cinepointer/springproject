@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.movieDto;
+import com.cinepointer.dto.reviewDto;
 import com.cinepointer.service.movieService;
+import com.cinepointer.service.reviewService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,10 +22,12 @@ import jakarta.servlet.http.HttpSession;
 public class movieController {
 
     private final movieService movieService;
+    private final reviewService reviewService; // ✅ 추가
 
     @Autowired
-    public movieController(movieService movieService) {
+    public movieController(movieService movieService,reviewService reviewService) { // ✅ 생성자 수정
         this.movieService = movieService;
+        this.reviewService = reviewService; // ✅ 추가
     }
 
     // 메인 페이지
@@ -69,6 +73,9 @@ public class movieController {
             model.addAttribute("userId", userId);
         }
         model.addAttribute("isWished", isWished);
+     // ✅ 리뷰 미리보기 3개 추가
+        List<reviewDto> recentReviews = reviewService.getLimitedReviewsByMovie(id.intValue(), 3);
+        model.addAttribute("reviews", recentReviews);
 
         return "moviePage";
     }

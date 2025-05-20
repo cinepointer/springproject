@@ -256,6 +256,8 @@
         color: #eaf2ff;
         font-size: 1.05rem;
         margin-bottom: 5px;
+        word-break: break-word;
+    	white-space: pre-wrap;
     }
     .review-date {
         color: #b5bccc;
@@ -341,7 +343,7 @@
                 </div>
             </section>
 
-            <section class="review-section">
+            <!-- <section class="review-section">
                 <h2 class="section-title">평점 및 리뷰</h2>
                 <div class="review-list" th:if="${!#lists.isEmpty(reviews)}">
                     <div class="review-item" th:each="review : ${reviews}">
@@ -354,7 +356,37 @@
                     </div>
                 </div>
                 
-            </section>
+            </section> -->
+            <section class="review-section">
+			    <!-- 제목 + 리뷰 더보기 링크를 나란히 배치 -->
+			    <div class="d-flex justify-content-between align-items-center mb-2">
+			        <h2 class="section-title">평점 및 리뷰</h2>
+			        <a th:href="@{/review/reviews/{movieNum}(movieNum=${movie.id})}"
+			           class="text-decoration-none fw-semibold text-info"
+			           style="font-size: 15px;">
+			            리뷰 더보기 &gt;
+			        </a>
+			    </div>
+			
+			    <div class="review-list" th:if="${!#lists.isEmpty(reviews)}">
+			        <div class="review-item" th:each="review : ${reviews}">
+			            <div class="review-header">
+			                <span class="review-title" th:text="${review.reviewTitle}">리뷰제목</span>
+			                <span class="review-username" th:text="${review.userId}">닉네임</span>
+			                <span class="review-rating" th:text="|★ ${review.reviewRating}|">★ 5</span>
+			            </div>
+			            <p class="card-text review-content"
+			               th:text="${#strings.length(review.reviewContent) > 200} ? ${review.reviewContent.substring(0, 200)} + '...' : ${review.reviewContent}">
+			               리뷰 요약
+			            </p>
+			            <div class="review-date" th:text="${review.reviewTime}">2025.01.01</div>
+			        </div>
+			    </div>
+			
+			    <div th:if="${#lists.isEmpty(reviews)}" class="text-muted">
+			        등록된 리뷰가 없습니다.
+			    </div>
+			</section>
         </div>
     </main>
 
