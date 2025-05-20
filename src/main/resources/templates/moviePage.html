@@ -50,8 +50,8 @@
                         </form>
                         <!-- 내 찜 목록 이동 버튼 -->
                         <a href="/my-movie" class="btn btn-primary">
-    💖 내가 찜한 영화 보기
-</a>
+						    💖 내가 찜한 영화 보기
+						</a>
                         
                     </div>
                 </div>
@@ -72,15 +72,17 @@
             </section>
 
             <section class="review-section">
-                <h2 class="section-title">평점 및 리뷰</h2>
+                <h2 class="section-title d-flex justify-content-between align-items-center">평점 및 리뷰<a th:href="@{/review/reviews/{movieNum}(movieNum=${movie.id})}"
+       					class="review-more-link">리뷰 더보기 &gt;</a></h2>
                 <div class="review-list" th:if="${!#lists.isEmpty(reviews)}">
                     <div class="review-item" th:each="review : ${reviews}">
                         <div class="review-header">
-                            <span class="review-username" th:text="${review.userName}">닉네임</span>
-                            <span class="review-rating" th:text="|★ ${review.rating}|">★ 5</span>
+                            <span class="review-userId" th:text="${review.userId}">닉네임</span>
+                            <span class="review-rating" th:text="|★ ${review.reviewRating}|">★ 5</span>
                         </div>
-                        <div class="review-content" th:text="${review.content}">리뷰내용</div>
-                        <div class="review-date" th:text="${#dates.format(review.createdDate, 'yyyy.MM.dd')}">2024.01.01</div>
+                        <p class="card-text review-content" th:text="${#strings.length(review.reviewContent) > 200} ? ${review.reviewContent.substring(0, 200)} + '...' : ${review.reviewContent}">리뷰 요약</p>
+
+                        <div class="review-date" th:text="${review.reviewTime}">2024.01.01</div>
                     </div>
                 </div>
             </section>
