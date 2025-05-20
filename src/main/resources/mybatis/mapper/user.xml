@@ -109,6 +109,19 @@
         FROM board
         WHERE user_num = #{userNum}
     </select>
+    
+    <select id="selectMyBoardComment" resultType="com.cinepointer.dto.boardCommentDto">
+        SELECT b_comment_num AS commentNum, b_comment_content AS commentContent, b_comment_time AS commentTime,
+        board_num AS boardNum, user_num AS userNum
+        from b_comment
+        WHERE user_num = #{userNum}
+    </select>
+    
+    <select id="selectMyReviewComment" resultType="com.cinepointer.dto.reviewCommentDto">
+        SELECT *
+        FROM board
+        WHERE user_num = #{userNum}
+    </select>
 
 </mapper>
 
