@@ -826,3 +826,13 @@ body {
     }
 }
 
+.review-more-link {
+    font-size: 15px;
+    font-weight: 600;
+    color: #39f;
+    text-decoration: none;
+}
+
+.review-more-link:hover {
+    text-decoration: underline;
+}
