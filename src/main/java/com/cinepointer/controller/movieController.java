@@ -94,13 +94,15 @@ public class movieController {
 
     // 내 찜 목록 (경로와 반환값을 myMovie로 변경)
     @GetMapping("/my-movie")
-    public String myMovie(Model model, HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-        if (userId != null) {
-            List<movieDto> myMovies = us.getwishList(userId);
-            model.addAttribute("myMovies", myMovies);
+    public String myMovie(Model model, HttpSession session,RedirectAttributes redirectAttributes) {
+        Integer userNum = (Integer) session.getAttribute("userNum");
+        redirectAttributes.addAttribute("fragment","myMovie");
+        if (userNum != null) {
+            List<movieDto> wishList = movieService.getWishList(userNum);
+            model.addAttribute("myMovie", wishList); // myMovie.html에서 myMovies 사용
         }
-        return "info/myMovie :: myMovieList";
+        
+         return "redirect:/info?fragment=myMovie"; // 대안
     }
 
 
