@@ -62,7 +62,7 @@
             m.movie_overview AS description,
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
-            m.movie_poster_path AS posterUrl,
+            m.movie_poster_path AS posterPath,
             GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM movie m
         LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
@@ -134,7 +134,7 @@
     </select>
 
     <!-- 내 위시리스트(찜 목록) 조회 -->
-    <select id="selectWishListByUserId" parameterType="string" resultType="com.cinepointer.dto.movieDto">
+    <select id="selectWishListByUserNum" parameterType="int" resultType="com.cinepointer.dto.movieDto">
         SELECT 
             m.movie_num AS id,
             m.movie_title AS title,
@@ -145,36 +145,43 @@
             m.movie_poster_path AS posterUrl,
             GROUP_CONCAT(DISTINCT a.actor_name) AS actors
         FROM users_movie um
-        INNER JOIN movie m ON um.movie_num = m.movie_num
+        JOIN movie m ON um.movie_num = m.movie_num
         LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
         LEFT JOIN genre g ON mg.genre_num = g.genre_num
         LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
         LEFT JOIN actor a ON am.actor_num = a.actor_num
-        WHERE um.user_num = #{userId}
+        WHERE um.user_num = #{userNum}
         GROUP BY m.movie_num
-        ORDER BY m.movie_release_date DESC
     </select>
 
-    <!-- ======================== -->
-    <!--      찜하기 기능 추가     -->
-    <!-- ======================== -->
-
-    <!-- 1. 찜 여부 확인 -->
-    <select id="countWish" parameterType="map" resultType="int">
-        SELECT COUNT(*) FROM users_movie
-        WHERE user_num = #{userId} AND movie_num = #{movieId}
+    <!-- 찜 여부 확인 -->
+    <select id="countWish" resultType="int">
+        SELECT COUNT(*) FROM users_movie WHERE user_num = #{userNum} AND movie_num = #{movieNum}
     </select>
 
-    <!-- 2. 찜 추가 -->
-    <insert id="insertWish" parameterType="map">
-        INSERT INTO users_movie (user_num, movie_num)
-        VALUES (#{userId}, #{movieId})
+    <!-- 찜하기 -->
+    <insert id="insertWish">
+        INSERT INTO users_movie (user_num, movie_num) VALUES (#{userNum}, #{movieNum})
     </insert>
 
-    <!-- 3. 찜 삭제(찜 해제) -->
-    <delete id="deleteWish" parameterType="map">
-        DELETE FROM users_movie
-        WHERE user_num = #{userId} AND movie_num = #{movieId}
+    <!-- 찜 취소 -->
+    <delete id="deleteWish">
+        DELETE FROM users_movie WHERE user_num = #{userNum} AND movie_num = #{movieNum}
     </delete>
+
+    <!-- 영화 등록(INSERT) -->
+    <insert id="insert" parameterType="com.cinepointer.dto.movieDto">
+        INSERT INTO movie (
+            movie_title,
+            movie_overview,
+            movie_release_date,
+            movie_poster_path
+        ) VALUES (
+            #{title},
+            #{description},
+            #{releaseDate},
+            #{posterUrl}
+        )
+    </insert>
 
 </mapper>
