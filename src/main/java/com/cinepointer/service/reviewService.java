@@ -49,4 +49,9 @@ public class reviewService {
         review.setComments(comments);
         return review;
     }
+    //영화상세페이지리뷰표시
+    public List<reviewDto> getLimitedReviewsByMovie(int movieNum, int limit) {
+        List<reviewDto> reviews = reviewDao.selectReview(movieNum);
+        return reviews.size() > limit ? reviews.subList(0, limit) : reviews;
+    }
 }

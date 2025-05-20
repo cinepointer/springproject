@@ -25,4 +25,5 @@
 	<delete id="deleteAllByBoardNum">
 	    delete from b_comment where board_num = #{boardNum}
 	</delete>
+	
 </mapper>

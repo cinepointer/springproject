@@ -9,240 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/splide.min.css">
     <!-- 통합 커스텀 CSS -->
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        body {
-            background: #f4f6fa;
-            min-height: 100vh;
-        }
-        .movie-detail-container {
-            max-width: 900px;
-            margin: 54px auto 54px auto;
-            padding: 38px 28px;
-            background: radial-gradient(ellipse at 60% 40%, #23202b 0%, #18161f 100%);
-            border-radius: 28px;
-            box-shadow:
-                0 4px 40px 0 #000a,
-                0 0 0 1.5px #39364d,
-                0 0 60px 12px #2a223c44;
-            border: 1.5px solid #23202b;
-            position: relative;
-            overflow: hidden;
-        }
-        .movie-detail-container::before {
-            content: "";
-            position: absolute;
-            inset: -12px;
-            border-radius: 40px;
-            pointer-events: none;
-            z-index: 0;
-            box-shadow:
-                0 0 44px 1px #2a3e7b33,
-                0 0 90px 8px #7c5fd122;
-            opacity: 0.21;
-        }
-        .movie-detail-card {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-        .movie-poster-box {
-            width: 270px;
-            min-width: 180px;
-            background: linear-gradient(160deg, #191728 80%, #23202b 100%);
-            border-radius: 18px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 400px;
-            box-shadow:
-                0 0 0 2px #23202b,
-                0 6px 32px #000a,
-                0 0 36px #3e3b5a33;
-            border: 1.5px solid #23202b;
-            position: relative;
-        }
-        .movie-poster-img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            background: #191728;
-            box-shadow:
-                0 0 18px 0 #1d1b28cc,
-                0 0 0 0 #0000;
-            border-radius: 10px;
-            transition: box-shadow 0.2s;
-        }
-        .movie-poster-box:hover .movie-poster-img,
-        .movie-poster-img:focus {
-            box-shadow: 0 0 28px 6px #6a79b855;
-        }
-        .movie-info-box {
-            flex: 1 1 320px;
-            min-width: 240px;
-            color: #e7eaf4;
-            background: transparent;
-        }
-        .movie-title {
-            font-size: 2.2rem;
-            font-weight: bold;
-            margin-bottom: 18px;
-            color: #f6f7fa;
-            text-shadow:
-                0 0 16px #2a3e7b22,
-                0 0 2px #23202b;
-            letter-spacing: -1px;
-        }
-        .movie-info-list {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 16px;
-        }
-        .movie-info-list li {
-            margin-bottom: 6px;
-            font-size: 1.09rem;
-        }
-        .info-label {
-            font-weight: 600;
-            color: #6a79b8;
-            margin-right: 8px;
-        }
-        .movie-desc {
-            margin: 20px 0 0 0;
-            color: #d9d8e1;
-            font-size: 1.08rem;
-            text-shadow: 0 1px 8px #19172833;
-            line-height: 1.65;
-        }
-        .movie-actions {
-            margin-top: 34px;
-        }
-        .wishlist-btn {
-            width: auto;
-            display: inline-block;
-            min-width: 130px;
-            font-weight: bold;
-            font-size: 1.07rem;
-            background: linear-gradient(90deg, #2a3e7b 0%, #7c5fd1 100%);
-            border: none;
-            color: #fff;
-            box-shadow: 0 0 14px #2a3e7b33, 0 2px 8px #23202b33;
-            border-radius: 28px;
-            padding: 10px 26px;
-            transition: box-shadow 0.16s, background 0.16s;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 8px #2a3e7b44;
-        }
-        .wishlist-btn:hover, .wishlist-btn:focus {
-            background: linear-gradient(90deg, #7c5fd1 0%, #2a3e7b 100%);
-            box-shadow: 0 0 32px #7c5fd188, 0 2px 16px #23202b77;
-            color: #fff;
-        }
-        .related-movies-section,
-        .review-section {
-            margin-top: 54px;
-            position: relative;
-            z-index: 1;
-        }
-        .section-title {
-            font-size: 1.35rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #7c5fd1;
-            text-shadow: 0 0 6px #2a3e7b55;
-        }
-        .related-movie-list {
-            display: flex;
-            gap: 18px;
-            flex-wrap: wrap;
-        }
-        .related-movie-card {
-            display: block;
-            width: 120px;
-            text-align: center;
-            text-decoration: none;
-            color: #e7eaf4;
-            border-radius: 10px;
-            overflow: hidden;
-            background: linear-gradient(160deg, #23202b 70%, #191728 100%);
-            transition: box-shadow 0.2s, background 0.2s;
-            box-shadow: 0 1px 10px #2a3e7b11;
-            border: 1.5px solid #23202b;
-            position: relative;
-        }
-        .related-movie-card:hover {
-            box-shadow: 0 4px 18px #7c5fd144, 0 2px 12px #2a3e7b33;
-            background: #1d1b28;
-            border-color: #7c5fd1aa;
-        }
-        .related-movie-img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            background: #191728;
-            margin-bottom: 6px;
-            border-radius: 6px 6px 0 0;
-        }
-        .related-movie-title {
-            font-size: 1.01rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-            color: #fff;
-        }
-        .related-movie-meta {
-            font-size: 0.89rem;
-            color: #7c5fd1cc;
-            margin-bottom: 8px;
-        }
-        .review-list {
-            margin-top: 10px;
-        }
-        .review-item {
-            border-bottom: 1px solid #2a3e7b33;
-            padding: 13px 0;
-        }
-        .review-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-        .review-username {
-            font-weight: 600;
-            color: #7c5fd1;
-        }
-        .review-rating {
-            color: #ffe066;
-            font-weight: bold;
-            text-shadow: 0 0 8px #ffe06688;
-        }
-        .review-content {
-            font-size: 1.02rem;
-            margin-bottom: 2px;
-            color: #e7eaf4;
-        }
-        .review-date {
-            font-size: 0.85rem;
-            color: #7c5fd1b7;
-        }
-        @media (max-width: 800px) {
-            .movie-detail-card {
-                flex-direction: column;
-                gap: 18px;
-            }
-            .movie-poster-box {
-                margin: 0 auto;
-            }
-            .movie-detail-container {
-                padding: 18px 6px;
-            }
-        }
-    </style>
 </head>
 <body>
     <th:block th:replace="~{fragment/header.html :: headerFragment}"></th:block>
@@ -259,10 +25,6 @@
                     <h1 class="movie-title" th:text="${movie.title}">영화 제목</h1>
                     <ul class="movie-info-list">
                         <li>
-                            <span class="info-label">감독</span>
-                            <span class="info-value" th:text="${movie.actors != null and #lists.size(movie.actors) > 0 ? movie.actors[0] : '정보없음'}">감독명</span>
-                        </li>
-                        <li>
                             <span class="info-label">장르</span>
                             <span class="info-value" th:text="${movie.genre}">장르</span>
                         </li>
@@ -277,24 +39,21 @@
                     </ul>
                     <div class="movie-desc" th:text="${movie.description}">영화 설명</div>
                     <div class="movie-actions">
-    <!-- 아직 찜하지 않은 경우 -->
-    <button class="btn wishlist-btn"
-            type="button"
-            th:if="${!isWished}"
-            th:data-movie-id="${movie.id}"
-            onclick="addToWishlist(this)">
-        💖 찜하기
-    </button>
-    <!-- 이미 찜한 경우 -->
-    <button class="btn wishlist-btn btn-warning"
-            type="button"
-            th:if="${isWished}"
-            th:data-movie-id="${movie.id}"
-            onclick="removeFromWishlist(this)">
-        💖 찜 취소
-    </button>
-</div>
-
+                        <!-- 찜/찜취소 버튼 -->
+                        <form th:if="${!isWished}" th:action="@{/movie/wish}" method="post" style="display:inline;">
+                            <input type="hidden" name="movieNum" th:value="${movie.id}" />
+                            <button class="btn wishlist-btn" type="submit">💖 찜하기</button>
+                        </form>
+                        <form th:if="${isWished}" th:action="@{/movie/unwish}" method="post" style="display:inline;">
+                            <input type="hidden" name="movieNum" th:value="${movie.id}" />
+                            <button class="btn wishlist-btn btn-warning" type="submit">💖 찜 취소</button>
+                        </form>
+                        <!-- 내 찜 목록 이동 버튼 -->
+                        <a href="/my-movie" class="btn btn-primary">
+    💖 내가 찜한 영화 보기
+</a>
+                        
+                    </div>
                 </div>
             </section>
 
@@ -356,6 +115,7 @@
         .catch(() => alert('서버 오류가 발생했습니다.'));
     }
     </script>
+   
     <script src="/js/my.js"></script>
 </body>
 </html>

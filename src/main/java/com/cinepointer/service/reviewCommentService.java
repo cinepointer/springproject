@@ -34,4 +34,5 @@ public class reviewCommentService {
     public void deleteAllByReviewNum(int reviewNum) {
         commentDao.deleteAllByReviewNum(reviewNum);
     }
+    
 }

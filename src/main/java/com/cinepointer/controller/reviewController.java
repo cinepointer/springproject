@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.reviewCommentDto;
 import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
@@ -27,12 +28,14 @@ public class reviewController {
     private final reviewService reviewService;
     private final reviewCommentService reviewCommentService;
     private final userService userService;
+    private final movieService movieService;
 
 
-    public reviewController(reviewService reviewService, reviewCommentService reviewCommentService,userService userService) {
+    public reviewController(reviewService reviewService, reviewCommentService reviewCommentService,userService userService,movieService movieService) {
         this.reviewService = reviewService;
         this.reviewCommentService = reviewCommentService;
         this.userService = userService;
+        this.movieService = movieService;
     }
 
     @GetMapping("/reviews/{movieNum}")
@@ -40,6 +43,9 @@ public class reviewController {
     	List<reviewDto> reviews = reviewService.getReviewsByMovie(movieNum);
         model.addAttribute("reviews", reviews);
         model.addAttribute("movieNum", movieNum);
+        
+        movieDto movie = movieService.findById((long)movieNum);
+        model.addAttribute("movie", movie);
         return "reviewListPage";
     }
     
