@@ -16,7 +16,7 @@
     <delete id="deleteComment" parameterType="int">
         delete from r_comment where r_comment_num = #{rCommentNum}
     </delete>
-    
+
     <delete id="deleteAllByReviewNum">
 	    delete from r_comment where review_num = #{reviewNum}
 	</delete>

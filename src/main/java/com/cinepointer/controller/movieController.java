@@ -21,12 +21,12 @@ import jakarta.servlet.http.HttpSession;
 public class movieController {
 
     private final movieService movieService;
-    private final reviewService reviewService; // ✅ 추가
+    private final reviewService reviewService; // 추가
 
     @Autowired
-    public movieController(movieService movieService,reviewService reviewService) { // ✅ 생성자 수정
+    public movieController(movieService movieService,reviewService reviewService) { // 생성자 추가
         this.movieService = movieService;
-        this.reviewService = reviewService; // ✅ 추가
+        this.reviewService = reviewService; // 추가
     }
 
     // 메인 페이지
@@ -71,7 +71,7 @@ public class movieController {
             model.addAttribute("userNum", userNum);
         }
         model.addAttribute("isWished", isWished);
-     // ✅ 리뷰 미리보기 3개 추가
+        // 리뷰 미리보기 3개 추가
         List<reviewDto> recentReviews = reviewService.getLimitedReviewsByMovie(id.intValue(), 3);
         model.addAttribute("reviews", recentReviews);
 

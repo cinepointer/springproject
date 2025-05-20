@@ -15,7 +15,7 @@
 
 <div class="review-list-container my-5">
 
-    <!-- ✅ 영화 정보 영역 -->
+    <!-- 영화 정보 영역 -->
     <div class="movie-info-box">
         <img th:src="${posterPath}" alt="포스터" />
         <div class="movie-details">
@@ -55,7 +55,6 @@
             </p>
         </div>
     </div>
-
     <!-- 영화 정보 보기 버튼 -->
     <div class="text-end mt-4">
         <a th:href="@{/movies/{id}(id=${movieNum})}" class="btn btn-outline-info btn-sm">🎬 영화 정보 보기</a>
@@ -64,6 +63,5 @@
 
 <!-- 공통 푸터 -->
 <div th:replace="~{fragment/footer :: footerFragment}"></div>
-
 </body>
 </html>

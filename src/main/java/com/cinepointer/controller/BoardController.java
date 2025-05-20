@@ -26,7 +26,7 @@ public class BoardController {
         this.boardCommentService = boardCommentService;
         this.userService = userService;
     }
-
+    
     @GetMapping("/list")
     public String getList(Model model) {
         model.addAttribute("boardList", boardService.getList());
