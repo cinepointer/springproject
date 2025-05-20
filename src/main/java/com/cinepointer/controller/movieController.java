@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.reviewDto;
@@ -98,16 +99,19 @@ public class movieController {
         return "redirect:/movies/" + movieNum;
     }
 
-    // 내 찜 목록
-    @GetMapping("/my-wishlist")
-    public String myWishList(Model model, HttpSession session) {
+    // 내 찜 목록 (경로와 반환값을 myMovie로 변경)
+    @GetMapping("/my-movie")
+    public String myMovie(Model model, HttpSession session,RedirectAttributes redirectAttributes) {
         Integer userNum = (Integer) session.getAttribute("userNum");
+        redirectAttributes.addAttribute("fragment","myMovie");
         if (userNum != null) {
             List<movieDto> wishList = movieService.getWishList(userNum);
-            model.addAttribute("wishList", wishList);
+            model.addAttribute("myMovie", wishList); // myMovie.html에서 myMovies 사용
         }
-        return "myWishList";
+        
+         return "redirect:/info?fragment=myMovie"; // 대안
     }
+
 
     // (좋아요 기능은 서비스에 없으므로 주석 처리)
     /*
