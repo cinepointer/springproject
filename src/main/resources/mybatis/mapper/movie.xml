@@ -55,23 +55,24 @@
 
     <!-- 상세 조회 -->
     <select id="findById" parameterType="long" resultType="com.cinepointer.dto.movieDto">
-        SELECT 
-            m.movie_num AS id,
-            m.movie_title AS title,
-            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
-            m.movie_overview AS description,
-            m.movie_release_date AS releaseDate,
-            (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
-            m.movie_poster_path AS posterUrl,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
-        FROM movie m
-        LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
-        LEFT JOIN genre g ON mg.genre_num = g.genre_num
-        LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
-        LEFT JOIN actor a ON am.actor_num = a.actor_num
-        WHERE m.movie_num = #{id}
-        GROUP BY m.movie_num
-    </select>
+    SELECT 
+        m.movie_num AS id,
+        m.movie_title AS title,
+        GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+        m.movie_overview AS description,
+        m.movie_release_date AS releaseDate,
+        (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
+        m.movie_poster_path AS posterPath,
+        GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+    FROM movie m
+    LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
+    LEFT JOIN genre g ON mg.genre_num = g.genre_num
+    LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
+    LEFT JOIN actor a ON am.actor_num = a.actor_num
+    WHERE m.movie_num = #{id}
+    GROUP BY m.movie_num
+</select>
+
 
     <!-- 장르별 인기영화 -->
     <select id="findByGenre" resultType="com.cinepointer.dto.movieDto">

@@ -1,18 +1,26 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>내 영화 목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
 <div th:fragment="myMovieList" class="container my-4">
-	<h2 class="mb-4">내 영화 목록</h2>
-    
+    <h2 class="mb-4">내 영화 목록</h2>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
         <div class="col" th:each="movie : ${myMovies}">
-
             <div class="card h-100 shadow-sm">
-                <img th:if="${movie.moviePosterPath}" th:src="${movie.moviePosterPath}" class="card-img-top" alt="포스터 이미지" />
-
+                <img th:if="${movie.posterPath}" th:src="${movie.posterPath}" class="card-img-top" alt="포스터 이미지" />
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${movie.movieTitle}">영화 제목</h5>
+                    <h5 class="card-title" th:text="${movie.title}">영화 제목</h5>
+                    <div th:if="${movie.genre}" th:text="|장르: ${movie.genre}|"></div>
+                    <div th:if="${movie.releaseDate}" th:text="|개봉: ${movie.releaseDate}|"></div>
+                    <div th:if="${movie.actors}" th:text="|출연: ${movie.actors}|"></div>
+                    <div th:if="${movie.likeCount != null}" th:text="|♥ ${movie.likeCount}|"></div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+</body>
+</html>
