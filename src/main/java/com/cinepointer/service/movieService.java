@@ -9,11 +9,13 @@ public interface movieService {
     List<movieDto> findByGenre(String genre, Integer limit);
     List<movieDto> findLatest(Integer limit);
     List<movieDto> findPopular(Integer limit);
-    List<movieDto> getWishList(String userId);
 
-    // 찜하기 기능
-    boolean addWish(String userId, Long movieId);
-    boolean isWished(String userId, Long movieId);
+    // 찜 기능
+    List<movieDto> getWishList(int userNum);                 // 내 찜 목록
+    boolean addWish(int userNum, int movieNum);              // 찜하기
+    boolean isWished(int userNum, int movieNum);             // 찜 여부 (기존)
+    boolean isWished(String userNum, Long movieNum);         // 찜 여부 (오버로딩 추가)
+    boolean removeWish(int userNum, int movieNum);           // 찜 취소
 
     // 영화 등록
     void insert(movieDto movie);

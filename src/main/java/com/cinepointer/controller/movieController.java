@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.service.movieService;
@@ -57,16 +56,15 @@ public class movieController {
         model.addAttribute("relatedMovies", related);
 
         // 로그인 여부
-        boolean isLogin = session.getAttribute("userId") != null;
+        Integer userNum = (Integer) session.getAttribute("userNum");
+        boolean isLogin = (userNum != null);
         model.addAttribute("isLogin", isLogin);
 
-        // 찜 여부 및 userId 전달
+        // 찜 여부 및 userNum 전달
         boolean isWished = false;
-        String userId = null;
         if (isLogin) {
-            userId = (String) session.getAttribute("userId");
-            isWished = movieService.isWished(userId, id);
-            model.addAttribute("userId", userId);
+            isWished = movieService.isWished(userNum, id.intValue());
+            model.addAttribute("userNum", userNum);
         }
         model.addAttribute("isWished", isWished);
 
@@ -74,32 +72,34 @@ public class movieController {
     }
 
     // 찜하기 (Wish 추가)
-    @PostMapping("/movies/{id}/wish")
-    @ResponseBody
-    public String addWish(@PathVariable("id") Long movieId, HttpSession session) {
-        Object userIdObj = session.getAttribute("userId");
-        System.out.println("userId in session: " + userIdObj);
-        if (userIdObj == null) {
-            return "fail";
+    @PostMapping("/movie/wish")
+    public String wishMovie(@RequestParam("movieNum") int movieNum, HttpSession session) {
+        Integer userNum = (Integer) session.getAttribute("userNum");
+        if (userNum != null) {
+            movieService.addWish(userNum, movieNum);
         }
-        String userId = (String) userIdObj;
-        boolean result = movieService.addWish(userId, movieId);
-        System.out.println("addWish result: " + result);
-        return result ? "success" : "fail";
+        return "redirect:/movies/" + movieNum;
     }
 
-
-    // 내 찜한 영화 목록
-    @GetMapping("/my/wishlist")
-    public String myWishList(Model model, HttpSession session) {
-        Object userIdObj = session.getAttribute("userId");
-        if (userIdObj == null) {
-            return "redirect:/login";
+    // 찜 취소
+    @PostMapping("/movie/unwish")
+    public String unwishMovie(@RequestParam("movieNum") int movieNum, HttpSession session) {
+        Integer userNum = (Integer) session.getAttribute("userNum");
+        if (userNum != null) {
+            movieService.removeWish(userNum, movieNum);
         }
-        String userId = (String) userIdObj;
-        List<movieDto> myMovies = movieService.getWishList(userId);
-        model.addAttribute("myMovies", myMovies);
-        return "myMovie"; // myMovie.html 사용
+        return "redirect:/movies/" + movieNum;
+    }
+
+    // 내 찜 목록
+    @GetMapping("/my-wishlist")
+    public String myWishList(Model model, HttpSession session) {
+        Integer userNum = (Integer) session.getAttribute("userNum");
+        if (userNum != null) {
+            List<movieDto> wishList = movieService.getWishList(userNum);
+            model.addAttribute("wishList", wishList);
+        }
+        return "myWishList";
     }
 
     // (좋아요 기능은 서비스에 없으므로 주석 처리)
