@@ -5,17 +5,24 @@
 
 <mapper namespace="com.cinepointer.dao.movieDao">
 
-    <!-- 영화 리스트 검색 및 정렬 (장르 검색 반영) -->
+    <!-- 
+        영화 리스트 검색 및 정렬 (장르, 검색어, 정렬, 제한)
+        - search: 제목 검색 (부분일치)
+        - genre: 장르명 (예: 액션)
+        - sort: release(최신순) | popular(인기순)
+        - limit: 최대 반환 개수
+    -->
     <select id="searchMovies" resultType="com.cinepointer.dto.movieDto">
         SELECT 
             m.movie_num AS id,
             m.movie_title AS title,
-            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            -- 여러 장르일 경우 콤마로 분리
+            GROUP_CONCAT(DISTINCT g.genre_name ORDER BY g.genre_name SEPARATOR ',') AS genre,
             m.movie_overview AS description,
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
             m.movie_poster_path AS posterPath,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+            GROUP_CONCAT(DISTINCT a.actor_name ORDER BY a.actor_name SEPARATOR ',') AS actors
         FROM movie m
         LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
         LEFT JOIN genre g ON mg.genre_num = g.genre_num
@@ -23,17 +30,10 @@
         LEFT JOIN actor a ON am.actor_num = a.actor_num
         <where>
             <if test="search != null and search != ''">
-                (m.movie_title LIKE CONCAT('%', #{search}, '%'))
+                m.movie_title LIKE CONCAT('%', #{search}, '%')
             </if>
             <if test="genre != null and genre != ''">
-                <choose>
-                    <when test="search != null and search != ''">
-                        AND g.genre_name = #{genre}
-                    </when>
-                    <otherwise>
-                        g.genre_name = #{genre}
-                    </otherwise>
-                </choose>
+                AND g.genre_name = #{genre}
             </if>
         </where>
         GROUP BY m.movie_num
@@ -53,17 +53,17 @@
         </if>
     </select>
 
-    <!-- 상세 조회 -->
+    <!-- 영화 상세 조회 (id로 단일 영화) -->
     <select id="findById" parameterType="long" resultType="com.cinepointer.dto.movieDto">
         SELECT 
             m.movie_num AS id,
             m.movie_title AS title,
-            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            GROUP_CONCAT(DISTINCT g.genre_name ORDER BY g.genre_name SEPARATOR ',') AS genre,
             m.movie_overview AS description,
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
             m.movie_poster_path AS posterPath,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+            GROUP_CONCAT(DISTINCT a.actor_name ORDER BY a.actor_name SEPARATOR ',') AS actors
         FROM movie m
         LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
         LEFT JOIN genre g ON mg.genre_num = g.genre_num
@@ -73,17 +73,17 @@
         GROUP BY m.movie_num
     </select>
 
-    <!-- 장르별 인기영화 -->
+    <!-- 장르별 인기영화 (genre명, 인기순) -->
     <select id="findByGenre" resultType="com.cinepointer.dto.movieDto">
         SELECT 
             m.movie_num AS id,
             m.movie_title AS title,
-            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            GROUP_CONCAT(DISTINCT g.genre_name ORDER BY g.genre_name SEPARATOR ',') AS genre,
             m.movie_overview AS description,
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
             m.movie_poster_path AS posterPath,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+            GROUP_CONCAT(DISTINCT a.actor_name ORDER BY a.actor_name SEPARATOR ',') AS actors
         FROM movie m
         INNER JOIN movie_genre mg ON m.movie_num = mg.movie_num
         INNER JOIN genre g ON mg.genre_num = g.genre_num
@@ -97,7 +97,7 @@
         </if>
     </select>
 
-    <!-- 최신 영화 -->
+    <!-- 최신 영화 (최신순 limit) -->
     <select id="findLatest" resultType="com.cinepointer.dto.movieDto">
         SELECT 
             m.movie_num AS id,
@@ -106,16 +106,18 @@
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
             m.movie_poster_path AS posterPath,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+            GROUP_CONCAT(DISTINCT a.actor_name ORDER BY a.actor_name SEPARATOR ',') AS actors
         FROM movie m
         LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
         LEFT JOIN actor a ON am.actor_num = a.actor_num
         GROUP BY m.movie_num
         ORDER BY m.movie_release_date DESC
-        LIMIT #{limit}
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
     </select>
 
-    <!-- 인기 영화 -->
+    <!-- 인기 영화 (좋아요순 limit) -->
     <select id="findPopular" resultType="com.cinepointer.dto.movieDto">
         SELECT 
             m.movie_num AS id,
@@ -124,13 +126,15 @@
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
             m.movie_poster_path AS posterPath,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+            GROUP_CONCAT(DISTINCT a.actor_name ORDER BY a.actor_name SEPARATOR ',') AS actors
         FROM movie m
         LEFT JOIN actor_movie am ON m.movie_num = am.movie_num
         LEFT JOIN actor a ON am.actor_num = a.actor_num
         GROUP BY m.movie_num
         ORDER BY likeCount DESC
-        LIMIT #{limit}
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
     </select>
 
     <!-- 내 위시리스트(찜 목록) 조회 -->
@@ -138,12 +142,12 @@
         SELECT 
             m.movie_num AS id,
             m.movie_title AS title,
-            GROUP_CONCAT(DISTINCT g.genre_name) AS genre,
+            GROUP_CONCAT(DISTINCT g.genre_name ORDER BY g.genre_name SEPARATOR ',') AS genre,
             m.movie_overview AS description,
             m.movie_release_date AS releaseDate,
             (SELECT COUNT(*) FROM users_movie WHERE movie_num = m.movie_num) AS likeCount,
             m.movie_poster_path AS posterPath,
-            GROUP_CONCAT(DISTINCT a.actor_name) AS actors
+            GROUP_CONCAT(DISTINCT a.actor_name ORDER BY a.actor_name SEPARATOR ',') AS actors
         FROM users_movie um
         JOIN movie m ON um.movie_num = m.movie_num
         LEFT JOIN movie_genre mg ON m.movie_num = mg.movie_num
@@ -154,22 +158,28 @@
         GROUP BY m.movie_num
     </select>
 
-    <!-- 찜 여부 확인 -->
+    <!-- 찜 여부 확인 (1:찜, 0:안함) -->
     <select id="countWish" resultType="int">
-        SELECT COUNT(*) FROM users_movie WHERE user_num = #{userNum} AND movie_num = #{movieNum}
+        SELECT COUNT(*) 
+        FROM users_movie 
+        WHERE user_num = #{userNum} 
+          AND movie_num = #{movieNum}
     </select>
 
-    <!-- 찜하기 -->
+    <!-- 찜하기 등록 -->
     <insert id="insertWish">
-        INSERT INTO users_movie (user_num, movie_num) VALUES (#{userNum}, #{movieNum})
+        INSERT INTO users_movie (user_num, movie_num) 
+        VALUES (#{userNum}, #{movieNum})
     </insert>
 
     <!-- 찜 취소 -->
     <delete id="deleteWish">
-        DELETE FROM users_movie WHERE user_num = #{userNum} AND movie_num = #{movieNum}
+        DELETE FROM users_movie 
+        WHERE user_num = #{userNum} 
+          AND movie_num = #{movieNum}
     </delete>
 
-    <!-- 영화 등록(INSERT) -->
+    <!-- 영화 등록 -->
     <insert id="insert" parameterType="com.cinepointer.dto.movieDto">
         INSERT INTO movie (
             movie_title,
@@ -183,5 +193,17 @@
             #{posterPath}
         )
     </insert>
+
+    <!-- 출연진 목록 조회 (영화별) -->
+    <select id="getActorsByMovieNum" parameterType="int" resultType="com.cinepointer.dto.actorMovieDto">
+        SELECT
+            a.actor_num AS actorNum,
+            a.actor_name AS actorName,
+            a.actor_profile_path AS actorProfilePath,
+            am.role AS role
+        FROM actor_movie am
+        JOIN actor a ON am.actor_num = a.actor_num
+        WHERE am.movie_num = #{movieNum}
+    </select>
 
 </mapper>

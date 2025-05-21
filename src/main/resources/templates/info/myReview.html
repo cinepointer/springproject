@@ -7,7 +7,10 @@
                 <div class="card-body">
                     <h5 class="card-title" th:text="${review.reviewTitle}">리뷰 제목</h5>
                     
-                    <p class="card-text" th:text="${review.reviewContent}">리뷰 내용</p>
+                    <p class="card-text" th:text="${#strings.length(review.reviewContent) > 20 ? #strings.substring(review.reviewContent, 0, 20) + '...' : review.reviewContent}">
+					    리뷰 내용
+					</p>
+
 
                     <div class="mb-2">
                         <span class="badge bg-success" th:text="'평점: ' + ${review.reviewRating}">평점</span>
@@ -18,12 +21,15 @@
                 </div>
 
                 <div class="card-footer bg-transparent border-top-0 text-end">
-                	<!-- 수정 버튼 -->
-                    <a th:href="@{'/info/review/edit'(reviewNum=${review.reviewNum})}"
-                       class="btn btn-outline-dark btn-sm ms-2">
-                        <i class="bi bi-pencil"></i> 수정
-                    </a>
-                
+                	<!-- 수정 버튼 영화정보 추가 후 redirect -->
+                	<form th:action="@{'/info/review/edit'(reviewNum=${review.reviewNum})}"
+                	 method="post" class="d-inline">
+                        <input type="hidden" name="reviewNum" th:value="${review.reviewNum}" />
+                        <button type="submit" class="btn btn-outline-dark btn-sm ms-2">
+                            <i class="bi bi-pencil"></i> 수정
+                        </button>
+                    </form>
+                    
                     <!-- 삭제 버튼 -->
                     <form th:action="@{info/review/delete}" method="post" class="d-inline">
                         <input type="hidden" name="reviewNum" th:value="${review.reviewNum}" />

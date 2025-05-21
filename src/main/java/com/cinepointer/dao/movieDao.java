@@ -4,9 +4,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.cinepointer.dto.movieDto;
+import com.cinepointer.dto.actorMovieDto;
 
 @Mapper
 public interface movieDao {
+    // ===== 영화 검색 및 조회 =====
+
     // 영화 검색
     List<movieDto> searchMovies(
         @Param("search") String search,
@@ -27,7 +30,8 @@ public interface movieDao {
     // 최신 영화
     List<movieDto> findLatest(@Param("limit") Integer limit);
 
-    // --- 찜 기능 ---
+    // ===== 찜 기능 =====
+
     // 유저의 찜 목록
     List<movieDto> selectWishListByUserNum(@Param("userNum") int userNum);
 
@@ -40,6 +44,17 @@ public interface movieDao {
     // 찜 취소
     int deleteWish(@Param("userNum") int userNum, @Param("movieNum") int movieNum);
 
-    // --- 영화 등록 ---
-    int insert(movieDto movie); // ★ 추가됨
+    // ===== 영화 등록 =====
+
+    // 영화 등록
+    int insert(movieDto movie);
+
+    // ===== 배우-영화 정보(출연진) =====
+
+    /**
+     * 해당 영화의 출연진(배우) 목록 반환
+     * @param movieNum 영화 번호
+     * @return 출연 배우 목록
+     */
+    List<actorMovieDto> getActorsByMovieNum(@Param("movieNum") int movieNum);
 }

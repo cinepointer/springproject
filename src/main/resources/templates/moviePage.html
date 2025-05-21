@@ -33,9 +33,10 @@
                             <span class="info-value" th:text="${#dates.format(movie.releaseDate, 'yyyy-MM-dd')}">개봉일</span>
                         </li>
                         <li>
-                            <span class="info-label">출연진</span>
-                            <span class="info-value" th:text="${#strings.arrayJoin(movie.actors, ', ')}">출연진</span>
-                        </li>
+    <span class="info-label">출연진</span>
+    <span class="info-value" th:text="${#strings.arrayJoin(actorList, ', ')}">출연진</span>
+</li>
+
                     </ul>
                     <div class="movie-desc" th:text="${movie.description}">영화 설명</div>
                     <div class="movie-actions">

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import com.cinepointer.dto.movie2Dto;
 import com.cinepointer.dto.reviewCommentDto;
 import com.cinepointer.dto.reviewDto;
 import com.cinepointer.dto.usersDto;
+import com.cinepointer.service.reviewCommentService;
 import com.cinepointer.service.reviewService;
 import com.cinepointer.service.userService;
 
@@ -29,8 +31,12 @@ public class infoController {
 
 	@Autowired
 	userService us;
+	
 	@Autowired
 	reviewService rs;
+	
+	@Autowired
+	reviewCommentService rcs;
 	
 	@GetMapping("/main")
 	public String main(
@@ -101,6 +107,8 @@ public class infoController {
         us.deleteMovie(userId,movieNum); // 삭제 로직 실행
         return "redirect:/info"; // 다시 목록으로 리다이렉트
     }
+    
+   
 
     @GetMapping("/myReview")
     public String MyReview(HttpSession session,Model model) {
@@ -117,10 +125,22 @@ public class infoController {
     		HttpSession session
     		) {
     	redirectAttributes.addAttribute("fragment","myReview");
+    	rcs.deleteAllByReviewNum(reviewNum);
         rs.deleteReview(reviewNum); // 삭제 로직 실행
         return "redirect:/info"; // 다시 목록으로 리다이렉트
     }
     
+    @PostMapping("/review/edit")
+    public String updateMyReview(@RequestParam("reviewNum") int reviewNum, 
+    		RedirectAttributes redirectAttributes,
+    		HttpSession session,
+    		Model model
+    		) {
+    	
+    	reviewDto dto=rs.getReviewByNum(reviewNum);
+
+    	return "redirect:/review/edit?reviewNum=" + dto.getReviewNum() + "&movieNum=" + dto.getMovieNum();
+    }
     
     @GetMapping("/myBoard")
     public String Myboard(HttpSession session,Model model) {
@@ -142,7 +162,15 @@ public class infoController {
         model.addAttribute("boardcomments",bcomment);
         return "info/myComment :: myComment";  // fragment 이름 명시
     }
-   
+    @GetMapping("/detail/{reviewNum}")
+    public String reviewDetail(@PathVariable("reviewNum") int reviewNum, Model model) {
+        // reviewNum으로 리뷰 데이터 조회 (예: service 호출)
+        reviewDto dto = rs.getReviewByNum(reviewNum);
+        model.addAttribute("review", dto);
+
+        // 상세보기 페이지 이름 (templates/info/detail.html 등)
+        return "redirect:/review/view?reviewNum=" + dto.getReviewNum() + "&movieNum=" + dto.getMovieNum();
+    }
 
     
 }

@@ -1,7 +1,9 @@
 package com.cinepointer.service;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
+
 import com.cinepointer.dao.movieDao;
 import com.cinepointer.dto.movieDto;
 
