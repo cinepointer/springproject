@@ -106,3 +106,30 @@ a:hover, a:focus {
     white-space: pre-wrap;
     word-break: break-word;
 }
+
+/* ✅ 댓글 입력 폼 정렬 및 버튼 높이 맞춤 */
+.comment-form {
+    align-items: stretch;
+}
+
+.comment-form textarea {
+    flex: 1;
+    resize: vertical;
+    height: auto;
+}
+
+.comment-form .form-control {
+    height: auto;
+}
+
+.comment-form button {
+    white-space: nowrap;
+    min-width: 80px;
+    padding: 0 16px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    line-height: 1.5;
+}

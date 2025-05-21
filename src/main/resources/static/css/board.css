@@ -26,11 +26,11 @@ form[id^="editForm-"] textarea {
 
 /* 댓글 등록 버튼 */
 form.d-flex .btn-success {
-    background: linear-gradient(90deg, #38cfc5, #2563eb);
+    background-color: #4a6cf7;
     border: none;
     color: white;
-    font-weight: 700;
-    font-size: 16px;
+    font-weight: 600;
+    font-size: 15px;
     padding: 10px 20px;
     border-radius: 8px;
     transition: all 0.2s ease-in-out;
@@ -41,27 +41,27 @@ form.d-flex .btn-success {
     justify-content: center;
 }
 form.d-flex .btn-success:hover {
-    background: linear-gradient(90deg, #2563eb, #38cfc5);
+    background-color: #3b5be0;
     transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(56, 207, 197, 0.3);
+    box-shadow: 0 3px 8px rgba(74, 108, 247, 0.3);
 }
 
 /* boardListPage */
 .btn-gradient {
-    background: linear-gradient(90deg, #2563eb 0%, #38cfc5 100%);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    width: auto;
-    white-space: nowrap;
-    padding: 6px 16px;
+  background: linear-gradient(90deg, #4a6cf7 0%, #5dc9f6 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 6px 16px;
+  transition: background 0.3s ease;
 }
 .btn-gradient:hover {
-    background: linear-gradient(90deg, #38cfc5 60%, #2563eb 100%);
-    color: #fff;
+  background: linear-gradient(90deg, #3b5be0 0%, #48bce4 100%);
 }
-
+a.btn-gradient:hover {
+    text-decoration: none;
+}
 .btn-outline-primary, .btn-outline-danger {
     border-radius: 8px;
     font-weight: 600;
@@ -69,12 +69,22 @@ form.d-flex .btn-success:hover {
     font-size: 0.9rem;
     transition: all 0.2s ease-in-out;
 }
+.btn-outline-primary {
+    background-color: #4a6cf7;
+    border: none;
+    color: white;
+}
 .btn-outline-primary:hover {
-    background-color: #2563eb;
+    background-color: #3b5be0;
+    color: white;
+}
+.btn-outline-danger {
+    background-color: #ff6b6b;
+    border: none;
     color: white;
 }
 .btn-outline-danger:hover {
-    background-color: #dc3545;
+    background-color: #fa5252;
     color: white;
 }
 
@@ -116,11 +126,11 @@ form.d-flex textarea {
 }
 
 .author-label {
-    font-weight: 600;  /* 작성자: */
+    font-weight: 600;
 }
 
 .author-name {
-    font-weight: 700;  /* 실제 사용자 ID */
+    font-weight: 700;
 }
 
 /* boardInsert */
@@ -155,7 +165,7 @@ a {
 
 a:hover, a:focus {
     color: #2563eb;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 /* 레이아웃 통일용 */
@@ -244,6 +254,50 @@ a:hover, a:focus {
 .comments .btn-sm {
     font-size: 0.85rem;
     padding: 4px 10px;
+    border-radius: 6px;
+}
+
+.comments .btn-primary {
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+    color: white;
+}
+.comments .btn-primary:hover {
+    background-color: #3b5be0;
+    border-color: #3b5be0;
+}
+
+.comments .btn-secondary {
+    background-color: #ced4da;
+    border-color: #ced4da;
+    color: white;
+}
+.comments .btn-secondary:hover {
+    background-color: #adb5bd;
+    border-color: #adb5bd;
+    color: white;
+}
+
+.comments .btn-outline-primary {
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+    color: white;
+}
+.comments .btn-outline-primary:hover {
+    background-color: #3b5be0;
+    border-color: #3b5be0;
+    color: white;
+}
+
+.comments .btn-outline-danger {
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+    color: white;
+}
+.comments .btn-outline-danger:hover {
+    background-color: #fa5252;
+    border-color: #fa5252;
+    color: white;
 }
 
 .comments small {
@@ -262,4 +316,28 @@ a:hover, a:focus {
 .comments textarea:focus {
     border-color: #38cfc5;
     outline: none;
+}
+
+/* 제목 여백 추가 */
+.text-start.ps-4 {
+  padding-left: 24px !important;
+}
+.btn-outline-primary {
+    background-color: #4a6cf7;
+    border: none;
+    color: white;
+}
+.btn-outline-primary:hover {
+    background-color: #3b5be0;
+    color: white;
+}
+
+.btn-outline-danger {
+    background-color: #ff6b6b;
+    border: none;
+    color: white;
+}
+.btn-outline-danger:hover {
+    background-color: #fa5252;
+    color: white;
 }
