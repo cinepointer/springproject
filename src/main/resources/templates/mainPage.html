@@ -10,7 +10,7 @@
     <!-- 통합 커스텀 CSS -->
     <link rel="stylesheet" href="/css/style.css">
     <style>
-    .main-flex {
+   .main-flex {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -182,6 +182,7 @@
         color: #364f6b;
         letter-spacing: -0.5px;
     }
+
     </style>
 </head>
 <body>
@@ -234,7 +235,12 @@
                                 onerror="this.onerror=null;this.src='/img/image_no.png';"
                             >
                             <div class="title" th:text="${movie.title}">영화 제목</div>
-                            <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
+                            <div class="desc"
+     th:text="|출연: ${movie.actors == null or #strings.isEmpty(movie.actors) ? '정보 없음' : movie.actors}|">
+    출연진
+</div>
+
+
                         </a>
                     </div>
                     <button class="arrow-btn right" type="button" aria-label="다음" onclick="scrollMovieList(this, 1)">
@@ -244,33 +250,35 @@
             </section>
 
             <!-- 장르별 영화 -->
-            <section class="main-section" id="genre">
-                <h2>🎞️ 장르별 영화</h2>
-                <div th:each="genre : ${genres}">
-                    <h3 th:text="${genre.name}">장르명</h3>
-                    <div class="movie-list-wrapper">
-                        <button class="arrow-btn left" type="button" aria-label="이전" onclick="scrollMovieList(this, -1)">
-                            &#x25C0;
-                        </button>
-                        <div class="movie-list">
-                            <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
-                                <img
-                                    th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
-                                    th:alt="|${movie.title} 포스터|"
-                                    loading="lazy"
-                                    class="movie-poster"
-                                    onerror="this.onerror=null;this.src='/img/image_no.png';"
-                                >
-                                <div class="title" th:text="${movie.title}">영화 제목</div>
-                                <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
-                            </a>
-                        </div>
-                        <button class="arrow-btn right" type="button" aria-label="다음" onclick="scrollMovieList(this, 1)">
-                            &#x25B6;
-                        </button>
-                    </div>
-                </div>
-            </section>
+            <!-- 장르별 영화 -->
+<section class="main-section" id="genre">
+    <h2>🎞️ 장르별 영화</h2>
+    <div th:each="genre : ${genres}">
+        <h3 th:text="${genre.name}">장르명</h3>
+        <div class="movie-list-wrapper">
+            <button class="arrow-btn left" type="button" aria-label="이전" onclick="scrollMovieList(this, -1)">
+                &#x25C0;
+            </button>
+            <div class="movie-list">
+                <a class="movie-card" th:each="movie : ${genre.movies}" th:href="@{/movies/{id}(id=${movie.id})}" th:title="|상세보기: ${movie.title}|">
+                    <img
+                        th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
+                        th:alt="|${movie.title} 포스터|"
+                        loading="lazy"
+                        class="movie-poster"
+                        onerror="this.onerror=null;this.src='/img/image_no.png';"
+                    >
+                    <div class="title" th:text="${movie.title}">영화 제목</div>
+                    <div class="desc" th:text="|출연: ${#lists.isEmpty(movie.actors) ? '정보 없음' : #strings.arrayJoin(movie.actors, ', ')}|">출연진</div>
+                </a>
+            </div>
+            <button class="arrow-btn right" type="button" aria-label="다음" onclick="scrollMovieList(this, 1)">
+                &#x25B6;
+            </button>
+        </div>
+    </div>
+</section>
+
 
             <!-- 추천 영화 -->
             <section class="main-section" id="recommend">
@@ -299,6 +307,8 @@
             </section>
         </main>
     </div>
+
+</div>
 
     <!-- 푸터 -->
     <th:block th:replace="~{fragment/footer.html :: footerFragment}"></th:block>

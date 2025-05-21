@@ -22,6 +22,6 @@ public class usersDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate userBirthDate;
     private int userEnabled;
-
+ 
  
 }
