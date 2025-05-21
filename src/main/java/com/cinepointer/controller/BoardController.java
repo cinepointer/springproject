@@ -55,7 +55,7 @@ public class BoardController {
     }
 
     @GetMapping("/detail/{boardNum}")
-    public String boardDetail(@PathVariable int boardNum, Model model, HttpSession session) {
+    public String boardDetail(@PathVariable("boardNum") int boardNum, Model model, HttpSession session) {
         String viewKey = "viewed_board_" + boardNum;
 
         if (session.getAttribute(viewKey) == null) {
@@ -69,7 +69,7 @@ public class BoardController {
     }
 
     @GetMapping("/updateForm/{boardNum}")
-    public String updateForm(@PathVariable int boardNum, Model model) {
+    public String updateForm(@PathVariable("boardNum") int boardNum, Model model) {
         model.addAttribute("board", boardService.getBoardDetail(boardNum));
         return "boardUpdate";
     }
@@ -91,7 +91,7 @@ public class BoardController {
     }
 
     @GetMapping("/delete/{boardNum}")
-    public String boardDelete(@PathVariable int boardNum, HttpSession session) {
+    public String boardDelete(@PathVariable("boardNum") int boardNum, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) return "redirect:/signin";
 
@@ -138,7 +138,7 @@ public class BoardController {
     }
 
     @GetMapping("/commentDelete/{commentNum}/{boardNum}")
-    public String deleteComment(@PathVariable int commentNum, @PathVariable int boardNum, HttpSession session) {
+    public String deleteComment(@PathVariable("commentNum") int commentNum, @PathVariable("boardNum") int boardNum, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) return "redirect:/signin";
 

@@ -836,3 +836,7 @@ body {
 .review-more-link:hover {
     text-decoration: underline;
 }
+.review-userId {
+    color: #ffffff;
+    font-weight: bold;
+}
