@@ -100,7 +100,7 @@ public class reviewController {
         reviewService.updateReview(dto);
         return "redirect:/review/view?reviewNum=" + dto.getReviewNum() + "&movieNum=" + dto.getMovieNum();
     }
-
+    
     @GetMapping("/delete")
     public String deleteReview(@RequestParam("reviewNum") int reviewNum, @RequestParam("movieNum") int movieNum, HttpSession session) {
         String userId = (String) session.getAttribute("userId");

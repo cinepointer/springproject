@@ -106,6 +106,8 @@ public class infoController {
         us.deleteMovie(userId,movieNum); // 삭제 로직 실행
         return "redirect:/info"; // 다시 목록으로 리다이렉트
     }
+    
+   
 
     @GetMapping("/myReview")
     public String MyReview(HttpSession session,Model model) {
@@ -127,6 +129,19 @@ public class infoController {
         return "redirect:/info"; // 다시 목록으로 리다이렉트
     }
     
+    @PostMapping("/review/edit")
+    public String updateMyReview(@RequestParam("reviewNum") int reviewNum, 
+    		RedirectAttributes redirectAttributes,
+    		HttpSession session,
+    		Model model
+    		) {
+    	
+    	reviewDto dto=rs.getReviewByNum(reviewNum);
+    	System.out.println(dto);
+
+    	
+    	return "redirect:/review/edit?reviewNum=" + dto.getReviewNum() + "&movieNum=" + dto.getMovieNum();
+    }
     
     @GetMapping("/myBoard")
     public String Myboard(HttpSession session,Model model) {
