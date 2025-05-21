@@ -82,6 +82,13 @@
         FROM users
         ORDER BY user_num
     </select>
+    
+    <select id="searchUsers" resultType="com.cinepointer.dto.usersDto">
+	  SELECT * FROM users 
+	  WHERE user_id LIKE #{keyword} 
+	  OR user_name LIKE #{keyword} 
+	  OR user_email LIKE #{keyword}
+	</select>
 	
 	<select id="selectWishListByUserId" parameterType="String" resultType="com.cinepointer.dto.movie2Dto">
 		<![CDATA[

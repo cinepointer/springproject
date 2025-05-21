@@ -1,5 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark  fixed-top" th:fragment="headerFragment">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" th:fragment="headerFragment">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">
             <img th:src="@{/img/dark-logo.png}" alt="로고" height="40">
@@ -60,9 +60,6 @@
             </ul>
         </div>
     </div>
-    <style>
-  body {
-    padding-top: 70px; /* 네비게이션 바 높이에 맞게 조정 */
-  }
-</style>
+
+
 </nav>

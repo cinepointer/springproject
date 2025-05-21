@@ -41,6 +41,7 @@ public interface userDao {
 
 	void deleteMyMovie(@Param("userId") int userId, @Param("movieNum") Long movieNum);
 	
+	List<usersDto> searchUsers(@Param("keyword") String keyword);
 
 	List<reviewDto> selectMyReview(@Param("userNum") int userNum);
 	

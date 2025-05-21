@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.tmdbDao;
@@ -37,6 +38,7 @@ public class tmdbServiceImpl implements tmdbService {
         tmdbDao.insertGenre(genres);
     }
     
+    @Async
     @Override
     public void insertPopularMovies() {
         List<Integer> genreList = tmdbDao.selectGenre();
@@ -84,7 +86,10 @@ public class tmdbServiceImpl implements tmdbService {
         tmdbDao.insertActorMoviesBatch(actorMovieList);
     }
 
-
+    @Override
+    public int existsGanre() {
+    	return tmdbDao.existsGenre();
+    }
 
 	
 	

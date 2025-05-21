@@ -30,6 +30,7 @@ public interface userService {
 	void deleteUserById(String id);
 	usersDto findById(String userId);
 	List<usersDto> findAll();
+	public List<usersDto> searchUsersByKeyword(String keyword);
 
 	//사용자용 기능
 	List<movie2Dto> getwishList(String userId);
