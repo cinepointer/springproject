@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -137,9 +138,7 @@ public class infoController {
     		) {
     	
     	reviewDto dto=rs.getReviewByNum(reviewNum);
-    	System.out.println(dto);
 
-    	
     	return "redirect:/review/edit?reviewNum=" + dto.getReviewNum() + "&movieNum=" + dto.getMovieNum();
     }
     
@@ -163,7 +162,15 @@ public class infoController {
         model.addAttribute("boardcomments",bcomment);
         return "info/myComment :: myComment";  // fragment 이름 명시
     }
-   
+    @GetMapping("/detail/{reviewNum}")
+    public String reviewDetail(@PathVariable("reviewNum") int reviewNum, Model model) {
+        // reviewNum으로 리뷰 데이터 조회 (예: service 호출)
+        reviewDto dto = rs.getReviewByNum(reviewNum);
+        model.addAttribute("review", dto);
+
+        // 상세보기 페이지 이름 (templates/info/detail.html 등)
+        return "redirect:/review/view?reviewNum=" + dto.getReviewNum() + "&movieNum=" + dto.getMovieNum();
+    }
 
     
 }

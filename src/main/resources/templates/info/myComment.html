@@ -5,15 +5,16 @@
             <thead class="table-dark">
                 <tr>
                     <th style="width: 8%;">번호</th>
-                    <th style="width: 10%;">유형</th>
-                    <th style="width: 40%;">내용</th>
+                    <th style="width: 12%;">유형</th>
+                    <th style="width: 55%;">내용</th>
                     <th style="width: 25%;">작성 시간</th>
-                    <th style="width: 15%;">작업</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- 게시판 댓글 -->
-                <tr th:each="comment, stat : ${boardcomments}">
+                <tr th:each="comment, stat : ${boardcomments}"
+                	th:onclick="|window.location.href='@{/board/detail/{boardNum}(boardNum=${comment.boardNum})}'|"
+	      			style="cursor: pointer;">
                     <td th:text="${stat.count}">1</td>
                     <td>게시판</td>
                     <td>
@@ -23,13 +24,12 @@
                         </span>
                     </td>
                     <td th:text="${comment.commentTime}">2025-05-01</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-dark">수정</button>
-                        <button class="btn btn-sm btn-outline-danger">삭제</button>
-                    </td>
+                    
                 </tr>
                 <!-- 리뷰 댓글 -->
-                <tr th:each="comment, stat : ${reviewcomments}">
+                <tr th:each="comment, stat : ${reviewcomments}"
+                	th:onclick="|window.location.href='@{/info/detail/{reviewNum}(reviewNum=${comment.reviewNum})}'|"
+	      			style="cursor: pointer;">
                     <td th:text="${stat.count + boardcomments.size()}">6</td>
                     <td>리뷰</td>
                     <td>
@@ -39,10 +39,7 @@
                         </span>
                     </td>
                     <td th:text="${comment.rCommentTime}">2025-05-02</td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-dark">수정</button>
-                        <button class="btn btn-sm btn-outline-danger">삭제</button>
-                    </td>
+                    
                 </tr>
             </tbody>
         </table>

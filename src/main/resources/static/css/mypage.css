@@ -16,13 +16,14 @@
     transform: scale(1.02);
 }
 
+
 /* 삭제 버튼 */
 .delete-button-form {
     position: absolute;
     top: 0;
     right: 0;
     margin: 4px;
-    z-index: 3;
+    z-index: 10;
 }
 
 /* 포스터 이미지 */
@@ -62,16 +63,17 @@
 
 /* 줄거리 텍스트 박스 */
 .scroll-box {
-    max-height: 120px;
+    max-height: 150px;       /* 필요한 높이로 조절 */
     overflow-y: auto;
-    font-size: 0.75rem;
-    padding-right: 5px;
+    padding-right: 4px;      /* 텍스트 오른쪽이 잘리지 않게 */
+    -ms-overflow-style: none;     /* IE, Edge */
+    scrollbar-width: none;        /* Firefox */
 }
 
-/* 스크롤바 스타일 (크롬 기준) */
 .scroll-box::-webkit-scrollbar {
-    width: 6px;
+    display: none;           /* Chrome, Safari */
 }
+
 .scroll-box::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 3px;
@@ -98,3 +100,23 @@
     color: #ff4d4d !important;
     background-color: rgba(255, 255, 255, 0.1);
 }
+
+.movie-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;         /* 최대 2줄 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    max-height: 3em;               /* 폰트 크기에 따라 조정 */
+    font-size: 0.95rem;
+}
+
+.card.movie-card {
+    min-height: 250px;             /* 카드 전체 높이 고정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 0;
+}
+

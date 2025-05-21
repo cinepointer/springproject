@@ -85,8 +85,9 @@ public class userController {
         Set<String> roleNames = auth.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.toSet());
-        System.out.println(roleNames);
+        
         if (roleNames.contains("ROLE_ADMIN")) {
+        	request.getSession().setAttribute("userRole", "ADMIN");
             return "redirect:/admin/main";
         }
         return "redirect:/movies";

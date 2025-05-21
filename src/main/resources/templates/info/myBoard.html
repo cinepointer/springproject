@@ -6,14 +6,16 @@
             <thead class="table-dark">
                 <tr>
                     <th style="width: 8%;">번호</th>
-                    <th style="width: 40%;">제목</th>
+                    <th style="width: 42%;">제목</th>
                     <th style="width: 25%;">작성시간</th>
                     <th style="width: 10%;">조회수</th>
-                    <th style="width: 17%;">관리</th>
+                    <th style="width: 15%;">수정/삭제</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="board : ${boards}">
+                <tr th:each="board : ${boards}"
+	                th:onclick="|window.location.href='@{/board/detail/{boardNum}(boardNum=${board.boardNum})}'|"
+	      			style="cursor: pointer;">
                     <td th:text="${board.boardNum}">1</td>
                     
                     <!-- 제목: 8글자 이상이면 말줄임 처리 -->
@@ -22,9 +24,11 @@
                     <td th:text="${board.boardRegDate}">작성시간</td>
                     <td th:text="${board.boardViewCnt}">조회수</td>
                     <td>
-                        <a th:href="@{'/board/edit'(boardNum=${board.boardNum})}" class="btn btn-sm btn-outline-dark me-1">
-                             수정
-                        </a>
+                        <a th:href="@{/board/updateForm/{boardNum}(boardNum=${board.boardNum})}" 
+						   class="btn btn-sm btn-outline-dark me-1">
+						   수정
+						</a>
+
                         <form th:action="@{/board/delete}" method="post" class="d-inline">
                             <input type="hidden" name="boardNum" th:value="${board.boardNum}" />
                             <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('정말 삭제하시겠습니까?');">

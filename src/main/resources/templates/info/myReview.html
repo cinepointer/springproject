@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="card-footer bg-transparent border-top-0 text-end">
-                	<!-- 수정 버튼 -->
+                	<!-- 수정 버튼 영화정보 추가 후 redirect -->
                 	<form th:action="@{'/info/review/edit'(reviewNum=${review.reviewNum})}"
                 	 method="post" class="d-inline">
                         <input type="hidden" name="reviewNum" th:value="${review.reviewNum}" />
