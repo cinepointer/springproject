@@ -32,4 +32,5 @@ public interface movieService {
      * 배우 번호 리스트로 배우 정보 조회
      */
     List<actorDto> getActorsByNums(List<Integer> actorNums); // ★ 추가
+    List<actorDto> getActorsByMovieNum(int movieNum);
 }

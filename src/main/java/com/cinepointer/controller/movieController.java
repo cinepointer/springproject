@@ -1,6 +1,11 @@
 package com.cinepointer.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.cinepointer.dto.actorDto;
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.reviewDto;
 import com.cinepointer.service.movieService;
@@ -39,9 +45,9 @@ public class movieController {
     ) {
         // TODO: search, genre, sort 파라미터 활용 예정이면 아래에 구현
 
-        model.addAttribute("popularMovies", movieService.findPopular(50));
-        model.addAttribute("latestMovies", movieService.findLatest(50));
-        model.addAttribute("recommendedMovies", movieService.findPopular(50)); // TODO: 추천 로직 분리 고려
+        model.addAttribute("popularMovies", movieService.findPopular(100));
+        model.addAttribute("latestMovies", movieService.findLatest(100));
+        model.addAttribute("recommendedMovies", movieService.findPopular(100)); // TODO: 추천 로직 분리 고려
 
         // 장르 코드와 이름 매핑
         Map<String, String> genreMap = new LinkedHashMap<>();
@@ -54,9 +60,9 @@ public class movieController {
         List<Map<String, Object>> genres = new ArrayList<>();
         for (Map.Entry<String, String> entry : genreMap.entrySet()) {
             Map<String, Object> genreSection = new HashMap<>();
-            genreSection.put("code", entry.getKey()); // 코드도 넣어두면 확장에 유리
+            genreSection.put("code", entry.getKey());
             genreSection.put("name", entry.getValue());
-            genreSection.put("movies", movieService.findByGenre(entry.getValue(), 50));
+            genreSection.put("movies", movieService.findByGenre(entry.getValue(), 100));
             genres.add(genreSection);
         }
         model.addAttribute("genres", genres);
@@ -66,17 +72,33 @@ public class movieController {
         return "mainPage";
     }
 
-
     // 영화 상세 페이지
     @GetMapping("/movies/{id}")
     public String movieDetail(@PathVariable("id") Long id, Model model, HttpSession session) {
         movieDto movie = movieService.findById(id);
         model.addAttribute("movie", movie);
 
-        // 관련 영화 (같은 장르 4개, 자기 자신 제외)
+        // 출연진 정보 (최대 10명만)
+        List<actorDto> actors = movieService.getActorsByMovieNum(id.intValue());
+        List<String> actorList = actors.stream()
+                                       .map(actorDto::getActorName)
+                                       .limit(10) // 최대 10명만 추출
+                                       .collect(Collectors.toList());
+        model.addAttribute("actorList", actorList);
+
+        // 관련 영화 (같은 장르 4개, 자기 자신 제외) + 각 영화의 출연진 포함
         List<movieDto> related = movieService.findByGenre(movie.getGenre(), 4);
         if (related != null) {
             related.removeIf(m -> m == null || m.getId() == null || m.getId().equals(id));
+            // 각 관련영화에 출연진 이름 배열 추가 (최대 10명만)
+            for (movieDto rel : related) {
+                List<actorDto> relActors = movieService.getActorsByMovieNum(rel.getId().intValue());
+                List<String> relActorNames = relActors.stream()
+                                                      .map(actorDto::getActorName)
+                                                      .limit(10) // 최대 10명만 추출
+                                                      .collect(Collectors.toList());
+                rel.setActors(relActorNames); // movieDto에 setActors(List<String>) 메소드 필요
+            }
         }
         model.addAttribute("relatedMovies", related);
 
@@ -121,7 +143,7 @@ public class movieController {
         return "redirect:/movies/" + movieNum;
     }
 
-    // 내 찜 목록 (경로와 반환값을 myMovie로 변경)
+    // 내 찜 목록
     @GetMapping("/my-movie")
     public String myMovie(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Integer userNum = (Integer) session.getAttribute("userNum");
@@ -130,7 +152,7 @@ public class movieController {
             List<movieDto> wishList = movieService.getWishList(userNum);
             model.addAttribute("myMovie", wishList); // myMovie.html에서 myMovies 사용
         }
-        return "redirect:/info"; // 대안
+        return "redirect:/info";
     }
 
     // (좋아요 기능은 서비스에 없으므로 주석 처리)

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.actorMovieDto;
+import com.cinepointer.dto.actorDto; // ★ 추가
 
 @Mapper
 public interface movieDao {
@@ -52,9 +53,12 @@ public interface movieDao {
     // ===== 배우-영화 정보(출연진) =====
 
     /**
-     * 해당 영화의 출연진(배우) 목록 반환
-     * @param movieNum 영화 번호
-     * @return 출연 배우 목록
+     * 해당 영화의 출연진(배우) 목록 반환 (actorMovieDto)
      */
     List<actorMovieDto> getActorsByMovieNum(@Param("movieNum") int movieNum);
+
+    /**
+     * 해당 영화의 출연진(배우) 정보 반환 (actorDto)
+     */
+    List<actorDto> findActorsByMovieNum(@Param("movieNum") int movieNum); // ★ 추가
 }
