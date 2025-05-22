@@ -32,7 +32,7 @@
                 m.movie_title LIKE CONCAT('%', #{search}, '%')
             </if>
             <if test="genre != null and genre != ''">
-                AND g.genre_name = #{genre}
+                g.genre_name = #{genre}
             </if>
         </where>
         GROUP BY m.movie_num
@@ -195,26 +195,29 @@
 
     <!-- 출연진 목록 조회 (영화별, actorMovieDto) -->
     <select id="getActorsByMovieNum" parameterType="int" resultType="com.cinepointer.dto.actorMovieDto">
-        SELECT
-            a.actor_num AS actorNum,
+        SELECT 
+            am.actor_movie_num AS id,
+            am.movie_num AS movieNum,
+            am.actor_num AS actorNum,
             a.actor_name AS actorName,
             a.actor_profile_path AS actorProfilePath,
-            am.role AS role
+            am.actor_role AS actorRole
         FROM actor_movie am
         JOIN actor a ON am.actor_num = a.actor_num
         WHERE am.movie_num = #{movieNum}
     </select>
 
-    <!-- 출연진 목록 조회 (영화별, actorDto) -->
-    <select id="findActorsByMovieNum" parameterType="int" resultType="com.cinepointer.dto.actorDto">
+    <!-- 배우 상세 정보 목록 조회 (여러 명) -->
+    <select id="getActorsByNums" parameterType="list" resultType="com.cinepointer.dto.actorDto">
         SELECT 
-            a.actor_num AS actorNum, 
-            a.actor_name AS actorName, 
-            a.actor_gender AS actorGender
-        FROM actor_movie am
-        JOIN actor a ON am.actor_num = a.actor_num
-        WHERE am.movie_num = #{movieNum}
-        ORDER BY am.actor_order
+            actor_num AS id,
+            actor_name AS name,
+            actor_profile_path AS profilePath
+        FROM actor
+        WHERE actor_num IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>

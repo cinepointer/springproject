@@ -15,6 +15,6 @@ public class movieDto {
     private Integer likeCount;
     private List<String> actors;
     private String posterPath;
-    // ⭐️ 찜(위시리스트) 여부 필드
     private Boolean wished;
+    
 }
