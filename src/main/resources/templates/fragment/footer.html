@@ -1,15 +1,34 @@
-<footer class="bg-dark text-white text-left py-4 mt-5" th:fragment="footerFragment">
-    <div class="container">
+<footer class="bg-dark text-white py-5 mt-5" th:fragment="footerFragment">
+  <div class="container">
+    <div class="row">
+      
+      <!-- Contact Info -->
+      <div class="col-md-6 mb-4">
+        <h5 class="text-uppercase mb-3">Contact</h5>
         <p class="mb-1">
-            출처: <a href="https://www.themoviedb.org/" class="text-white text-decoration-underline" target="_blank">The Movie Database API</a>
-            /본 사이트는 영화 정보 제공을 위한 학습용 프로젝트이며, 상업적 목적이 아닙니다.
+          📧 Email: 
+          <a href="mailto:ibo12224@naver.com" class="text-white text-decoration-underline">ibo12224@naver.com</a>
         </p>
-
         <p class="mb-1">
-            저작권 © 2025 CinePointer. All rights reserved.
+          📍 Address: 부산 부산진구 중앙대로 627 삼비빌딩 2F, 12F
+        </p>
+      </div>
+
+      <!-- Project Info -->
+      <div class="col-md-6 mb-4">
+        <h5 class="text-uppercase mb-3">About</h5>
+        <p class="mb-1">
+          © 2025 <strong>CinePointer</strong>. All rights reserved.
         </p>
         <p class="mb-0">
-            이메일: <a href="mailto:ibo12224@naver.com" class="text-white">ibo12224@naver.com</a>
+          Movie data powered by  
+          <a href="https://www.themoviedb.org/" class="text-white text-decoration-underline" target="_blank">The Movie Database (TMDb)</a>  
+          <br />
+          이 사이트는 학습용으로 제작되었으며, 상업적 목적은 없습니다.
         </p>
+      </div>
+
     </div>
+    
+  </div>
 </footer>

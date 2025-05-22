@@ -39,6 +39,7 @@
                   th:if="${pageType == 'main'}">
                 <input class="form-control me-2" type="search" name="keyword" id="searchInput" placeholder="영화 검색" aria-label="검색" autocomplete="off">
                 <ul id="search-result-list" class="search-result-list position-absolute w-100" style="z-index:1050; top:100%; left:0;"></ul>
+                
             </form>
             <!-- 비로그인 상태: 로그인/회원가입 -->
             <ul class="navbar-nav" th:if="${session.userId == null}">

@@ -4,17 +4,17 @@ function getAllMovies() {
   const movies = [];
   movieCards.forEach(card => {
     const titleEl = card.querySelector('.title');
-    const descEl = card.querySelector('.desc');
-    if (titleEl && descEl) {
+    if (titleEl) {
       movies.push({
         title: titleEl.textContent.trim(),
-        desc: descEl.textContent.trim(),
-        link: card.getAttribute('href')
+        desc: descEl ? descEl.textContent.trim() : '',  // desc가 없을 경우 빈 문자열 처리
+        link: card.getAttribute('href') || '#'
       });
     }
   });
   return movies;
 }
+
 
 document.addEventListener("DOMContentLoaded", function(){
   const input = document.getElementById('searchInput');
@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", function(){
       return;
     }
     const filtered = allMovies.filter(movie =>
-      movie.title.toLowerCase().includes(keyword) ||
-      movie.desc.toLowerCase().includes(keyword)
+      movie.title.toLowerCase().includes(keyword)
+	  // || movie.desc.toLowerCase().includes(keyword)
     );
     if (filtered.length > 0) {
       filtered.forEach(movie => {
