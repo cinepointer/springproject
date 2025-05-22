@@ -7,12 +7,13 @@
     <link rel="stylesheet" href="/css/board.css">
     <script th:src="@{/js/bootstrap.bundle.min.js}" defer></script>
     <script src="/js/boardDetail.js" defer></script>
+    <link rel="stylesheet" href="/css/common.css">
 </head>
 <body>
 
 <div th:replace="~{fragment/header :: headerFragment}"></div>
 
-<div class="container my-5">
+<div class="container my-5 min-vh-75">
     <!-- 게시글 카드 -->
     <div class="card mb-4">
         <div class="card-body">
@@ -94,9 +95,7 @@
         </div>
     </div>
 
-    <div class="text-end mt-4">
-        <a th:href="@{/board/list}" class="btn btn-outline-secondary">목록으로</a>
-    </div>
+    
 </div>
 
 <div th:replace="~{fragment/footer :: footerFragment}"></div>
