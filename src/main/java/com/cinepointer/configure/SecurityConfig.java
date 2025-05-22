@@ -52,9 +52,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/loginForm", "/signin", "/signup", "/css/**", "/js/**", "/img/**", "users/signup").permitAll()
-                .requestMatchers("/guest/**").permitAll()
-                .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/","/loginForm", "/signin", "/signup", "/css/**", "/js/**", "/img/**", "users/signup").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
@@ -65,6 +63,10 @@ public class SecurityConfig {
                 .failureHandler(authenticationFailureHandler)
                 .permitAll()
             )
+            .oauth2Login(oauth2 -> oauth2
+                    .loginPage("/signin") // 커스텀 로그인 페이지
+                    .defaultSuccessUrl("/loginSuccess", true)
+                )
             .logout(logout -> logout
                 .logoutUrl("/signout")
                 .logoutSuccessUrl("/logout")

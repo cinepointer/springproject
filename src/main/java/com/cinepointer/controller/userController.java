@@ -1,15 +1,15 @@
 package com.cinepointer.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cinepointer.dto.movieDto;
 import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.userService;
 
@@ -108,6 +106,36 @@ public class userController {
         return "myPage";
     }
     
+    @GetMapping("/loginSuccess")
+    public String loginSuccess(@AuthenticationPrincipal OAuth2User principal, HttpServletRequest request) {
+        String name = principal.getAttribute("name");
+        String email = principal.getAttribute("email");
+
+        if (email == null || name == null) {
+            throw new IllegalArgumentException("Google 사용자 정보 부족");
+        }
+
+
+
+        if (userService.findById(email) == null) {
+        	usersDto user = new usersDto();
+	        user.setUserId(email);
+	        user.setUserPasswd(UUID.randomUUID().toString());
+	        user.setUserEmail(email);
+	        user.setUserName(name);
+	        user.setRoleName("ROLE_USER");
+        	
+        	
+            userService.registerUser(user);
+        }
+
+        request.getSession().setAttribute("userId", email);
+        usersDto dto=userService.findById(email);
+        request.getSession().setAttribute("userNum", dto.getUserNum());
+        return "redirect:/";
+    }
+
+
 
 //    // 회원정보 조회 (URL 접근, 방어코드 추가)
 //    @GetMapping("/users/{user_id}")

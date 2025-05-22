@@ -72,6 +72,10 @@
 		Select genre_num from genre;
 	</select>
 	
+	<select id="existsGenre" resultType="int">
+	    SELECT COUNT(genre_num) FROM genre
+	</select>
+
 	
 </mapper>
 

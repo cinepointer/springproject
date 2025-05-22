@@ -145,6 +145,11 @@ public class userServiceImpl implements userService, UserDetailsService {
     }
 
     @Override
+    public List<usersDto> searchUsersByKeyword(String keyword) {
+        return userDao.searchUsers("%" + keyword + "%");
+    }
+
+    @Override
     public List<movie2Dto> getwishList(String userId) {
     	 List<movie2Dto> myMovies=userDao.selectWishListByUserId(userId);
         return myMovies;

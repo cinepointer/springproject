@@ -2,23 +2,19 @@ package com.cinepointer.controller;
 
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 import com.cinepointer.dto.tmdbMovieDto;
 import com.cinepointer.dto.usersDto;
@@ -38,21 +34,15 @@ public class adminController {
 	@Autowired
     private userService userservice;
 	
-	@Autowired
-    private PasswordEncoder passwordEncoder;
 	
-	@GetMapping("/ganre")
-	@ResponseBody
-	public String insertgenre() {
-	    service.insertGenre();
-	    return "장르 테이블 추가";
-	}
 
 	@GetMapping("/insertMovie")
-	@ResponseBody
 	public String insertmovie() {
+		if(service.existsGanre()<10) {
+			service.insertGenre();
+		}
 		service.insertPopularMovies();
-	    return "영화, 장르_영화, 배우, 영화_배우 테이블 추가";
+		return "redirect:/admin/main";
 	}
 	
 	@RequestMapping("/header")
@@ -90,6 +80,12 @@ public class adminController {
 	    userservice.deleteUserById(userId);
 	    return "redirect:/admin/main";
 	}
-
+	@GetMapping("/searchUser")
+	public String getUser(@RequestParam("keyword") String keyword, Model model) {
+		List<usersDto> users = userservice.searchUsersByKeyword(keyword);
+		
+		model.addAttribute("users", users);
+	    return "adminPage";
+	}
 
 }

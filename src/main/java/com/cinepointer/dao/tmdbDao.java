@@ -31,6 +31,6 @@ public interface tmdbDao {
     // 배치 삽입 - 배우-영화 관계 리스트
     void insertActorMoviesBatch(@Param("actorMovieList") List<actorMovieDto> actorMovieList);
 
-    
+    int existsGenre();
 
 }
