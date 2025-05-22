@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 상세</title>
-    <link rel="stylesheet" href="/css/board.css">
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/css/board.css">
     <script th:src="@{/js/bootstrap.bundle.min.js}" defer></script>
     <script src="/js/boardDetail.js" defer></script>
 </head>
@@ -43,29 +43,37 @@
         </div>
 
         <!-- 댓글 목록 -->
-        <div th:each="comment : ${comment}" class="card mb-3">
+        <div th:each="comment : ${comment}" class="card mb-3 position-relative">
             <div class="card-body">
+                <!-- 오른쪽 상단 버튼 -->
+                <div class="comment-actions" th:if="${session.userId == comment.userId}">
+                    <a href="javascript:void(0);" class="text-primary me-2"
+                       th:onclick="'showEditForm(' + ${comment.commentNum} + ');'">[수정]</a>
+                    <a th:href="@{'/board/commentDelete/' + ${comment.commentNum} + '/' + ${board.boardNum}}"
+                       class="text-danger"
+                       onclick="return confirm('정말 삭제하시겠습니까?');">[삭제]</a>
+                </div>
+
+                <!-- 작성자 + 시간 -->
                 <p class="mb-1">
                     <strong th:text="${comment.userId}">작성자</strong>
                     <small class="text-muted ms-2" th:text="${comment.commentTime}">작성시간</small>
-                    <span th:if="${session.userId == comment.userId}">
-                        <a href="javascript:void(0);" class="text-primary ms-2"
-                           th:onclick="'showEditForm(' + ${comment.commentNum} + ');'">[수정]</a>
-                        <a th:href="@{'/board/commentDelete/' + ${comment.commentNum} + '/' + ${board.boardNum}}"
-                           class="text-danger ms-1"
-                           onclick="return confirm('정말 삭제하시겠습니까?');">[삭제]</a>
-                    </span>
                 </p>
-                <p class="white-space-pre-wrap" th:text="${comment.commentContent}" th:id="'content-' + ${comment.commentNum}">댓글 내용</p>
+
+                <!-- 댓글 내용 -->
+                <p class="white-space-pre-wrap mb-2"
+                   th:text="${comment.commentContent}"
+                   th:id="'content-' + ${comment.commentNum}">댓글 내용</p>
 
                 <!-- 수정 폼 -->
                 <div th:id="'editForm-' + ${comment.commentNum}" class="edit-form mt-2" style="display:none;">
                     <form th:action="@{/board/commentEdit}" method="post" class="d-flex flex-column gap-2">
                         <input type="hidden" name="commentNum" th:value="${comment.commentNum}">
                         <input type="hidden" name="boardNum" th:value="${board.boardNum}">
-                        <textarea name="commentContent" class="form-control" rows="4" th:text="${comment.commentContent}"></textarea>
+                        <textarea name="commentContent" class="form-control" rows="4"
+                                  th:text="${comment.commentContent}"></textarea>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-sm btn-primary">수정</button>
+                            <button type="submit" class="btn btn-sm btn-primary">수정하기</button>
                             <button type="button" class="btn btn-sm btn-secondary cancel-edit">취소</button>
                         </div>
                     </form>
@@ -73,13 +81,14 @@
             </div>
         </div>
 
-        <!-- 댓글 작성 폼 -->
+        <!-- 댓글 작성 폼 카드 -->
         <div class="card mt-4">
             <div class="card-body">
-                <form action="/board/comment" method="post" class="d-flex gap-2 align-items-stretch">
-                    <textarea name="commentContent" class="form-control" placeholder="댓글을 작성해주세요." required rows="4"></textarea>
+                <form action="/board/comment" method="post" class="comment-form d-flex align-items-stretch">
+                    <textarea name="commentContent" class="form-control"
+                              placeholder="댓글을 입력하세요" required rows="4"></textarea>
                     <input type="hidden" name="boardNum" th:value="${board.boardNum}">
-                    <button type="submit" class="btn btn-success px-4">등록</button>
+                    <button type="submit" class="btn btn-success comment-submit-btn">등록</button>
                 </form>
             </div>
         </div>

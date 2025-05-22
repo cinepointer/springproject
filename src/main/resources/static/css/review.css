@@ -78,10 +78,58 @@ body {
 
 .btn-primary,
 .btn-outline-secondary,
-.btn-outline-info {
+.btn-outline-info,
+.btn-soft-primary,
+.btn-soft-danger,
+.btn-soft-green,
+.btn-secondary {
     border-radius: 8px;
     font-weight: 500;
 }
+
+.btn-soft-primary {
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+}
+.btn-soft-primary:hover {
+    background-color: #5c7cfa;
+}
+
+.btn-soft-danger {
+    background-color: #999999;
+    color: #fff;
+    border: none;
+    padding: 6px 14px;
+}
+.btn-soft-danger:hover {
+    background-color: #ff8787;
+}
+
+.btn-soft-green {
+    background-color: #999999;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+.btn-soft-green:hover {
+    background-color: #69db7c;
+}
+
+.btn-secondary {
+    background-color: #ced4da;
+    border: none;
+    color: #212529;
+    padding: 6px 14px;
+}
+.btn-secondary:hover {
+    background-color: #adb5bd;
+    color: #fff;
+}
+
 .btn-outline-info {
     background: linear-gradient(to right, #38cfc5, #2563eb);
     color: white;
@@ -92,14 +140,17 @@ body {
     opacity: 0.92;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-    transition: color 0.14s;
+.comment-box {
+    background-color: #f9fafb;
+    border: 1px solid #e0e6f0;
+    border-radius: 10px;
+    padding: 1rem;
 }
-a:hover, a:focus {
-    color: #2563eb;
-    text-decoration: underline;
+
+.comments h5 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 .white-space-pre-wrap {
@@ -107,7 +158,6 @@ a:hover, a:focus {
     word-break: break-word;
 }
 
-/* ✅ 댓글 입력 폼 정렬 및 버튼 높이 맞춤 */
 .comment-form {
     align-items: stretch;
 }
@@ -116,6 +166,11 @@ a:hover, a:focus {
     flex: 1;
     resize: vertical;
     height: auto;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
 }
 
 .comment-form .form-control {
@@ -132,4 +187,14 @@ a:hover, a:focus {
     justify-content: center;
     height: auto;
     line-height: 1.5;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.14s;
+}
+a:hover, a:focus {
+    color: #000000;
+    text-decoration: none;
 }

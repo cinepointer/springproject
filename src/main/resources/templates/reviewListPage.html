@@ -17,7 +17,12 @@
 
     <!-- 영화 정보 영역 -->
     <div class="movie-info-box">
-        <img th:src="${posterPath}" alt="포스터" />
+        <div class="movie-poster-box">
+                    <img class="movie-poster-img"
+                         th:src="@{'https://image.tmdb.org/t/p/w200/' + ${movie.posterPath}}"
+                         th:alt="|${movie.title} 포스터|"
+                         onerror="this.onerror=null;this.src='/img/image_no.png';"/>
+                </div>
         <div class="movie-details">
             <h2 class="movie-title" th:text="${#lists.isEmpty(reviews) ? '영화 제목 없음' : reviews[0].movieTitle}">영화 제목</h2>
             <p class="movie-release-date" th:text="${movie.releaseDate}">개봉일</p>

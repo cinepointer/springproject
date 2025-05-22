@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.movieDao;
+import com.cinepointer.dto.actorDto;
+import com.cinepointer.dto.actorMovieDto;
 import com.cinepointer.dto.movieDto;
 
 @Service
@@ -85,4 +87,16 @@ public class movieServiceImpl implements movieService {
     public void insert(movieDto movie) {
         movieDao.insert(movie);
     }
+
+	@Override
+	public List<actorMovieDto> getActorMoviesByMovieNum(int movieNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<actorDto> getActorsByNums(List<Integer> actorNums) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
