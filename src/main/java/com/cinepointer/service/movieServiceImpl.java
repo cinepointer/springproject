@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cinepointer.dao.movieDao;
 import com.cinepointer.dto.actorDto;
+import com.cinepointer.dto.actorMovieDto;
 import com.cinepointer.dto.movieDto;
 
 @Service
@@ -80,7 +81,7 @@ public class movieServiceImpl implements movieService {
     public boolean removeWish(int userNum, int movieNum) {
         return movieDao.deleteWish(userNum, movieNum) > 0;
     }
-
+    
     // 영화 등록
     @Override
     public void insert(movieDto movie) {
@@ -89,5 +90,15 @@ public class movieServiceImpl implements movieService {
     @Override
     public List<actorDto> getActorsByMovieNum(int movieNum) {
         return movieDao.findActorsByMovieNum(movieNum);
+    }
+    @Override
+    public List<actorMovieDto> getActorMoviesByMovieNum(int movieNum) {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
+@Override
+    public List<actorDto> getActorsByNums(List<Integer> actorNums) {
+    	// TODO Auto-generated method stub
+    	return null;
     }
 }
