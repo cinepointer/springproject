@@ -108,7 +108,7 @@ public class BoardController {
     }
 
     @PostMapping("/comment")
-    public String insertComment(@RequestParam int boardNum, @ModelAttribute boardCommentDto comment, HttpSession session) {
+    public String insertComment(@RequestParam("boardNum") int boardNum, @ModelAttribute boardCommentDto comment, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) return "redirect:/signin";
 
@@ -120,7 +120,7 @@ public class BoardController {
     }
 
     @PostMapping("/commentEdit")
-    public String updateComment(@RequestParam int commentNum, @RequestParam int boardNum,
+    public String updateComment(@RequestParam("commentNum") int commentNum, @RequestParam("boardNum") int boardNum,
                                  @ModelAttribute boardCommentDto comment, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         if (userId == null) return "redirect:/signin";
