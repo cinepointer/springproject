@@ -31,7 +31,7 @@
                     </form>
                     
                     <!-- 삭제 버튼 -->
-                    <form th:action="@{/info/review/delete}" method="post" class="d-inline">
+                    <form th:action="@{info/review/delete}" method="post" class="d-inline">
                         <input type="hidden" name="reviewNum" th:value="${review.reviewNum}" />
                         <button type="submit" class="btn btn-outline-danger btn-sm">
                             <i class="bi bi-trash"></i> 삭제

@@ -54,8 +54,11 @@ public class reviewController {
                              @RequestParam("movieNum") int movieNum,
                              Model model) {
         reviewDto review = reviewService.getReviewWithCommentsByNum(reviewNum);
+        movieDto movie = movieService.findById((long)movieNum);
+        movieNum = review.getMovieNum();
         model.addAttribute("review", review);
         model.addAttribute("movieNum", movieNum);
+        model.addAttribute("movie", movie);
         return "reviewDetailPage";
     }
 

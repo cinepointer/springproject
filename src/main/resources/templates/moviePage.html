@@ -78,6 +78,7 @@
                 <div class="review-list" th:if="${!#lists.isEmpty(reviews)}">
                     <div class="review-item" th:each="review : ${reviews}">
                         <div class="review-header">
+                        	<span class="review-title" th:text="${review.reviewTitle}">리뷰제목</span>
                             <span class="review-userId" th:text="${review.userId}">닉네임</span>
                             <span class="review-rating" th:text="|★ ${review.reviewRating}|">★ 5</span>
                         </div>

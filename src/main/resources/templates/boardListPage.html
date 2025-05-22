@@ -6,44 +6,43 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splide@4.0.7/dist/splide.min.css">
   <link rel="stylesheet" href="/css/board.css">
+  <style>
+    .text-start.ps-3 {
+      padding-left: 16px !important;
+    }
+  </style>
 </head>
 <body>
-<!-- 헤더 -->
+  <!-- 헤더 -->
   <div th:replace="~{fragment/header :: headerFragment}"></div>
 
   <div class="board-container">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
       <h2 class="section-title">📢 게시판 목록</h2>
       <a href="/board/insertForm" class="btn btn-gradient btn-sm">✏ 글 작성</a>
     </div>
 
-    <div class="card shadow-sm">
-      <div class="card-body p-0">
-        <table class="table table-striped mb-0">
-          <thead class="table-light">
-            <tr>
-              <th scope="col">번호</th>
-              <th scope="col">제목</th>
-              <th scope="col">작성자</th>
-              <th scope="col">작성일</th>
-              <th scope="col">조회수</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="board : ${boardList}">
-              <td th:text="${board.boardNum}">1</td>
-              <td>
-                <a th:href="@{/board/detail/{num}(num=${board.boardNum})}" th:text="${board.boardTitle}">제목</a>
-              </td>
-              <td th:text="${board.userId}">작성자</td>
-              <td th:text="${board.boardRegDate}">2025-05-15</td>
-              <td th:text="${board.boardViewCnt}">0</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="list-group shadow-sm rounded-4 overflow-hidden">
+      <div class="list-group-item list-group-item-light fw-bold d-flex text-center py-3 bg-light">
+        <div class="col-1">번호</div>
+        <div class="col-5">제목</div>
+        <div class="col-2">작성자</div>
+        <div class="col-3">작성일</div>
+        <div class="col-1">조회</div>
+      </div>
+
+      <div th:each="board : ${boardList}" class="list-group-item d-flex align-items-center text-center py-3">
+        <div class="col-1" th:text="${board.boardNum}">1</div>
+        <div class="col-5 text-start ps-5">
+          <a th:href="@{/board/detail/{num}(num=${board.boardNum})}" th:text="${board.boardTitle}" class="text-decoration-none text-dark">제목</a>
+        </div>
+        <div class="col-2" th:text="${board.userId}">작성자</div>
+        <div class="col-3" th:text="${board.boardRegDate}">2025-05-15</div>
+        <div class="col-1" th:text="${board.boardViewCnt}">0</div>
       </div>
     </div>
   </div>
+
   <!-- 푸터 -->
   <div th:replace="~{fragment/footer :: footerFragment}"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

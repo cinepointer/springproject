@@ -96,7 +96,7 @@ public class movieController {
         // 리뷰 미리보기 3개 추가
         List<reviewDto> recentReviews = reviewService.getLimitedReviewsByMovie(id.intValue(), 3);
         model.addAttribute("reviews", recentReviews);
-
+        
         return "moviePage";
     }
 
