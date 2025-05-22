@@ -61,6 +61,9 @@ public class userController {
     @PostMapping("/users/signup")
     public String register(@ModelAttribute("user") usersDto user, Model model) {
         user.setRoleName("ROLE_USER");
+        if(userService.findAll()==null) {
+        	user.setRoleName("ROLE_ADMIN");
+        }
         try {
             if(userService.registerUser(user)) {
             	model.addAttribute("errorMessage", "이미 있는 아이디입니다.");

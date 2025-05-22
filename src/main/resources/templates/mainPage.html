@@ -129,6 +129,26 @@ aaaaaa
 .arrow-btn.right {
   right: -10px;
 }
+.search-result-list {
+    border: 1px solid #ddd;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #fff;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    left: 0; right: 0;
+    z-index: 1000;
+    display: none;
+}
+.search-result-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.search-result-list li:hover, .search-result-list a:hover {
+    background: #f0f0f0;
+}
 @media (max-width: 767px) {
   .container { padding: 0 6px; }
   .main-content {
