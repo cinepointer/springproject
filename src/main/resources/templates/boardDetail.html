@@ -44,22 +44,22 @@
         </div>
 
         <!-- 댓글 목록 -->
-        <div th:each="comment : ${comment}" class="card mb-3 position-relative">
+        <div th:each="comment : ${comment}" class="card mb-3">
             <div class="card-body">
-                <!-- 오른쪽 상단 버튼 -->
-                <div class="comment-actions" th:if="${session.userId == comment.userId}">
-                    <a href="javascript:void(0);" class="text-primary me-2"
-                       th:onclick="'showEditForm(' + ${comment.commentNum} + ');'">[수정]</a>
-                    <a th:href="@{'/board/commentDelete/' + ${comment.commentNum} + '/' + ${board.boardNum}}"
-                       class="text-danger"
-                       onclick="return confirm('정말 삭제하시겠습니까?');">[삭제]</a>
+                <!-- 작성자 + 시간 + 수정/삭제 한 줄 정렬 -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <p class="mb-0">
+                        <strong th:text="${comment.userId}">작성자</strong>
+                        <small class="text-muted ms-2" th:text="${comment.commentTime}">작성시간</small>
+                    </p>
+                    <div class="comment-actions" th:if="${session.userId == comment.userId}">
+                        <a href="javascript:void(0);" class="text-primary me-2"
+                           th:onclick="'showEditForm(' + ${comment.commentNum} + ');'">[수정]</a>
+                        <a th:href="@{'/board/commentDelete/' + ${comment.commentNum} + '/' + ${board.boardNum}}"
+                           class="text-danger"
+                           onclick="return confirm('정말 삭제하시겠습니까?');">[삭제]</a>
+                    </div>
                 </div>
-
-                <!-- 작성자 + 시간 -->
-                <p class="mb-1">
-                    <strong th:text="${comment.userId}">작성자</strong>
-                    <small class="text-muted ms-2" th:text="${comment.commentTime}">작성시간</small>
-                </p>
 
                 <!-- 댓글 내용 -->
                 <p class="white-space-pre-wrap mb-2"
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <!-- 댓글 작성 폼 카드 -->
+        <!-- 댓글 작성 폼 -->
         <div class="card mt-4">
             <div class="card-body">
                 <form action="/board/comment" method="post" class="comment-form d-flex align-items-stretch">
@@ -94,10 +94,9 @@
             </div>
         </div>
     </div>
-
-    
 </div>
 
 <div th:replace="~{fragment/footer :: footerFragment}"></div>
+
 </body>
 </html>
