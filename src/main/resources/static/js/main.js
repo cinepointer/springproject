@@ -4,17 +4,17 @@ function getAllMovies() {
   const movies = [];
   movieCards.forEach(card => {
     const titleEl = card.querySelector('.title');
-    const descEl = card.querySelector('.desc');
-    if (titleEl && descEl) {
+    if (titleEl) {
       movies.push({
         title: titleEl.textContent.trim(),
-        desc: descEl.textContent.trim(),
-        link: card.getAttribute('href')
+        
+        link: card.getAttribute('href') || '#'
       });
     }
   });
   return movies;
 }
+
 
 document.addEventListener("DOMContentLoaded", function(){
   const input = document.getElementById('searchInput');
@@ -30,25 +30,33 @@ document.addEventListener("DOMContentLoaded", function(){
       resultList.style.display = 'none';
       return;
     }
-    const filtered = allMovies.filter(movie =>
-      movie.title.toLowerCase().includes(keyword) ||
-      movie.desc.toLowerCase().includes(keyword)
-    );
-    if (filtered.length > 0) {
-      filtered.forEach(movie => {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="${movie.link}" style="display:block; padding:8px 12px; text-decoration:none; color:#222;">
-                          <strong>${movie.title}</strong> <span style="color:#888;">${movie.desc}</span>
-                        </a>`;
-        resultList.appendChild(li);
-      });
-    } else {
-      const li = document.createElement('li');
-      li.textContent = '검색 결과가 없습니다.';
-      li.style.padding = '8px 12px';
-      resultList.appendChild(li);
-    }
-    resultList.style.display = 'block';
+	const displayedTitles = new Set();
+
+	
+	const filtered = allMovies.filter(movie =>
+	    movie.title.toLowerCase().includes(keyword)
+	    // || movie.desc.toLowerCase().includes(keyword)
+	  );
+	  if (filtered.length > 0) {
+	    filtered.forEach(movie => {
+	      const lowerTitle = movie.title.toLowerCase();
+	      if (displayedTitles.has(lowerTitle)) return; // 이미 추가된 제목이면 skip
+
+	      displayedTitles.add(lowerTitle); // Set에 추가
+
+	      const li = document.createElement('li');
+	      li.innerHTML = `<a href="${movie.link}" style="display:block; padding:8px 12px; text-decoration:none; color:#222;">
+	                        <strong>${movie.title}</strong> <span style="color:#888;">${movie.desc ? movie.desc : ''}</span>
+	                      </a>`;
+	      resultList.appendChild(li);
+	    });
+	  } else {
+	    const li = document.createElement('li');
+	    li.textContent = '검색 결과가 없습니다.';
+	    li.style.padding = '8px 12px';
+	    resultList.appendChild(li);
+	  }
+	  resultList.style.display = 'block';
   }
 
   input.addEventListener('input', searchAndDisplay);
