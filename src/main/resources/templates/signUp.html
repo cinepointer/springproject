@@ -62,14 +62,15 @@
             </div>
         </div>
     </main>
-		<script th:if="${errorMessage != null}">
-	    alert('[[${errorMessage}]]');
-	</script>
+		
     <!-- 푸터 fragment 삽입 -->
     <th:block th:replace="fragment/footer.html :: footerFragment"></th:block>
 
     <!-- Bootstrap JS -->
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script th:if="${errorMessage != null}">
+	    alert('[[${errorMessage}]]');
+	</script>
 </body>
 </html>
 

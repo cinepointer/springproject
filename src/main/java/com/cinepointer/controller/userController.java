@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cinepointer.dto.usersDto;
 import com.cinepointer.service.userService;
@@ -36,20 +37,22 @@ public class userController {
     }
 
     @GetMapping("/signin")
-    public String signInForm(
-            @RequestParam(value = "error", required = false) String error,
-            @RequestParam(value = "msg", required = false) String msg,
-            HttpSession session,
-            Model model) {
-
+    public String signInForm(Model model, HttpSession session) {
         String errorMessage = (String) session.getAttribute("errorMessage");
         if (errorMessage != null) {
             model.addAttribute("errorMessage", errorMessage);
-            session.removeAttribute("errorMessage"); // 세션에서 제거
+            session.removeAttribute("errorMessage");
+        }
+
+        // 여기서는 FlashAttribute "msg"를 자동으로 모델에서 받을 수 있음
+        // 만약 템플릿에서 th:text="${msg}"로 접근하고 싶다면 아래 코드 추가
+        if (model.containsAttribute("msg")) {
+            model.addAttribute("message", model.getAttribute("msg"));
         }
 
         return "signIn";
     }
+
 
     @GetMapping("/signup")
     public String signUpForm(Model model) {
@@ -59,23 +62,24 @@ public class userController {
     }
 
     @PostMapping("/users/signup")
-    public String register(@ModelAttribute("user") usersDto user, Model model) {
+    public String register(@ModelAttribute("user") usersDto user, RedirectAttributes redirectAttributes) {
         user.setRoleName("ROLE_USER");
-        if(userService.findAll()==null) {
-        	user.setRoleName("ROLE_ADMIN");
+        if(userService.findAll() == null) {
+            user.setRoleName("ROLE_ADMIN");
         }
         try {
             if(userService.registerUser(user)) {
-            	model.addAttribute("errorMessage", "이미 있는 아이디입니다.");
-            	return "redirect:/signup";
+                redirectAttributes.addFlashAttribute("errorMessage", "이미 있는 아이디입니다.");
+                return "redirect:/signup";
             }
+            redirectAttributes.addFlashAttribute("msg", "회원가입에 성공하였습니다.");
             return "redirect:/signIn";
         } catch (Exception e) {
-            System.out.print(e.getMessage());
-            model.addAttribute("errorMessage", "회원가입에 실패했습니다: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "회원가입에 실패했습니다: " + e.getMessage());
             return "redirect:/signup";
         }
     }
+
 
     @GetMapping("/login")
     public String login(HttpServletRequest request, Authentication auth) {
@@ -138,28 +142,6 @@ public class userController {
         return "redirect:/";
     }
 
-
-
-//    // 회원정보 조회 (URL 접근, 방어코드 추가)
-//    @GetMapping("/users/{user_id}")
-//    public String getUserInfo(@PathVariable("user_id") String user_id, Model model,HttpSession session) {
-//    	String userId = (String)session.getAttribute("userId");
-//        List<movieDto> wishlist = new ArrayList<>();
-//        if (user != null) {
-//            try {
-//                wishlist = userService.getwishList(user_id);
-//            } catch (Exception e) {
-//                // 무시
-//            }
-//            model.addAttribute("user", user);
-//            model.addAttribute("wishlist", wishlist);
-//        } else {
-//            model.addAttribute("user", null);
-//            model.addAttribute("wishlist", wishlist);
-//            model.addAttribute("error", "회원을 찾을 수 없습니다.");
-//        }
-//        return "myPage";
-//    }
 
     @GetMapping("/users/{user_id}/edit")
     public String editUserForm(@PathVariable("user_id") String user_id, Model model) {

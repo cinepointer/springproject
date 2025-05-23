@@ -55,11 +55,11 @@ public class userServiceImpl implements userService, UserDetailsService {
     public boolean registerUser(usersDto user) {
         usersDto existingUser = userDao.selectUserById(user.getUserId());
         if (existingUser != null) {
-            return false; // 아이디 중복
+            return true; // 아이디 중복
         }
         user.setUserPasswd(passwordEncoder.encode(user.getUserPasswd()));
         userDao.insertUser(user);
-        return true;
+        return false;
     }
     
 	    @Override

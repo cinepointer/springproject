@@ -45,5 +45,12 @@
 	<script th:if="${errorMessage != null}">
 	    alert('[[${errorMessage}]]');
 	</script>
+	<script th:if="${msg != null}">
+    alert('[[${msg}]]');
+</script>
+
+	<script type="text/javascript">
+		Console.log(message);
+	</script>
 </body>
 </html>
