@@ -48,44 +48,6 @@ TMDb API를 활용한 영화 추천 및 리뷰 플랫폼 **cinepointer**에 오�
 | **Build & Deploy** | WAR 파일 배포 |
 | **Tool** | IntelliJ, Git, GitHub |
 
----
-
-## 🗂 디렉토리 구조
-cinepointer/
-├── controller/
-│ ├── userController.java
-│ ├── movieController.java
-│ └── boardController.java
-├── dto/
-│ ├── usersDto.java
-│ ├── movieDto.java
-│ ├── boardDto.java
-│ ├── reviewDto.java
-│ ├── genreDto.java
-│ └── likesDto.java
-├── dao/
-│ └── cinepointerDao.java
-├── service/
-│ └── cinepointerService.java
-├── resources/
-│ └── mybatis/mapper/MyBatis.xml
-├── static/
-│ ├── css/style.css
-│ ├── js/
-│ │ ├── headerJs.js
-│ │ └── footerJs.js
-│ └── img/
-├── templates/
-│ ├── header.html
-│ ├── footer.html
-│ ├── mainpage.html
-│ ├── moviepage.html
-│ ├── mypage.html
-│ ├── adminpage.html
-│ ├── boardlistpage.html
-│ └── boardpage.html
-
----
 
 ## 📈 향후 개선 사항 (To-do)
 - ✅ OAuth 로그인 연동
